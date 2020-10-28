@@ -1,0 +1,12 @@
+<div>
+  <h1>Films</h1>
+  <div class="container">
+    <ul *ngIf="content">
+      <li *ngFor="let element of content">
+        <p class="title"><strong>{{ element.title }}</strong></p>
+        <p class="episode">Episode: {{ element.episode_id }}</p>
+        <p class="date">Release date: {{ element.release_date }}</p>
+      </li>
+    </ul>
+  </div>
+</div>
