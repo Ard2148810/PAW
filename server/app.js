@@ -1,11 +1,12 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var MongoClient = require('mongodb').MongoClient
 
 var app = express();
 
@@ -37,5 +38,14 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+MongoClient.connect('mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+process.env.DB_HOST+'/'+process.env.DB_NAME+'?retryWrites=true&w=majority', function (err, client) {
+  if (err) throw err
+  var db = client.db(process.env.DB_NAME)
+  db.collection('posts').find().toArray(function (err, result) {
+    if (err) throw err
+    console.log(result)
+  })
+})
 
 module.exports = app;
