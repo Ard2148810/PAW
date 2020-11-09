@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 
-export class HttpService {
+export class MovieService {
 
   constructor(private http: HttpClient) { }
 
