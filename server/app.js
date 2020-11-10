@@ -3,10 +3,12 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+var logger = require('morgan')
+const mongoose = require('mongoose');
+;
 var indexRouter = require('./routes/index');
+var authRouter = require('./routes/auth');
 var usersRouter = require('./routes/users');
-var MongoClient = require('mongodb').MongoClient
 
 var app = express();
 
@@ -20,8 +22,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// connect to db
+mongoose.connect('mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+process.env.DB_HOST+'/'+process.env.DB_NAME+'?retryWrites=true&w=majority', {useNewUrlParser: true});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  // we're connected!
+});
+
+app.use(indexRouter);
+app.use(usersRouter);
+app.use(authRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -39,13 +50,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-MongoClient.connect('mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+process.env.DB_HOST+'/'+process.env.DB_NAME+'?retryWrites=true&w=majority', function (err, client) {
-  if (err) throw err
-  var db = client.db(process.env.DB_NAME)
-  db.collection('posts').find().toArray(function (err, result) {
-    if (err) throw err
-    console.log(result)
-  })
-})
+app.listen(3000);
 
 module.exports = app;
