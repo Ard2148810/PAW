@@ -17,15 +17,18 @@ passport.deserializeUser(function (id, done) {
 passport.use('signup', new LocalStrategy(
     {
         usernameField: 'username',
-        passwordField: 'password'
+        passwordField: 'password',
+        passReqToCallback: true
     },
-    async (username, password, done) => {
+    async (req, username, password, done) => {
         try {
             const user = await userModel.findOne({username: username})
             if (user) {
                 return done(null, false, {message: 'User already exists'})
             } else {
-                const newUser = await userModel.create({username: username, password: password})
+                const name = req.body.name;
+                const email = req.body.email;
+                const newUser = await userModel.create({username: username, name: name, email: email, password: password})
                 return done(null, newUser,  { message: 'Signed up Successfully' })
             }
         } catch (error) {
@@ -36,12 +39,17 @@ passport.use('signup', new LocalStrategy(
 
 passport.use('login', new LocalStrategy(
     {
-        usernameField: 'username',
+        usernameField: 'login',
         passwordField: 'password'
     },
-    async (username, password, done) => {
+    async (login, password, done) => {
         try {
-            const user = await userModel.findOne({ username: username })
+            var user = await userModel.findOne({
+                $or: [
+                    {username: login},
+                    {email: login},
+                ],
+            })
             if (!user) {
                 return done(null, false, { message: 'User not found' })
             }
