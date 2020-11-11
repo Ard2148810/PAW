@@ -8,9 +8,10 @@ const mongoose = require('mongoose');
 var passport = require('passport')
 require('./config/passport');
 
-var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/api/users');
+var boardsRouter = require('./routes/api/boards');
+var indexRouter = require('./routes/index');
 
 var app = express();
 
@@ -34,12 +35,12 @@ db.once('open', function() {
   // we're connected!
 });
 
-app.use(indexRouter);
-app.use(usersRouter);
 app.use(authRouter);
+app.use(usersRouter);
+app.use(boardsRouter);
+app.use(indexRouter);
 
-app.use('/index', passport.authenticate('jwt', { session: false }), indexRouter);
-// app.use('/profile', passport.authenticate('jwt', { session: false }), indexRouter);
+app.use('/index/profile', passport.authenticate('jwt', { session: false }), indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

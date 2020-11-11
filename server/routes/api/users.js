@@ -1,8 +1,8 @@
 var express = require('express')
-const userModel = require('../models/user')
+const userModel = require('../../models/user')
 var router = express.Router()
 
-router.get('/users', async (req, res) => {
+router.get('/api/users', async (req, res) => {
     const users = await userModel.find({})
 
     try {
@@ -12,10 +12,10 @@ router.get('/users', async (req, res) => {
     }
 })
 
-router.get('/user/:username', async (req, res) => {
+router.get('/api/user/:username', async (req, res) => {
     try {
         const user = await userModel.findOne({
-            username: req.body.username
+            username: req.params.username
         })
         res.send(user)
     } catch (err) {
@@ -23,7 +23,7 @@ router.get('/user/:username', async (req, res) => {
     }
 })
 
-router.post('/user', async (req, res) => {
+router.post('/api/user', async (req, res) => {
     const user = new userModel(req.body);
 
     try {
@@ -44,7 +44,7 @@ router.put('/user/:id', async (req, res) => {
     }
 })
 
-router.delete('/user/:id', async (req, res) => {
+router.delete('/api/user/:id', async (req, res) => {
     try {
         const user = await userModel.findByIdAndDelete(req.params.id)
         if (!user) res.status(404).send("No user found")
@@ -54,7 +54,7 @@ router.delete('/user/:id', async (req, res) => {
     }
 })
 
-router.delete('/users', async (req, res) => {
+router.delete('/api/users', async (req, res) => {
     try {
         await userModel.deleteMany()
         res.status(200).send("All users successfully deleted.")
