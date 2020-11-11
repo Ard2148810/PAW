@@ -1,6 +1,6 @@
-var express = require('express');
-const userModel = require('../models/user');
-var router = express.Router();
+var express = require('express')
+const userModel = require('../models/user')
+var router = express.Router()
 
 router.get('/users', async (req, res) => {
     const users = await userModel.find({})
@@ -10,7 +10,18 @@ router.get('/users', async (req, res) => {
     } catch (err) {
         res.status(500).send(err)
     }
-});
+})
+
+router.get('/user/:username', async (req, res) => {
+    try {
+        const user = await userModel.findOne({
+            username: req.body.username
+        })
+        res.send(user)
+    } catch (err) {
+        res.status(500).send(err)
+    }
+})
 
 router.post('/user', async (req, res) => {
     const user = new userModel(req.body);
@@ -21,9 +32,9 @@ router.post('/user', async (req, res) => {
     } catch (err) {
         res.status(500).send(err)
     }
-});
+})
 
-router.patch('/user/:id', async (req, res) => {
+router.put('/user/:id', async (req, res) => {
     try {
         const user = await userModel.findByIdAndUpdate(req.params.id, req.body)
         await userModel.save()
@@ -52,4 +63,4 @@ router.delete('/users', async (req, res) => {
     }
 })
 
-module.exports = router;
+module.exports = router

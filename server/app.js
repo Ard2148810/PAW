@@ -5,7 +5,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan')
 const mongoose = require('mongoose');
-;
+var passport = require('passport')
+require('./config/passport');
+
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 var usersRouter = require('./routes/users');
@@ -21,6 +23,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize(express));
+app.use(passport.session(express));
 
 // connect to db
 mongoose.connect('mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+process.env.DB_HOST+'/'+process.env.DB_NAME+'?retryWrites=true&w=majority', {useNewUrlParser: true});
@@ -33,6 +37,9 @@ db.once('open', function() {
 app.use(indexRouter);
 app.use(usersRouter);
 app.use(authRouter);
+
+app.use('/index', passport.authenticate('jwt', { session: false }), indexRouter);
+// app.use('/profile', passport.authenticate('jwt', { session: false }), indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
