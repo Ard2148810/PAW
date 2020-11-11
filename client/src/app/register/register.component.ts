@@ -31,6 +31,7 @@ export class RegisterComponent implements OnInit {
     console.log(userData);
     this.http.registerUser(userData).subscribe(result => {
       console.log(result);
+      this.responseMessage = `Hello ${result.username}! You can log in now.`;
     }, error => {
       this.responseMessage = `Something went wrong :( ${error.status}: ${error.statusText}`;
     });
