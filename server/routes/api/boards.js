@@ -1,8 +1,9 @@
 var express = require('express')
+var passport = require('passport')
 const boardModel = require('../../models/board')
 var router = express.Router()
 
-router.get('/api/boards', async (req, res) => {
+router.get('/api/boards', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const boards = await boardModel.find({})
 
     try {
@@ -12,7 +13,7 @@ router.get('/api/boards', async (req, res) => {
     }
 })
 
-router.post('/api/board', async (req, res) => {
+router.post('/api/board', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const board = new boardModel(req.body);
 
     try {
@@ -23,7 +24,7 @@ router.post('/api/board', async (req, res) => {
     }
 })
 
-router.get('/api/board/:name', async (req, res) => {
+router.get('/api/board/:name', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const board = await boardModel.findOne({
             name: req.params.name
@@ -35,7 +36,7 @@ router.get('/api/board/:name', async (req, res) => {
 })
 
 
-router.put('/api/board/:id', async (req, res) => {
+router.put('/api/board/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const board = await boardModel.findByIdAndUpdate(req.params.id, req.body)
         await boardModel.save()
@@ -45,7 +46,7 @@ router.put('/api/board/:id', async (req, res) => {
     }
 })
 
-router.delete('/api/board/:id', async (req, res) => {
+router.delete('/api/board/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const board = await boardModel.findByIdAndDelete(req.params.id)
         if (!board) res.status(404).send("No board found")
@@ -55,7 +56,7 @@ router.delete('/api/board/:id', async (req, res) => {
     }
 })
 
-router.delete('/api/boards', async (req, res) => {
+router.delete('/api/boards', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         await boardModel.deleteMany()
         res.status(200).send("All boards successfully deleted.")
@@ -64,7 +65,7 @@ router.delete('/api/boards', async (req, res) => {
     }
 })
 
-router.get('/api/boards/user/:username', async (req, res) => {
+router.get('/api/boards/user/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const boards = await boardModel.find({
             $or: [
@@ -79,7 +80,7 @@ router.get('/api/boards/user/:username', async (req, res) => {
     }
 })
 
-router.get('/api/boards/owner/:username', async (req, res) => {
+router.get('/api/boards/owner/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const boards = await boardModel.find({
             owner: req.params.username
@@ -90,7 +91,7 @@ router.get('/api/boards/owner/:username', async (req, res) => {
     }
 })
 
-router.get('/api/boards/teammember/:username', async (req, res) => {
+router.get('/api/boards/teammember/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const boards = await boardModel.find({
             teamMembers: req.params.username
@@ -101,7 +102,7 @@ router.get('/api/boards/teammember/:username', async (req, res) => {
     }
 })
 
-router.get('/api/boards/guest/:username', async (req, res) => {
+router.get('/api/boards/guest/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const boards = await boardModel.find({
             guests: req.params.username

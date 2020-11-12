@@ -40,8 +40,6 @@ app.use(usersRouter);
 app.use(boardsRouter);
 app.use(indexRouter);
 
-app.use('/index/profile', passport.authenticate('jwt', { session: false }), indexRouter);
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

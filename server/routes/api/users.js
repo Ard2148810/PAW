@@ -1,8 +1,9 @@
 var express = require('express')
+var passport = require('passport')
 const userModel = require('../../models/user')
 var router = express.Router()
 
-router.get('/api/users', async (req, res) => {
+router.get('/api/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const users = await userModel.find({})
 
     try {
@@ -12,7 +13,7 @@ router.get('/api/users', async (req, res) => {
     }
 })
 
-router.get('/api/user/:username', async (req, res) => {
+router.get('/api/user/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const user = await userModel.findOne({
             username: req.params.username
@@ -23,7 +24,7 @@ router.get('/api/user/:username', async (req, res) => {
     }
 })
 
-router.post('/api/user', async (req, res) => {
+router.post('/api/user', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const user = new userModel(req.body);
 
     try {
@@ -34,7 +35,7 @@ router.post('/api/user', async (req, res) => {
     }
 })
 
-router.put('/user/:id', async (req, res) => {
+router.put('/user/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const user = await userModel.findByIdAndUpdate(req.params.id, req.body)
         await userModel.save()
@@ -44,7 +45,7 @@ router.put('/user/:id', async (req, res) => {
     }
 })
 
-router.delete('/api/user/:id', async (req, res) => {
+router.delete('/api/user/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const user = await userModel.findByIdAndDelete(req.params.id)
         if (!user) res.status(404).send("No user found")
@@ -54,7 +55,7 @@ router.delete('/api/user/:id', async (req, res) => {
     }
 })
 
-router.delete('/api/users', async (req, res) => {
+router.delete('/api/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         await userModel.deleteMany()
         res.status(200).send("All users successfully deleted.")

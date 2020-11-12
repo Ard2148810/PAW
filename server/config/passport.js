@@ -4,6 +4,11 @@ const JWTstrategy = require('passport-jwt').Strategy
 const ExtractJWT = require('passport-jwt').ExtractJwt
 var userModel  = require('../models/user')
 
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) { return next(); }
+    res.redirect('/login')
+}
+
 passport.serializeUser(function (user, done) {
     done(null, user)
 })
