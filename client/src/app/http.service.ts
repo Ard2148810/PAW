@@ -15,7 +15,7 @@ export class HttpService {
   }
 
   registerUser(userRegisterData: UserRegisterData): any {
-    const url = `${window.location.protocol}/signup`;
+    const url = `${window.location.protocol}/auth/signup`;
     const headers = {
       'content-type': 'application/json'
     };
