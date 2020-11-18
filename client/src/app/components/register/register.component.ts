@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {MovieService} from '../../services/movie.service';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +14,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private http: MovieService
+    private authenticationService: AuthenticationService
   ) {
     this.registerForm = this.formBuilder.group({
       username: '',
@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
   onSubmit(userData: UserRegisterData): void {
     this.responseMessage = 'Please wait...';
     console.log(userData);
-    this.http.registerUser(userData).subscribe(result => {
+    this.authenticationService.registerUser(userData).subscribe(result => {
       console.log(result);
       this.responseMessage = `Hello ${result.user.name}! You can log in now.`;
     }, error => {

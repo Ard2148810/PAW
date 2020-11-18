@@ -5,7 +5,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService} from '../../services/authentication.service';
 import {first} from 'rxjs/operators';
 
-@Component({ templateUrl: 'login.component.html' })
+@Component({
+  selector: 'app-login',
+  templateUrl: 'login.component.html',
+  styleUrls: ['./login.component.sass']
+})
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted: boolean;

@@ -14,12 +14,4 @@ export class MovieService {
     return this.http.get('https://swapi.dev/api/films/');
   }
 
-  registerUser(userRegisterData: UserRegisterData): any {
-    const url = `${window.location.protocol}/auth/signup`;
-    const headers = {
-      'content-type': 'application/json'
-    };
-    return this.http.post(url, JSON.stringify(userRegisterData), { headers });
-  }
-
 }

@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 
 import { environment} from '../../environments/environment';
 import { User} from '../entities/user';
+import {UserRegisterData} from '../components/register/register.component';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -20,8 +21,17 @@ export class AuthenticationService {
     return this.currentUser.value;
   }
 
+  registerUser(userRegisterData: UserRegisterData): any {
+    const url = `${window.location.protocol}/auth/signup`;
+    const headers = {
+      'content-type': 'application/json'
+    };
+    return this.http.post(url, JSON.stringify(userRegisterData), { headers });
+  }
+
   login(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${environment.backendURL}/users/login`, { username, password })
+    console.log('username:', username, 'password:', password);
+    return this.http.post<any>(`${environment.backendURL}/auth/login`, { username, password })
       .pipe(map(user => {
         // set current user
         console.log('HELLLLLLOOOOOOOOO');
