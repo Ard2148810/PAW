@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthenticationService} from '../../services/authentication.service';
 import {first} from 'rxjs/operators';
+import {User} from '../../entities/user';
 
 @Component({
   selector: 'app-login',
@@ -36,21 +37,23 @@ export class LoginComponent implements OnInit {
   get f() { return this.loginForm.controls; } // trzeba sprecyzować typ ale nie wiem jaki :/
 
   onSubmit(): void {
+    this.submitted = true;
     // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
-    this.submitted = true;
-    this.loading = true;
+
+    this.loading = true;  // setting true disables login button until response is received
     this.authenticationService.login(this.f.username.value, this.f.password.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.router.navigate(['/home']);
-        },
-        error => {
-          this.error = error;
-          this.loading = false;
-        });
+    .pipe(first())
+    .subscribe(
+      response => {
+        console.log(response);
+        this.router.navigate(['']);
+      },
+      error => {
+        this.error = error;
+        this.loading = false;
+      });
   }
 }

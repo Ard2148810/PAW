@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment} from '../../environments/environment';
 import { User} from '../entities/user';
-import {UserRegisterData} from '../components/register/register.component';
+import { UserRegisterData } from '../components/register/register.component';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -22,23 +22,32 @@ export class AuthenticationService {
   }
 
   registerUser(userRegisterData: UserRegisterData): any {
-    const url = `${window.location.protocol}/auth/signup`;
+    const url = `${environment.backendURL}/auth/signup`;
     const headers = {
       'content-type': 'application/json'
     };
     return this.http.post(url, JSON.stringify(userRegisterData), { headers });
   }
 
-  login(username: string, password: string): Observable<any> {
-    console.log('username:', username, 'password:', password);
-    return this.http.post<any>(`${environment.backendURL}/auth/login`, { username, password })
-      .pipe(map(user => {
+  login(username: string, userPassword: string): Observable<any> {
+    const url = `${environment.backendURL}/auth/login`;
+    const headers = {
+      'content-type': 'application/json'
+    };
+    return this.http.post<any>(url, JSON.stringify({login: username, password: userPassword}), {headers})
+      .pipe(map(response => {
         // set current user
-        console.log('HELLLLLLOOOOOOOOO');
-        console.log(user);
+        const user = new User();
+        user.username = response.user.username;
+        user.name = response.user.name;
+        user.email = response.user.email;
+        user.password = response.user.password;
+        user.token = response.token;
+
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUser.next(user);
-        return user;
+
+        return response;
       }));
   }
 

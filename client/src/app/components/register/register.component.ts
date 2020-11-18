@@ -30,9 +30,9 @@ export class RegisterComponent implements OnInit {
   onSubmit(userData: UserRegisterData): void {
     this.responseMessage = 'Please wait...';
     console.log(userData);
-    this.authenticationService.registerUser(userData).subscribe(result => {
-      console.log(result);
-      this.responseMessage = `Hello ${result.user.name}! You can log in now.`;
+    this.authenticationService.registerUser(userData).subscribe(response => {
+      console.log(response);
+      this.responseMessage = `Hello ${response.user.name}! You can log in now.`;
     }, error => {
       this.responseMessage = `Something went wrong :( ${error.status}: ${error.statusText}`;
     });

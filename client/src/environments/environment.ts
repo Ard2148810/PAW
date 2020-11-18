@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  backendURL: 'http://localhost:3001',
+  // backendURL: `${window.location.protocol},
+  backendURL: 'http://localhost:3001',  // for development only!
 };
 
 /*
