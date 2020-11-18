@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UserRegisterData } from './register/register.component';
+import { UserRegisterData } from '../components/register/register.component';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class HttpService {
+export class MovieService {
 
   constructor(private http: HttpClient) { }
 

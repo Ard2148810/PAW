@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {HttpService} from '../http.service';
+import {MovieService} from '../../services/movie.service';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +14,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpService
+    private http: MovieService
   ) {
     this.registerForm = this.formBuilder.group({
       username: '',
