@@ -29,7 +29,6 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(userData: UserRegisterData): void {
     this.responseMessage = 'Please wait...';
-    console.log(userData);
     this.authenticationService.registerUser(userData).subscribe(response => {
       console.log(response);
       this.responseMessage = `Hello ${response.user.name}! You can log in now.`;

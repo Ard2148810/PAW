@@ -11,7 +11,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // add header with basic auth credentials if user is logged in and request is to the api url
-    const user = this.authenticationService.getCurrentUser();
+    const user = this.authenticationService.getCurrentUserValue();
     const isLoggedIn = user && user.token;
     const isApiUrl = request.url.startsWith(environment.backendURL);
 

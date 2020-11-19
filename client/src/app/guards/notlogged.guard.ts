@@ -11,19 +11,8 @@ export class NotLoggedGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const currentUser = this.authenticationService.getCurrentUser();
-    console.log(currentUser);
+    const currentUser = this.authenticationService.getCurrentUserValue();
+    // console.log(currentUser);
     return !Boolean(currentUser);
-    // // return !Boolean(localStorage.getItem('userValue'));
-    //
-    // if (currentUser.username) {
-    //   // logged in so return true
-    //   return false;
-    // }
-    //
-    // // not logged in so redirect to login page with the return url
-    // this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-    // // and return false
-    // return true;
   }
 }

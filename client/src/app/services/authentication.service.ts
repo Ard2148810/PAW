@@ -13,12 +13,19 @@ export class AuthenticationService {
   // https://stackoverflow.com/questions/39494058/behaviorsubject-vs-observable
   private currentUser: BehaviorSubject<User>;
 
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {
     this.currentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
   }
 
-  public getCurrentUser(): User {
+  public getCurrentUserValue(): User {
     return this.currentUser.value;
+  }
+
+  public getCurrentUserObservable(): Observable<User> {
+    return this.currentUser;
   }
 
   registerUser(userRegisterData: UserRegisterData): any {

@@ -1,0 +1,19 @@
+<nav>
+
+  <div>
+    <p>Better Trellllo</p>
+  </div>
+  <ng-container *ngIf="userObservable | async else NotLoggedBar">
+    <div>
+      <button class="simple" (click)="logout()">Logout</button>
+    </div>
+  </ng-container>
+
+  <ng-template #NotLoggedBar>
+    <div>
+      <button class="simple" (click)="login()">Login</button>
+      <button class="primary" (click)="register()">Register</button>
+    </div>
+  </ng-template>
+
+</nav>
