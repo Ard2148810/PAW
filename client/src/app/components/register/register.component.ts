@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {HttpService} from '../http.service';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +14,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpService
+    private authenticationService: AuthenticationService
   ) {
     this.registerForm = this.formBuilder.group({
       username: '',
@@ -29,10 +29,9 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(userData: UserRegisterData): void {
     this.responseMessage = 'Please wait...';
-    console.log(userData);
-    this.http.registerUser(userData).subscribe(result => {
-      console.log(result);
-      this.responseMessage = `Hello ${result.user.name}! You can log in now.`;
+    this.authenticationService.registerUser(userData).subscribe(response => {
+      console.log(response);
+      this.responseMessage = `Hello ${response.user.name}! You can log in now.`;
     }, error => {
       this.responseMessage = `Something went wrong :( ${error.status}: ${error.statusText}`;
     });

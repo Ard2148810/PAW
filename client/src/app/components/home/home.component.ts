@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from '../http.service';
+import { MovieService } from '../../services/movie.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
 
   content: ContentItems;
 
-  constructor(private http: HttpService) { }
+  constructor(private http: MovieService) { }
 
   ngOnInit(): void {
     this.http.getContent().subscribe(data => {
