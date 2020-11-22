@@ -1,6 +1,7 @@
 var express = require('express')
 var passport = require('passport')
 const jwt = require('jsonwebtoken');
+const { token } = require('morgan');
 var router = express.Router()
 
 router.post('/auth/signup',
@@ -22,7 +23,9 @@ router.post('/auth/login',
                 return next(new Error('An error occurred.'))
               }
               if (!user) {
-                return next(new Error('User not found.'))
+                return res.json({
+                  message:'User not found'
+                })
               }
               req.login(user, { session: false },
                   async (error) => {
