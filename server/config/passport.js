@@ -31,10 +31,11 @@ passport.use('signup', new LocalStrategy(
             if (user) {
                 return done(null, false, {message: 'User already exists'})
             } else {
-                const name = req.body.name;
-                const email = req.body.email;
+                const name = req.body.name
+                const email = req.body.email
                 const newUser = await userModel.create({username: username, name: name, email: email, password: password})
-                return done(null, newUser,  { message: 'Signed up Successfully' })
+
+                return done(null, newUser, { message: 'Signed up Successfully' })
             }
         } catch (error) {
             done(error)
@@ -64,7 +65,6 @@ passport.use('login', new LocalStrategy(
             }
             return done(null, user, { message: 'Logged in Successfully' })
         } catch (error) {
-            console.log(error.message)
             return done(error);
         }
     })

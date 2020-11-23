@@ -6,26 +6,27 @@ const userSchema = new mongoose.Schema({
     name: String,
     email: String,
     password: String,
-});
+})
 
 userSchema.methods.validPassword = async function(password) {
-    const user = this;
-    const compare = await bcrypt.compare(password, user.password);
+    const user = this
+    const compare = await bcrypt.compare(password, user.password)
 
-    return compare;
+    return compare
 }
 
-userSchema.pre(
-    'save',
-    async function(next) {
-        const user = this;
-        const hash = await bcrypt.hash(this.password, 10);
-
-        this.password = hash;
-        user.save()
-        next();
+userSchema.pre('save', async function(next) {
+    if (this.password) {
+        this.password = await bcrypt.hash(this.password, 10)
     }
-);
+    next()
+})
 
-const User = mongoose.model("User", userSchema);
-module.exports = User;
+userSchema.methods.hashPassword = async function(password) {
+    const hash = await bcrypt.hash(password, 10)
+
+    return hash
+}
+
+const User = mongoose.model("User", userSchema)
+module.exports = User
