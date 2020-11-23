@@ -13,7 +13,7 @@ router.get('/api/users', passport.authenticate('jwt', { session: false }), async
     }
 })
 
-router.get('/api/user/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.get('/api/users/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const user = await userModel.findOne({
             username: req.params.username
@@ -24,8 +24,9 @@ router.get('/api/user/:username', passport.authenticate('jwt', { session: false 
     }
 })
 
-router.post('/api/user', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    const user = new userModel(req.body);
+router.post('/api/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    var user = new userModel(req.body)
+    user.password = user.hashPassword(req.body.user.password)
 
     try {
         await user.save()
@@ -35,24 +36,24 @@ router.post('/api/user', passport.authenticate('jwt', { session: false }), async
     }
 })
 
-router.put('/user/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.put('/api/users/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-        const user = await userModel.findByIdAndUpdate(req.params.id, req.body)
-        await userModel.save()
+        if(req.user._id !== req.params.id) res.status(400).send("You are not logged in as this user.")
+        const user = await userModel.findByIdAndUpdate(req.params.id, req.body.user)
+        await user.save()
         res.send(user)
     } catch (err) {
         res.status(500).send(err)
     }
 })
 
-router.delete('/api/user/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    try {
-        const user = await userModel.findByIdAndDelete(req.params.id)
-        if (!user) res.status(404).send("No user found")
+router.delete('/api/users/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    if(req.user._id !== req.params.id) res.status(400).send("You are not logged in as this user.")
+    userModel.findByIdAndRemove(req.params.id).then(() => {
         res.status(200).send("User successfully deleted.")
-    } catch (err) {
+    }).catch((err) => {
         res.status(500).send(err)
-    }
+    })
 })
 
 router.delete('/api/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
