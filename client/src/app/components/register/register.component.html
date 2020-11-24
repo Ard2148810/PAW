@@ -1,32 +1,37 @@
 <div>
-  <h2>{{responseMessage}}</h2>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
-    <div>
-      <label for="username">
-        Username
-      </label>
-      <input id="username" type="text" formControlName="username">
-    </div>
-    <div>
-      <label for="password">
-        Password
-      </label>
-      <input id="password" type="password" formControlName="password">
-    </div>
-    <div>
-      <label for="email">
-        E-mail
-      </label>
-      <input id="email" type="email" formControlName="email">
-    </div>
-    <div>
-      <label for="name">
-        Name
-      </label>
-      <input id="name" type="text" formControlName="name">
-    </div>
-    <div>
-      <button type="submit">Register</button>
-    </div>
-  </form>
+  <div class="form-wrapper">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
+      <div class="center">
+        <h2 class="header-basic">Create a new account</h2>
+      </div>
+      <div class="form-control-container">
+        <label for="username">
+          Login
+        </label>
+        <input id="username" type="text" formControlName="username">
+      </div>
+      <div class="form-control-container">
+        <label for="password">
+          Password
+        </label>
+        <input id="password" type="password" formControlName="password">
+      </div>
+      <div class="form-control-container">
+        <label for="email">
+          E-mail
+        </label>
+        <input id="email" type="email" formControlName="email">
+      </div>
+      <div class="form-control-container">
+        <label for="name">
+          Display name
+        </label>
+        <input id="name" type="text" formControlName="name">
+      </div>
+      <div class="center">
+        <button class="btn primary" type="submit">Register</button>
+        <div *ngIf="responseMessage" class="alert">{{responseMessage}}</div>
+      </div>
+    </form>
+  </div>
 </div>

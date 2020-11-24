@@ -1,27 +1,31 @@
 <div>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="username">
-        Username
-      </label>
-      <input id="username" type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-      <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-        <div *ngIf="f.username.errors.required" style="color: #ff9e39">Username is required</div>
+  <div class="form-wrapper">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="center">
+        <h2 class="header-basic">Log in</h2>
       </div>
-    </div>
-    <div>
-      <label for="password">Password </label>
-      <input type="password" id="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-      <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-        <div *ngIf="f.password.errors.required" style="color: #ff9e39">Password is required</div>
+      <div class="form-control-container">
+        <label for="username">
+          Login
+        </label>
+        <input id="username" type="text" formControlName="username" class="form-control" />
+        <span *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <span *ngIf="f.username.errors.required" class="input-incorrect">Username is required</span>
+        </span>
       </div>
-    </div>
-    <div>
-      <button [disabled]="loading" class="btn primary">
-        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        Login
-      </button>
-      <div *ngIf="error" class="alert alert-danger mt-3 mb-0" style="color: #ff5843">{{error}}</div>
-    </div>
-  </form>
+      <div class="form-control-container">
+        <label for="password">Password </label>
+        <input type="password" id="password" formControlName="password" class="form-control"/>
+        <span *ngIf="submitted && f.password.errors" class="invalid-feedback">
+          <span *ngIf="f.password.errors.required" class="input-incorrect">Password is required</span>
+        </span>
+      </div>
+      <div class="center">
+        <button class="btn primary">
+          Login
+        </button>
+        <div *ngIf="error" class="alert">{{error}}</div>
+      </div>
+    </form>
+  </div>
 </div>

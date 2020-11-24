@@ -1,11 +1,11 @@
 <nav>
 
   <div>
-    <p>Better Trellllo</p>
+    <p>Trollo</p>
   </div>
   <ng-container *ngIf="userObservable | async else NotLoggedBar">
     <div>
-      <button class="simple" (click)="logout()">Logout</button>
+      <button class="btn simple" (click)="logout()">Logout</button>
     </div>
   </ng-container>
 
