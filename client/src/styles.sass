@@ -8,3 +8,24 @@ $font: Helvetica, "Helvetice Neue", "Segoe UI", Arial, sans-serif
 body
   font-family: $font
   margin: 0
+
+.btn
+  cursor: pointer
+  margin: 2px
+  border: 2px solid $color2
+  color: $color2
+  background-color: $color1
+  padding: 10px 25px 10px 25px
+  transition: background-color, border, color, 300ms
+  text-transform: uppercase
+  &.simple
+    border: none
+    &:hover
+      color: darken($color2, 12%)
+  &.primary
+    color: $color2
+    border-color: $color2
+    &:hover
+      background-color: $color2
+      border-color: $color1
+      color: $color1
