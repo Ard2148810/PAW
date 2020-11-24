@@ -5,20 +5,20 @@ var router = express.Router()
 
 router.get('/api/boards', passport.authenticate('jwt', { session: false }), async (req, res) => {
     boardModel.find({teamMembers: req.user._id}, async function (err, board) {
-        if (err){ res.status(500).send(err) }
-        else{ res.send(board) }
+        if (err) { res.status(500).send(err) }
+        else { res.send(board) }
     });
 })
 
 router.get('/api/boards/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     boardModel.findById(req.params.id, async function (err, board) {
-        if (err){ res.status(500).send(err) }
-        else{
-            if (!board) res.status(404).send("No board found.")
-            if (!board.teamMembers.includes(req.user._id)) {
+        if (err) { res.status(500).send(err) }
+        else {
+            if (!board) { res.status(404).send("No board found.") }
+            else if (!board.teamMembers.includes(req.user._id)) {
                 res.status(404).send("You don't have permissions for this board.")
             }
-            res.send(board)
+            else { res.send(board) }
         }
     });
 })
@@ -42,15 +42,15 @@ router.put('/api/boards/:id', passport.authenticate('jwt', { session: false }), 
 
 router.delete('/api/boards/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     boardModel.findById(req.params.id, async function (err, board) {
-        if (err){ res.status(500).send(err) }
-        else{
-            if (!board) res.status(404).send("No board found.")
-            if (board.owner !== req.user._id) {
+        if (err) { res.status(500).send(err) }
+        else {
+            if (!board) { res.status(404).send("No board found.") }
+            else if (board.owner !== req.user._id) {
                 res.status(404).send("You don't have permissions to delete this board. " +
                     "Only the owner can delete a board.")
             }
             else {
-                board.delete()
+                await board.delete()
                 res.status(200).send("Board successfully deleted.")
             }
         }
@@ -59,28 +59,34 @@ router.delete('/api/boards/:id', passport.authenticate('jwt', { session: false }
 
 router.put('/api/boards/:id/assignment', passport.authenticate('jwt', { session: false }), async (req, res) => {
     boardModel.findById(req.params.id, async function (err, board) {
-        if (err){ res.status(500).send(err) }
-        else{
-            if (!board) res.status(404).send("No board found.")
-            if (!board.teamMembers.includes(req.user._id)) {
+        if (err) { res.status(500).send(err) }
+        else {
+            if (!board) { res.status(404).send("No board found.") }
+            else if (!board.teamMembers.includes(req.user._id)) {
                 res.status(404).send("You don't have permissions to assign users to this board.")
             }
-            // TODO: add user to team members
-            res.send(board.teamMembers)
+            else {
+                // TODO: add user to team members
+                // TODO: return full user objects, not just ids
+                res.send(board.teamMembers)
+            }
         }
     });
 })
 
 router.delete('/api/boards/:id/assignment', passport.authenticate('jwt', { session: false }), async (req, res) => {
     boardModel.findById(req.params.id, async function (err, board) {
-        if (err){ res.status(500).send(err) }
-        else{
-            if (!board) res.status(404).send("No board found.")
-            if (!board.teamMembers.includes(req.user._id)) {
+        if (err) { res.status(500).send(err) }
+        else {
+            if (!board) { res.status(404).send("No board found.") }
+            else if (!board.teamMembers.includes(req.user._id)) {
                 res.status(404).send("You don't have permissions to delete users from this board.")
             }
-            // TODO: delete user from team members (except the case when the user is an owner)
-            res.send(board.teamMembers)
+            else {
+                // TODO: delete user from team members (except the case when the user is an owner)
+                // TODO: return full user objects, not just ids
+                res.send(board.teamMembers)
+            }
         }
     })
 })

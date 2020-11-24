@@ -5,14 +5,14 @@ var router = express.Router()
 
 router.get('/api/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
     userModel.findById(req.user._id, async function (err, user) {
-        if (err){ res.status(500).send(err) }
-        else{ res.send(user) }
+        if (err) { res.status(500).send(err) }
+        else { res.send(user) }
     });
 })
 
 router.put('/api/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
     userModel.findByIdAndUpdate(req.user._id, req.body.user,  {new: true}, function (err, user) {
-        if (err){ res.status(500).send(err) }
+        if (err) { res.status(500).send(err) }
         else { res.status(200).send(user) }
     });
 })
