@@ -1,6 +1,6 @@
 $color1: #af00de
 $color2: #f8f8f8
-$color3: #212121
+$color3: #393939
 $color4: #ffd077
 
 $font: Helvetica, "Helvetice Neue", "Segoe UI", Arial, sans-serif
@@ -8,3 +8,69 @@ $font: Helvetica, "Helvetice Neue", "Segoe UI", Arial, sans-serif
 body
   font-family: $font
   margin: 0
+
+input
+  background-color: transparent
+  border: none
+  border-bottom: 3px solid $color1
+
+.btn
+  cursor: pointer
+  margin: 2px
+  border: 2px solid $color2
+  color: $color2
+  background-color: $color1
+  padding: 10px 25px 10px 25px
+  transition: background-color, border, color, 300ms
+  text-transform: uppercase
+  &.simple
+    border: none
+    &:hover
+      color: darken($color2, 12%)
+  &.primary
+    color: $color2
+    border-color: $color2
+    &:hover
+      background-color: $color2
+      border-color: $color1
+      color: $color1
+
+.alert
+  border: 1px solid #A6A6A6
+  color: #656565
+
+.form-wrapper
+  display: flex
+  align-items: center
+  justify-content: center
+
+.form-control-container
+  display: flex
+  label
+    color: $color3
+    flex: 1
+    margin-right: 20px
+    text-align: right
+  input
+    flex: 2
+    padding-left: 10px
+    caret-color: $color1
+    color: $color3
+
+.center-content
+  display: flex
+  align-items: center
+  justify-content: center
+
+.center
+  text-align: center
+
+.input-incorrect
+  margin-left: 10px
+  color: darkred
+
+.header-basic
+  font-family: $font
+  background-color: $color1
+  color: $color2
+  padding: 10px
