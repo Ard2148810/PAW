@@ -66,9 +66,9 @@ router.put('/api/boards/:id/assignment', passport.authenticate('jwt', { session:
                 res.status(404).send("You don't have permissions to assign users to this board.")
             }
             else {
-                // TODO: add user to team members
+                board.teamMembers.push(req.params.id);
                 // TODO: return full user objects, not just ids
-                res.send(board.teamMembers)
+                res.send(board.teamMembers);
             }
         }
     });
@@ -83,9 +83,10 @@ router.delete('/api/boards/:id/assignment', passport.authenticate('jwt', { sessi
                 res.status(404).send("You don't have permissions to delete users from this board.")
             }
             else {
-                // TODO: delete user from team members (except the case when the user is an owner)
+                if(board.owner._id ===  req.user._id) res.status(404).send("You can't delete the owner");
+                board.teamMembers.splice(board.teamMembers.indexOf(req.user._id),1);
                 // TODO: return full user objects, not just ids
-                res.send(board.teamMembers)
+                res.status(200).send(board.teamMembers);
             }
         }
     })
