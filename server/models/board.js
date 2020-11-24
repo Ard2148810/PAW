@@ -5,7 +5,6 @@ const boardSchema = new mongoose.Schema({
     description: String,
     owner: String,
     teamMembers: [String],
-    guests: [String],
 });
 
 const Board = mongoose.model("Board", boardSchema);
