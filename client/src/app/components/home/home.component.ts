@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BoardService } from '../../services/board.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,8 @@ export class HomeComponent implements OnInit {
   creatingBoard: boolean;
   boardName: string;
 
-  constructor(private http: BoardService) {
+  constructor(private http: BoardService,
+              private router: Router) {
     this.creatingBoard = false;
   }
 
@@ -26,6 +28,11 @@ export class HomeComponent implements OnInit {
       this.boardItems = data;
       console.log(this.boardItems);
     });
+  }
+
+  openBoard(id: string): void {
+    this.router.navigate(['board', id])
+      .catch(console.log);
   }
 
   setCreatingBoard(): void {
@@ -55,6 +62,7 @@ export class HomeComponent implements OnInit {
 
 export interface BoardItem {
   name: string;
+  _id: string;
 }
 
 export interface BoardItems extends Array<BoardItem> {}

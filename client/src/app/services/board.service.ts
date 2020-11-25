@@ -21,4 +21,8 @@ export class BoardService {
     return this.http.post(`${environment.backendURL}/api/boards`, body);
   }
 
+  getBoard(id: string): any {
+    return this.http.get(`${environment.backendURL}/api/boards/${id}`);
+  }
+
 }

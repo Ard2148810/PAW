@@ -14,10 +14,8 @@
 
   <div class="container">
     <ul *ngIf="boardItems && boardItems.length > 0; else noBoards">
-      <li *ngFor="let item of boardItems">
+      <li *ngFor="let item of boardItems" (click)="openBoard(item._id)" class="clickable">
         <p class="title"><strong>{{ item.name }}</strong></p>
-        <!--<p class="episode">Episode: {{ item.episode_id }}</p>
-        <p class="date">Release date: {{ item.release_date }}</p>-->
       </li>
     </ul>
     <ng-template #noBoards>

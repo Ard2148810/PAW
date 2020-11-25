@@ -13,6 +13,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { ErrorInterceptor } from './services/error.interceptor';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
+import { BoardComponent } from './components/board/board.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { NavigationBarComponent } from './components/navigation-bar/navigation-b
     HomeComponent,
     RegisterComponent,
     LoginComponent,
-    NavigationBarComponent
+    NavigationBarComponent,
+    BoardComponent
   ],
   imports: [
     BrowserModule,
