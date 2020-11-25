@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MovieService } from '../../services/movie.service';
+import { BoardService } from '../../services/board.service';
 
 @Component({
   selector: 'app-home',
@@ -9,23 +9,21 @@ import { MovieService } from '../../services/movie.service';
 
 export class HomeComponent implements OnInit {
 
-  content: ContentItems;
+  boardItems: BoardItems;
 
-  constructor(private http: MovieService) { }
+  constructor(private http: BoardService) { }
 
   ngOnInit(): void {
     this.http.getContent().subscribe(data => {
-      this.content = data.results;
-      console.log(this.content);
+      this.boardItems = data;
+      console.log(this.boardItems);
     });
   }
 
 }
 
-export interface ContentItem {
-  title: string;
-  episode_id: number;
-  release_date: string;
+export interface BoardItem {
+  name: string;
 }
 
-export interface ContentItems extends Array<ContentItem> {}
+export interface BoardItems extends Array<BoardItem> {}

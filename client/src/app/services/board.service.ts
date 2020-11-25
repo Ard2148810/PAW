@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UserRegisterData } from '../components/register/register.component';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class MovieService {
+export class BoardService {
 
   constructor(private http: HttpClient) { }
 
   getContent(): any {
-    return this.http.get('https://swapi.dev/api/films/');
+    return this.http.get(`${environment.backendURL}/api/boards`);
   }
 
 }

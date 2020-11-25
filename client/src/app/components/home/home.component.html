@@ -1,12 +1,17 @@
 <div>
-  <h1>Films</h1>
+  <h1 class="header-basic">Boards</h1>
   <div class="container">
-    <ul *ngIf="content">
-      <li *ngFor="let element of content">
-        <p class="title"><strong>{{ element.title }}</strong></p>
-        <p class="episode">Episode: {{ element.episode_id }}</p>
-        <p class="date">Release date: {{ element.release_date }}</p>
+    <ul *ngIf="boardItems && boardItems.length > 0; else noBoards">
+      <li *ngFor="let item of boardItems">
+        <p class="title"><strong>{{ item.name }}</strong></p>
+        <!--<p class="episode">Episode: {{ item.episode_id }}</p>
+        <p class="date">Release date: {{ item.release_date }}</p>-->
       </li>
     </ul>
+    <ng-template #noBoards>
+      <div class="msg-empty">
+        You don't have access to any board. You can create a new one.
+      </div>
+    </ng-template>
   </div>
 </div>

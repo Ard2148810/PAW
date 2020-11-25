@@ -73,7 +73,7 @@ passport.use('login', new LocalStrategy(
 passport.use(new JWTstrategy(
         {
             secretOrKey: 'TOP_SECRET',
-            jwtFromRequest: ExtractJWT.fromBodyField('token')
+            jwtFromRequest: ExtractJWT.fromHeader('token')
         },
         async (token, done) => {
             try {
