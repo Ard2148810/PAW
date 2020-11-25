@@ -25,4 +25,11 @@ export class BoardService {
     return this.http.get(`${environment.backendURL}/api/boards/${id}`);
   }
 
+  renameBoard(id: string, name: string): any {
+    // TODO
+  }
+
+  deleteBoard(id: string): any {
+    return this.http.delete(`${environment.backendURL}/api/boards/${id}`);
+  }
 }

@@ -6,8 +6,25 @@
     <div>
       <span class="subtitle">{{ data ? data.name : "Loading..." }}</span>
     </div>
+    <div class="right-align">
+      <div>
+        <input *ngIf="renamingBoard" class="light" placeholder="Board name" (keyup)="setBoardName($event.target.value)">
+        <button class="btn simple" (click)="handleCreateBoardClick()">
+          {{ renamingBoard ? "Submit" : "Rename Board" }}
+        </button>
+      </div>
+      <div>
+        <button class="btn simple" (click)="navigateBack()">Add User</button>
+      </div>
+      <div>
+        <button class="btn simple" (click)="handleDeleteBoardClick()">Delete</button>
+      </div>
+    </div>
   </div>
   <div id="content">
     Content placeholder
   </div>
 </div>
+
+
+

@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   creatingBoard: boolean;
   boardName: string;
 
-  constructor(private http: BoardService,
+  constructor(private boardService: BoardService,
               private router: Router) {
     this.creatingBoard = false;
   }
@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   }
 
   updateBoardList(): void {
-    this.http.getContent().subscribe(data => {
+    this.boardService.getContent().subscribe(data => {
       this.boardItems = data;
       console.log(this.boardItems);
     });
@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
   }
 
   createBoard(name: string): void {
-    this.http.createBoard(name).subscribe(data => {
+    this.boardService.createBoard(name).subscribe(data => {
       this.updateBoardList();
     });
   }
