@@ -13,6 +13,9 @@ input
   background-color: transparent
   border: none
   border-bottom: 3px solid $color1
+  &.light
+    border-bottom: 3px solid $color2
+    color: $color2
 
 .btn
   cursor: pointer
@@ -78,3 +81,20 @@ input
 .msg-empty
   color: #656565
   font-style: italic
+
+.container-horizontal
+  display: flex
+  flex-direction: row
+  align-items: center
+  padding: 5px
+  div
+    padding: 5px
+    display: flex
+    align-items: center
+
+  div.right-align
+    margin-left: auto
+
+
+.subtitle
+  font-size: 1.5em

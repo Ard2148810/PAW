@@ -14,4 +14,11 @@ export class BoardService {
     return this.http.get(`${environment.backendURL}/api/boards`);
   }
 
+  createBoard(name: string): any {
+    const body = {
+      board: { name }
+    };
+    return this.http.post(`${environment.backendURL}/api/boards`, body);
+  }
+
 }
