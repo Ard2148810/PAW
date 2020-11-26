@@ -44,18 +44,19 @@ router.put('/api/boards/:id', passport.authenticate('jwt', { session: false }), 
         if (err) { res.status(500).send(err); }
         else {
             if (!board) { res.status(404).send("No board found."); }
-            else { if(req.body.content){
-                board.content = req.body.content;
-                board.save();
-            }
-            if (req.body.name) {
-                if (board.owner !== req.user._id) {
-                    res.status(404).send("You don't have permissions to change name of board. " +
-                        "Only the owner can change name of board.")
-                } else {
-                    board.name = req.body.name;
+            else {
+                if (req.body.content) {
+                    board.content = req.body.content;
+                    board.save();
                 }
-            }
+                if (req.body.name) {
+                    if (board.owner !== req.user._id) {
+                        res.status(404).send("You don't have permissions to change name of board. " +
+                            "Only the owner can change name of board.")
+                    } else {
+                        board.name = req.body.name;
+                    }
+                }
                 res.send(board);
             }
         }
@@ -118,10 +119,12 @@ router.delete('/api/boards/:id/assignment', passport.authenticate('jwt', { sessi
                 res.status(404).send("You don't have permissions to delete users from this board.")
             }
             else {
-                if (board.owner._id === req.body._id) res.status(404).send("You can't delete the owner");
-                board.teamMembers.splice(board.teamMembers.indexOf(req.body._id), 1);
-                // TODO: return full user objects, not just ids
-                res.status(200).send(board.teamMembers);
+                if (req.body.user) {
+                    if (board.owner._id === req.body.user) res.status(404).send("You can't delete the owner");
+                    board.teamMembers.splice(board.teamMembers.indexOf(req.body.user), 1);
+                    // TODO: return full user objects, not just ids
+                    res.status(200).send(board.teamMembers);
+                }
             }
         }
     })
