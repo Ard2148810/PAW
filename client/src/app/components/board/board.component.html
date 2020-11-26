@@ -6,6 +6,29 @@
     <div>
       <span class="subtitle">{{ data ? data.name : "Loading..." }}</span>
     </div>
+    <div class="right-align">
+      <div>
+        <input *ngIf="renamingBoard" class="light" placeholder="Board name" (keyup)="setBoardName($event.target.value)">
+        <button class="btn simple" (click)="handleRenameBoardClick()">
+          {{ renamingBoard ? "Rename" : "Rename Board" }}
+        </button>
+      </div>
+      <div>
+        <input *ngIf="addingUser" class="light" placeholder="Username" (keyup)="setUserToAdd($event.target.value)">
+        <button class="btn simple" (click)="handleAddUserClick()">
+          {{ addingUser ? "Add" : "Add User" }}
+        </button>
+      </div>
+      <div>
+        <input *ngIf="deletingUser" class="light" placeholder="Username" (keyup)="setUserToDelete($event.target.value)">
+        <button class="btn simple" (click)="handleDeleteUserClick()">
+          {{ deletingUser ? "Delete" : "Delete User" }}
+        </button>
+      </div>
+      <div>
+        <button class="btn simple" (click)="handleDeleteBoardClick()">Delete Board</button>
+      </div>
+    </div>
   </div>
   <div id="content">
     Content placeholder
