@@ -5,8 +5,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan')
 const mongoose = require('mongoose');
-var passport = require('passport')
+var passport = require('passport');
 require('./config/passport');
+var bodyParser = require("body-parser");
+var swaggerJsdoc = require("swagger-jsdoc");
+var swaggerUi = require("swagger-ui-express");
 
 var authRouter = require('./routes/auth');
 var usersRouter = require('./routes/api/users');
@@ -14,6 +17,36 @@ var boardsRouter = require('./routes/api/boards');
 var indexRouter = require('./routes/index');
 
 var app = express();
+
+var port = process.env.PORT;
+
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Trello API Docs",
+      version: "0.1.0",
+      description:
+          "Application based on Trello.",
+      contact: {
+        name: "Bravo2",
+      },
+    },
+     servers: [
+      {
+        url: "http://localhost:" + port,
+      },
+    ],
+  },
+  apis: ["./routes/api/*.js"],
+};
+
+const specs = swaggerJsdoc(options);
+app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(specs, { explorer: true })
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

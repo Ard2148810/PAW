@@ -1,75 +1,235 @@
 var express = require('express')
-const { use } = require('passport')
 var passport = require('passport')
 const boardModel = require('../../models/board')
-const userModel = require('../../models/user')
 var router = express.Router()
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Board:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *        name:
+ *          type: string
+ *        description:
+ *          type: string
+ *        owner:
+ *          type: string
+ *        teamMembers:
+ *          type: array
+ *          items:
+ *            type: string
+ *    BoardPost:
+ *      type: object
+ *      properties:
+ *        name:
+ *          type: string
+ *        description:
+ *          type: string
+ */
+
+/**
+ * @swagger
+ * /api/boards:
+ *  get:
+ *    tags:
+ *      - Boards
+ *    description: Returns all user's boards
+ *    produces:
+ *      - application/json
+ *    parameters: []
+ *    responses:
+ *      '200':
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/Board'
+ *      '401':
+ *        description: Unauthorized
+ *      '500':
+ *        description: Internal server error
+ */
 router.get('/api/boards', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    boardModel.find({ teamMembers: req.user._id }, async function (err, board) {
+    boardModel.find({ teamMembers: req.user._id }, async function (err, boards) {
         if (err) { res.status(500).send(err) }
-        else { res.status(200).send(board) }
+        else { res.status(200).send(boards) }
     });
 })
 
+/**
+ * @swagger
+ * /api/boards/{id}:
+ *  get:
+ *    tags:
+ *      - Boards
+ *    description: Returns a single board
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - name: _id
+ *        description: Board ID
+ *        in: path
+ *        required: true
+ *    responses:
+ *      '200':
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#components/schemas/Board'
+ *      '401':
+ *        description: Unauthorized
+ *      '403':
+ *        description: Forbidden
+ *      '404':
+ *        description: Not found
+ *      '500':
+ *        description: Internal server error
+ */
 router.get('/api/boards/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     boardModel.findById(req.params.id, async function (err, board) {
         if (err) { res.status(500).send(err) }
         else {
             if (!board) { res.status(404).send("No board found.") }
             else if (!board.teamMembers.includes(req.user._id)) {
-                res.status(404).send("You don't have permissions for this board.")
+                res.status(403).send("You don't have permissions for this board.")
             }
-            else { res.send(board) }
+            else { res.status(200).send(board) }
         }
     });
 })
 
+/**
+ * @swagger
+ * /api/boards:
+ *  post:
+ *    tags:
+ *      - Boards
+ *    description: Creates a new board
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: "body"
+ *        name: "body"
+ *        description: "A board object"
+ *        required: true
+ *        schema:
+ *          $ref: '#/components/schemas/BoardPost'
+ *    responses:
+ *      '200':
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#components/schemas/Board'
+ *      '401':
+ *        description: Unauthorized
+ *      '500':
+ *        description: Internal server error
+ */
 router.post('/api/boards', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    const board = new boardModel(req.body.board);
+    const board = new boardModel(req.body);
     board.owner = req.user._id
     board.teamMembers = [req.user._id]
 
     try {
         await board.save()
-        res.send(board)
+        res.status(200).send(board)
     } catch (err) {
         res.status(500).send(err)
     }
 })
 
+/**
+ * @swagger
+ * /api/boards/{id}:
+ *  put:
+ *    tags:
+ *      - Boards
+ *    description: Modifies a board
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: "body"
+ *        name: "body"
+ *        description: "A board object"
+ *        required: true
+ *        schema:
+ *          $ref: '#/components/schemas/BoardPost'
+ *    responses:
+ *      '200':
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#components/schemas/Board'
+ *      '401':
+ *        description: Unauthorized
+ *      '403':
+ *        description: Forbidden
+ *      '404':
+ *        description: Not found
+ *      '500':
+ *        description: Internal server error
+ */
 router.put('/api/boards/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     //put for name (owner), put for content (teammembers), restrict not to change owner
     boardModel.findById(req.params.id, async function (err, board) {
         if (err) { res.status(500).send(err); }
         else {
             if (!board) { res.status(404).send("No board found."); }
-            else {
-                if (req.body.content) {
+            else if (!board.teamMembers.includes(req.user._id)) {
+                res.status(403).send("You don't have permissions for this board.")
+            } else {
+                if(req.body.content) {
                     board.content = req.body.content;
                     board.save();
                 }
                 if (req.body.name) {
                     if (board.owner !== req.user._id) {
-                        res.status(404).send("You don't have permissions to change name of board. " +
+                        res.status(403).send("You don't have permissions to change name of board. " +
                             "Only the owner can change name of board.")
                     } else {
                         board.name = req.body.name;
                     }
                 }
-                res.send(board);
+                res.status(200).send(board)
             }
         }
     });
 })
 
+/**
+ * @swagger
+ * /api/boards/{id}:
+ *  delete:
+ *    tags:
+ *      - Boards
+ *    description: Deletes a single board, provided the user is an owner of the board
+ *    produces:
+ *      - application/json
+ *    parameters: []
+ *    responses:
+ *      '200':
+ *        description: OK
+ *      '401':
+ *        description: Unauthorized
+ *      '403':
+ *        description: Forbidden
+ *      '404':
+ *        description: Not found
+ *      '500':
+ *        description: Internal server error
+ */
 router.delete('/api/boards/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     boardModel.findById(req.params.id, async function (err, board) {
         if (err) { res.status(500).send(err) }
         else {
             if (!board) { res.status(404).send("No board found.") }
             else if (board.owner !== req.user._id) {
-                res.status(404).send("You don't have permissions to delete this board. " +
+                res.status(403).send("You don't have permissions to delete this board. " +
                     "Only the owner can delete a board.")
             }
             else {

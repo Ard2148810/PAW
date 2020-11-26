@@ -19,7 +19,6 @@ router.get('/api/users/:id', passport.authenticate('jwt', { session: false }), a
     );
 })
 
-
 router.put('/api/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
     userModel.findByIdAndUpdate(req.user._id, req.body.user,  {new: true}, function (err, user) {
         if (err) { res.status(500).send(err) }
