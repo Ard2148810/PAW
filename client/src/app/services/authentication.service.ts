@@ -10,8 +10,9 @@ import { UserRegisterData } from '../components/register/register.component';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
+
   // https://stackoverflow.com/questions/39494058/behaviorsubject-vs-observable
-  private currentUser: BehaviorSubject<User>;
+  private readonly currentUser: BehaviorSubject<User>;
 
   constructor(
     private router: Router,

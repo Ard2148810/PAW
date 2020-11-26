@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BoardService } from '../../services/board.service';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { Board } from '../../entities/board';
 
 @Component({
   selector: 'app-home',
@@ -10,33 +12,29 @@ import { Router } from '@angular/router';
 
 export class HomeComponent implements OnInit {
 
-  boardItems: BoardItems;
+  boards: BehaviorSubject<Array<Board>>;
+
   creatingBoard: boolean;
   boardName: string;
 
   constructor(private boardService: BoardService,
               private router: Router) {
     this.creatingBoard = false;
+    this.boardName = '';
   }
 
   ngOnInit(): void {
+    this.boards = this.boardService.getBoardsObservable();
     this.updateBoardList();
   }
 
   updateBoardList(): void {
-    this.boardService.getContent().subscribe(data => {
-      this.boardItems = data;
-      console.log(this.boardItems);
-    });
+    this.boardService.refreshBoards();
   }
 
   openBoard(id: string): void {
     this.router.navigate(['board', id])
       .catch(console.log);
-  }
-
-  setCreatingBoard(): void {
-    this.creatingBoard = true;
   }
 
   createBoard(name: string): void {
@@ -45,24 +43,19 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  setBoardName(name: string): void {
-    this.boardName = name;
-  }
-
   handleCreateBoardClick(): void {
     if (this.creatingBoard) {
       if (this.boardName.length > 0) {
         this.createBoard(this.boardName);
+        this.creatingBoard = false;
+        this.boardName = '';
       }
     } else {
-      this.setCreatingBoard();
+      this.creatingBoard = true;
     }
   }
-}
 
-export interface BoardItem {
-  name: string;
-  _id: string;
+  setBoardName(name: string): void {
+    this.boardName = name;
+  }
 }
-
-export interface BoardItems extends Array<BoardItem> {}
