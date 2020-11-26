@@ -82,6 +82,7 @@ router.put('/api/boards/:id/assignment', passport.authenticate('jwt', { session:
                 //     })
                 // }));
                 // res.status(200).send(userList);
+                board.save();
                 res.status(200).send(board.teamMembers);
             }
         }
