@@ -10,6 +10,16 @@ router.get('/api/users', passport.authenticate('jwt', { session: false }), async
     });
 })
 
+router.get('/api/users/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    userModel.findById(req.params.id, async function (err, user) {
+        if (err) { res.status(500).send(err) }
+        else {
+            res.send(user); }
+        }
+    );
+})
+
+
 router.put('/api/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
     userModel.findByIdAndUpdate(req.user._id, req.body.user,  {new: true}, function (err, user) {
         if (err) { res.status(500).send(err) }

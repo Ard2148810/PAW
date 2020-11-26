@@ -1,12 +1,14 @@
 var express = require('express')
+const { use } = require('passport')
 var passport = require('passport')
 const boardModel = require('../../models/board')
+const userModel = require('../../models/user')
 var router = express.Router()
 
 router.get('/api/boards', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    boardModel.find({teamMembers: req.user._id}, async function (err, board) {
+    boardModel.find({ teamMembers: req.user._id }, async function (err, board) {
         if (err) { res.status(500).send(err) }
-        else { res.send(board) }
+        else { res.status(200).send(board) }
     });
 })
 
@@ -62,13 +64,25 @@ router.put('/api/boards/:id/assignment', passport.authenticate('jwt', { session:
         if (err) { res.status(500).send(err) }
         else {
             if (!board) { res.status(404).send("No board found.") }
-            else if (!board.teamMembers.includes(req.user._id)) {
+            else if (board.owner !== req.user._id) {
                 res.status(404).send("You don't have permissions to assign users to this board.")
             }
             else {
-                board.teamMembers.push(req.params.id);
-                // TODO: return full user objects, not just ids
-                res.send(board.teamMembers);
+                req.body.users.forEach(element => {
+                    
+                    board.teamMembers.push(element);
+                });
+                // // TODO: return full user objects, not just ids
+                // var userList = await Promise.all(board.teamMembers.map( element => {
+                //     userModel.findById({ _id: element }, async function (err, user) {
+                //         if (err) { console.log(err); }
+                //         else {
+                //            return user;
+                //         }
+                //     })
+                // }));
+                // res.status(200).send(userList);
+                res.status(200).send(board.teamMembers);
             }
         }
     });
@@ -83,8 +97,8 @@ router.delete('/api/boards/:id/assignment', passport.authenticate('jwt', { sessi
                 res.status(404).send("You don't have permissions to delete users from this board.")
             }
             else {
-                if(board.owner._id ===  req.user._id) res.status(404).send("You can't delete the owner");
-                board.teamMembers.splice(board.teamMembers.indexOf(req.user._id),1);
+                if (board.owner._id === req.user._id) res.status(404).send("You can't delete the owner");
+                board.teamMembers.splice(board.teamMembers.indexOf(req.user._id), 1);
                 // TODO: return full user objects, not just ids
                 res.status(200).send(board.teamMembers);
             }
