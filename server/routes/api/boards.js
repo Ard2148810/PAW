@@ -118,8 +118,8 @@ router.delete('/api/boards/:id/assignment', passport.authenticate('jwt', { sessi
                 res.status(404).send("You don't have permissions to delete users from this board.")
             }
             else {
-                if (board.owner._id === req.user._id) res.status(404).send("You can't delete the owner");
-                board.teamMembers.splice(board.teamMembers.indexOf(req.user._id), 1);
+                if (board.owner._id === req.body._id) res.status(404).send("You can't delete the owner");
+                board.teamMembers.splice(board.teamMembers.indexOf(req.body._id), 1);
                 // TODO: return full user objects, not just ids
                 res.status(200).send(board.teamMembers);
             }
