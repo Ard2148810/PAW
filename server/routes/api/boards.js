@@ -39,7 +39,27 @@ router.post('/api/boards', passport.authenticate('jwt', { session: false }), asy
 })
 
 router.put('/api/boards/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    // TODO: put for name (owner), put for content (teammembers), restrict not to change owner
+    //put for name (owner), put for content (teammembers), restrict not to change owner
+    boardModel.findById(req.params.id, async function (err, board) {
+        if (err) { res.status(500).send(err); }
+        else {
+            if (!board) { res.status(404).send("No board found."); }
+            else { if(req.body.content){
+                board.content = req.body.content;
+                board.save();
+            }
+            if (req.body.name) {
+                if (board.owner !== req.user._id) {
+                    res.status(404).send("You don't have permissions to change name of board. " +
+                        "Only the owner can change name of board.")
+                } else {
+                    board.name = req.body.name;
+                }
+            }
+                res.send(board);
+            }
+        }
+    });
 })
 
 router.delete('/api/boards/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -69,7 +89,7 @@ router.put('/api/boards/:id/assignment', passport.authenticate('jwt', { session:
             }
             else {
                 req.body.users.forEach(element => {
-                    
+
                     board.teamMembers.push(element);
                 });
                 // // TODO: return full user objects, not just ids
