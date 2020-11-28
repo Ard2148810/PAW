@@ -9,13 +9,20 @@ body
   font-family: $font
   margin: 0
 
+//input
+//  background-color: transparent
+//  border: none
+//  border-bottom: 3px solid $color1
+//  &.light
+//    border-bottom: 3px solid $color2
+//    color: $color2
+
 input
-  background-color: transparent
   border: none
-  border-bottom: 3px solid $color1
-  &.light
-    border-bottom: 3px solid $color2
-    color: $color2
+  text-decoration: none
+  padding: 0
+  margin: 0
+
 
 .btn
   cursor: pointer
@@ -60,11 +67,6 @@ input
     caret-color: $color1
     color: $color3
 
-.center-content
-  display: flex
-  align-items: center
-  justify-content: center
-
 .center
   text-align: center
 
@@ -103,3 +105,29 @@ input
 
 .clickable
   cursor: pointer
+
+.center-content
+  display: flex
+  align-items: center
+  justify-content: center
+  text-align: center
+
+.spacein
+  &-small
+    padding: 5px
+  &-medium
+    padding: 10px
+  &-big
+    padding: 15px
+  &-none
+    padding: 0
+
+.spaceout
+  &-small
+    margin: 5px
+  &-medium
+    margin: 10px
+  &-big
+    margin: 15px
+  &-none
+    margin: 0

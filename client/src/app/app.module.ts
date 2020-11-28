@@ -14,6 +14,8 @@ import { AuthInterceptor } from './services/auth.interceptor';
 import { ErrorInterceptor } from './services/error.interceptor';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
 import { BoardComponent } from './components/board/board.component';
+import { CardComponent } from './components/card/card.component';
+import { InlineInputComponent } from './components/inline-input/inline-input.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { BoardComponent } from './components/board/board.component';
     RegisterComponent,
     LoginComponent,
     NavigationBarComponent,
-    BoardComponent
+    BoardComponent,
+    CardComponent,
+    InlineInputComponent
   ],
   imports: [
     BrowserModule,
