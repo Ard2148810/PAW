@@ -7,7 +7,30 @@ var router = express.Router()
  * @swagger
  * components:
  *  schemas:
- *    Board:
+ *    TeamMemberRequest:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *        username:
+ *          type: string
+ *    TeamMemberResponse:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *        username:
+ *          type: string
+ *        name:
+ *          type: string
+ *    BoardRequest:
+ *      type: object
+ *      properties:
+ *        name:
+ *          type: string
+ *        description:
+ *          type: string
+ *    BoardResponse:
  *      type: object
  *      properties:
  *        id:
@@ -21,14 +44,7 @@ var router = express.Router()
  *        teamMembers:
  *          type: array
  *          items:
- *            type: string
- *    BoardPost:
- *      type: object
- *      properties:
- *        name:
- *          type: string
- *        description:
- *          type: string
+ *            type: TeamMemberResponse
  */
 
 /**
@@ -48,7 +64,7 @@ var router = express.Router()
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#components/schemas/Board'
+ *                $ref: '#components/schemas/BoardResponse'
  *      '401':
  *        description: Unauthorized
  *      '500':
@@ -80,7 +96,7 @@ router.get('/api/boards', passport.authenticate('jwt', { session: false }), asyn
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#components/schemas/Board'
+ *              $ref: '#components/schemas/BoardResponse'
  *      '401':
  *        description: Unauthorized
  *      '403':
@@ -118,13 +134,13 @@ router.get('/api/boards/:id', passport.authenticate('jwt', { session: false }), 
  *        description: "A board object"
  *        required: true
  *        schema:
- *          $ref: '#/components/schemas/BoardPost'
+ *          $ref: '#/components/schemas/BoardRequest'
  *    responses:
  *      '200':
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#components/schemas/Board'
+ *              $ref: '#components/schemas/BoardResponse'
  *      '401':
  *        description: Unauthorized
  *      '500':
@@ -158,13 +174,13 @@ router.post('/api/boards', passport.authenticate('jwt', { session: false }), asy
  *        description: "A board object"
  *        required: true
  *        schema:
- *          $ref: '#/components/schemas/BoardPost'
+ *          $ref: '#/components/schemas/BoardRequest'
  *    responses:
  *      '200':
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#components/schemas/Board'
+ *              $ref: '#components/schemas/BoardResponse'
  *      '401':
  *        description: Unauthorized
  *      '403':
@@ -240,20 +256,51 @@ router.delete('/api/boards/:id', passport.authenticate('jwt', { session: false }
     })
 })
 
+/**
+ * @swagger
+ * /api/boards/{id}/assignment:
+ *  put:
+ *    tags:
+ *      - Boards
+ *    description: Assigns user to the board as a team member
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: "body"
+ *        name: "body"
+ *        description: "User"
+ *        required: true
+ *        schema:
+ *          $ref: '#/components/schemas/TeamMemberRequest'
+ *    responses:
+ *      '200':
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#components/schemas/BoardResponse'
+ *      '401':
+ *        description: Unauthorized
+ *      '403':
+ *        description: Forbidden
+ *      '404':
+ *        description: Not found
+ *      '500':
+ *        description: Internal server error
+ */
 router.put('/api/boards/:id/assignment', passport.authenticate('jwt', { session: false }), async (req, res) => {
     boardModel.findById(req.params.id, async function (err, board) {
         if (err) { res.status(500).send(err) }
         else {
             if (!board) { res.status(404).send("No board found.") }
             else if (board.owner !== req.user._id) {
-                res.status(404).send("You don't have permissions to assign users to this board.")
+                res.status(403).send("You don't have permissions to assign users to this board.")
             }
             else {
                 req.body.users.forEach(element => {
 
+                    // TODO: The whole user object won't be passed in body. Should decide if we pass id or username or both, where only one is needed.
                     board.teamMembers.push(element);
                 });
-                // // TODO: return full user objects, not just ids
                 // var userList = await Promise.all(board.teamMembers.map( element => {
                 //     userModel.findById({ _id: element }, async function (err, user) {
                 //         if (err) { console.log(err); }
@@ -264,25 +311,59 @@ router.put('/api/boards/:id/assignment', passport.authenticate('jwt', { session:
                 // }));
                 // res.status(200).send(userList);
                 board.save();
+                // TODO: return board with team members (user objects: id, username, name)
                 res.status(200).send(board.teamMembers);
             }
         }
     });
 })
 
+
+/**
+ * @swagger
+ * /api/boards/{id}/assignment:
+ *  delete:
+ *    tags:
+ *      - Boards
+ *    description: Deletes a team member from a board
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: "body"
+ *        name: "body"
+ *        description: "User"
+ *        required: true
+ *        schema:
+ *          $ref: '#/components/schemas/TeamMemberRequest'
+ *    responses:
+ *      '200':
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#components/schemas/BoardResponse'
+ *      '401':
+ *        description: Unauthorized
+ *      '403':
+ *        description: Forbidden
+ *      '404':
+ *        description: Not found
+ *      '500':
+ *        description: Internal server error
+ */
 router.delete('/api/boards/:id/assignment', passport.authenticate('jwt', { session: false }), async (req, res) => {
     boardModel.findById(req.params.id, async function (err, board) {
         if (err) { res.status(500).send(err) }
         else {
             if (!board) { res.status(404).send("No board found.") }
             else if (!board.teamMembers.includes(req.user._id)) {
-                res.status(404).send("You don't have permissions to delete users from this board.")
+                res.status(403).send("You don't have permissions to delete users from this board.")
             }
             else {
                 if (req.body.user) {
-                    if (board.owner._id === req.body.user) res.status(404).send("You can't delete the owner");
+                    if (board.owner._id === req.body.user) res.status(403).send("You can't delete the owner");
+                    // TODO: Should decide if we pass id or username or both, where only one is needed.
                     board.teamMembers.splice(board.teamMembers.indexOf(req.body.user), 1);
-                    // TODO: return full user objects, not just ids
+                    // TODO: return board with team members (user objects: id, username, name)
                     res.status(200).send(board.teamMembers);
                 }
             }
