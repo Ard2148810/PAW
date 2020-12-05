@@ -1,9 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, ObjectIdColumn, BeforeInsert } from 'typeorm';
+import uuid = require('uuid');
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @ObjectIdColumn()
+  _id: string;
 
   @Column()
   username: string;
@@ -16,4 +17,13 @@ export class User {
 
   @Column()
   password: string;
+
+  constructor(user?: Partial<User>) {
+    Object.assign(this, user);
+  }
+
+  @BeforeInsert()
+  async b4create() {
+    this._id = await uuid.v1();
+  }
 }

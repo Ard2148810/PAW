@@ -1,9 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
+import { ObjectID } from 'mongodb';
 
 @Injectable()
 export class UsersService {
@@ -12,23 +17,33 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    // if (!createUserDto || !createUserDto.username || !createUserDto.password) {
+    //   throw new BadRequestException(
+    //     `A user must have at least username and password defined`,
+    //   );
+    // }
+    return await this.userRepository.save(createUserDto);
   }
 
-  public async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
+  findAll(): Promise<User[]> {
+    return this.userRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: number): Promise<User> {
+    return this.userRepository.findOne(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto){
+    const exists =
+      ObjectID.isValid(id) && (await this.userRepository.findOne(id));
+    if (!exists) {
+      throw new NotFoundException();
+    }
+    await this.userRepository.update(id, updateUserDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number): Promise<void> {
+    await this.userRepository.delete(id);
   }
 }
