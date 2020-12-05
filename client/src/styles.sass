@@ -44,6 +44,8 @@ body
     padding: 10px
     border: 1px solid $color5
     transition: border 300ms
+    &:active
+      //border: none
     &:focus
       border: 1px solid $color1
 
@@ -124,18 +126,17 @@ body
   color: #656565
   font-style: italic
 
-//.container-horizontal
-//  display: flex
-//  flex-direction: row
-//  align-items: center
-//  padding: 5px
-//  div
-//    padding: 5px
-//    display: flex
-//    align-items: center
-//
-//  div.right-align
-//    margin-left: auto
+.menu-container
+  display: flex
+  flex-direction: row
+  align-items: center
+  padding: 5px
+  div
+    display: flex
+    align-items: center
+
+  div.right-align
+    margin-left: auto
 
 
 .subtitle

@@ -1,5 +1,5 @@
 <div class="home">
-  <div class="header-basic container-horizontal">
+  <div class="header-basic menu-container" style="padding-bottom: 20px">
     <div>
       <span class="subtitle">Boards</span>
     </div>
@@ -11,7 +11,7 @@
     </div>
   </div>
 
-  <div class="container">
+  <div class="container" style="padding: 10px">
     <ul *ngIf="boards && boards.value.length > 0 else noBoards">
       <li *ngFor="let item of boards.value" (click)="openBoard(item._id)" class="clickable">
           <p class="title"><strong>{{ item.name }}</strong></p>

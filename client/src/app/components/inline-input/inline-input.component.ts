@@ -9,6 +9,7 @@ export class InlineInputComponent implements OnInit {
   @ViewChild('valueContainer') valueContainer: ElementRef;
   @Input() value: string;
   @Output() valueChanged = new EventEmitter<string>();
+  @Output() canceledChange = new EventEmitter<string>();
   isEditing = false;
 
   ngOnInit(): void {
@@ -41,6 +42,7 @@ export class InlineInputComponent implements OnInit {
   handleCancel(): void {
     this.valueContainer.nativeElement.innerText = this.value;  // Reset value
     this.deactivate();
+    this.canceledChange.emit(this.value);
   }
 
 }

@@ -55,6 +55,10 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  cancelCreateBoard(): void {
+    this.creatingBoard = false;
+  }
+
   setBoardName(name: string): void {
     this.boardName = name;
   }
