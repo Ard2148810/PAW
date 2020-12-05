@@ -1,5 +1,5 @@
 $color1: #9103f5
-$color2: #ffffff
+$color2: #f6f6f6
 $color3: #393939
 $color4: #ffd077
 $color5: #999999
@@ -9,6 +9,7 @@ $font: Helvetica, "Helvetice Neue", "Segoe UI", Arial, sans-serif
 body
   font-family: $font
   margin: 0
+  background-color: $color2
 
 //input
 //  background-color: transparent
@@ -18,11 +19,44 @@ body
 //    border-bottom: 3px solid $color2
 //    color: $color2
 
-input
-  border: none
-  text-decoration: none
-  padding: 0
-  margin: 0
+// Forms
+
+
+//input
+//  border: none
+//  text-decoration: none
+//  padding: 0
+//  margin: 0
+
+
+.form-control-container
+  padding: 5px
+  label
+    background-color: #FFFFFF
+    position: absolute
+    margin-left: 5px
+    font-size: 0.8em
+    margin-top: -5px
+    padding-left: 2px
+    padding-right: 2px
+    color: $color3
+  input
+    padding: 10px
+    border: 1px solid $color5
+    transition: border 300ms
+    &:focus
+      border: 1px solid $color1
+
+.flex-container
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-direction: column
+
+.flex-container-horizontal
+  @extend .flex-container
+  flex-direction: row
+
 
 
 .btn
@@ -50,23 +84,23 @@ input
   border: 1px solid #A6A6A6
   color: #656565
 
-.form-wrapper
-  display: flex
-  align-items: center
-  justify-content: center
+//.form-wrapper
+//  display: flex
+//  align-items: center
+//  justify-content: center
 
-.form-control-container
-  display: flex
-  label
-    color: $color3
-    flex: 1
-    margin-right: 20px
-    text-align: right
-  input
-    flex: 2
-    padding-left: 10px
-    caret-color: $color1
-    color: $color3
+//.form-control-container
+//  display: flex
+//  label
+//    color: $color3
+//    flex: 1
+//    margin-right: 20px
+//    text-align: right
+//  input
+//    flex: 2
+//    padding-left: 10px
+//    caret-color: $color1
+//    color: $color3
 
 .center
   text-align: center
@@ -79,24 +113,29 @@ input
   font-family: $font
   background-color: $color1
   color: $color2
-  padding: 10px
+  padding: 10px 40px 18px 40px
+  margin: 0
+  clip-path: polygon(0 0, 100% 0%, 100% 80%, 50% 100%, 0 80%)
+  h2
+    padding: 0
+    margin: 0
 
 .msg-empty
   color: #656565
   font-style: italic
 
-.container-horizontal
-  display: flex
-  flex-direction: row
-  align-items: center
-  padding: 5px
-  div
-    padding: 5px
-    display: flex
-    align-items: center
-
-  div.right-align
-    margin-left: auto
+//.container-horizontal
+//  display: flex
+//  flex-direction: row
+//  align-items: center
+//  padding: 5px
+//  div
+//    padding: 5px
+//    display: flex
+//    align-items: center
+//
+//  div.right-align
+//    margin-left: auto
 
 
 .subtitle

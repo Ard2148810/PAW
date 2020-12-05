@@ -1,30 +1,32 @@
 <div>
-  <div class="form-wrapper">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="center">
-        <h2 class="header-basic">Log in</h2>
+  <div class="flex-container" style="margin-top: 15px">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" style="background-color: #FFFFFF">
+      <div class="center header-basic">
+        <h2>Log in</h2>
       </div>
-      <div class="form-control-container">
-        <label for="username">
-          Login
-        </label>
-        <input id="username" type="text" formControlName="username" class="form-control" />
-        <span *ngIf="submitted && f.username.errors" class="invalid-feedback">
-          <span *ngIf="f.username.errors.required" class="input-incorrect">Username is required</span>
-        </span>
-      </div>
-      <div class="form-control-container">
-        <label for="password">Password </label>
-        <input type="password" id="password" formControlName="password" class="form-control"/>
-        <span *ngIf="submitted && f.password.errors" class="invalid-feedback">
-          <span *ngIf="f.password.errors.required" class="input-incorrect">Password is required</span>
-        </span>
-      </div>
-      <div class="center">
-        <button class="btn primary">
-          Login
-        </button>
-        <div *ngIf="error" class="alert">{{error}}</div>
+      <div class="flex-container" style="background-color: white; padding: 20px">
+        <div class="form-control-container">
+          <label for="username">
+            Login
+          </label>
+          <input id="username" type="text" formControlName="username" class="form-control" />
+          <span *ngIf="submitted && f.username.errors" class="invalid-feedback">
+            <span *ngIf="f.username.errors.required" class="input-incorrect">Username is required</span>
+          </span>
+        </div>
+        <div class="form-control-container">
+          <label for="password">Password </label>
+          <input type="password" id="password" formControlName="password" class="form-control"/>
+          <span *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <span *ngIf="f.password.errors.required" class="input-incorrect">Password is required</span>
+          </span>
+        </div>
+        <div class="center">
+          <button class="btn primary">
+            Login
+          </button>
+          <div *ngIf="error" class="alert">{{error}}</div>
+        </div>
       </div>
     </form>
   </div>
