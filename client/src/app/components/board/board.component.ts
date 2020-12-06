@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BoardService} from '../../services/board.service';
-import {Board} from '../../entities/board';
-import {first} from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BoardService } from '../../services/board.service';
+import { Board } from '../../entities/board';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-board',

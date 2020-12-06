@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {Board} from '../entities/board';
-import {User} from '../entities/user';
-import {map} from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { Board } from '../entities/board';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +33,7 @@ export class BoardService {
 
   createBoard(name: string): any {
     const body = {
-      board: { name }
+      name
     };
     return this.http.post(`${environment.backendURL}/api/boards`, body);
   }

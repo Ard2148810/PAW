@@ -9,7 +9,9 @@ export class AppComponent {
   title = 'client';
   text = 'Test text';
 
-  inputChanged(value: string): void {
-    this.text = value;
+  modalActive = false;
+
+  toggleModal(): void {
+    this.modalActive = !this.modalActive;
   }
 }
