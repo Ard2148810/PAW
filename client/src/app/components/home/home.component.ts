@@ -43,19 +43,16 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  handleCreateBoardClick(): void {
-    if (this.creatingBoard) {
-      if (this.boardName.length > 0) {
-        this.createBoard(this.boardName);
-        this.creatingBoard = false;
-        this.boardName = '';
-      }
-    } else {
-      this.creatingBoard = true;
-    }
+  toggleCreatingBoard(): void {
+    this.creatingBoard = !this.creatingBoard;
   }
 
-  setBoardName(name: string): void {
-    this.boardName = name;
+  setBoardName(event: KeyboardEvent): void {
+    this.boardName = (event.target as HTMLInputElement).value;
+  }
+
+  handleSubmitCreateBoard(): void {
+    this.toggleCreatingBoard();
+    this.createBoard(this.boardName);
   }
 }

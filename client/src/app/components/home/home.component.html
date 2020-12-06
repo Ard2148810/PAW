@@ -1,17 +1,14 @@
 <div class="home">
-  <div class="header-basic container-horizontal">
+  <div class="header-basic menu-container" style="padding-bottom: 20px">
     <div>
       <span class="subtitle">Boards</span>
     </div>
     <div class="right-align">
-      <input *ngIf="creatingBoard" class="light" placeholder="Board name" (keyup)="setBoardName($event.target.value)">
-      <button class="btn primary" (click)="handleCreateBoardClick()">
-        {{ creatingBoard ? "Submit" : "Create Board" }}
-      </button>
+      <button class="btn primary" (click)=toggleCreatingBoard()>Create board</button>
     </div>
   </div>
 
-  <div class="container">
+  <div class="container" style="padding: 10px">
     <ul *ngIf="boards && boards.value.length > 0 else noBoards">
       <li *ngFor="let item of boards.value" (click)="openBoard(item._id)" class="clickable">
           <p class="title"><strong>{{ item.name }}</strong></p>
@@ -24,3 +21,26 @@
     </ng-template>
   </div>
 </div>
+
+<div *ngIf="creatingBoard" class="modal">
+  <div class="modal-background">
+    <div class="modal-window">
+      <div class="modal-header">
+        Name your new board
+      </div>
+      <div class="modal-body">
+        <div class="form-control-container">
+          <label for="username">
+            Board name
+          </label>
+          <input id="username" type="text" (keyup)="setBoardName($event)">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" (click)="toggleCreatingBoard()">Close</button>
+        <button type="submit" (click)="handleSubmitCreateBoard()" class="btn primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+

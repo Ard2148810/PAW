@@ -1,0 +1,16 @@
+<div class="inline-input" [class.editing]="isEditing">
+  <div class="wrapper">
+
+    <div
+      class="value-container"
+      (click)=setEditing(true)
+      [class.editing]=isEditing
+      (keyup.escape)=handleEscape($event)
+      (keydown.enter)=handleEnter($event)
+      contenteditable="true"
+      #valueContainer
+    >{{value}}</div>
+    <div class="input-btn left" (click)=handleCancel()>X</div>
+    <div class="input-btn right" (click)=handleConfirm()>V</div>
+  </div>
+</div>

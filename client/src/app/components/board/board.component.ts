@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BoardService} from '../../services/board.service';
-import {Board} from '../../entities/board';
-import {first} from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BoardService } from '../../services/board.service';
+import { Board } from '../../entities/board';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-board',
@@ -40,6 +40,10 @@ export class BoardComponent implements OnInit {
     });
   }
 
+  getBoardDisplayName(): string {
+    return this.data ? this.data.name : 'Loading...';
+  }
+
   navigateBack(): void {
     this.router.navigate(['..'])
       .catch(console.log);
@@ -55,6 +59,10 @@ export class BoardComponent implements OnInit {
 
   setUserToDelete(name: string): void {
     this.userToDelete = name;
+  }
+
+  handleRenameBoard(name: string): void { // TODO
+    console.log(`New board name: ${name}`);
   }
 
   handleRenameBoardClick(): void {

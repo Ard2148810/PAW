@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'client';
+  text = 'Test text';
+
+  modalActive = false;
+
+  toggleModal(): void {
+    this.modalActive = !this.modalActive;
+  }
 }

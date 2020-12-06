@@ -1,38 +1,84 @@
-$color1: #af00de
-$color2: #f8f8f8
+$color1: #9103f5
+$color2: #f6f6f6
 $color3: #393939
 $color4: #ffd077
+$color5: #999999
 
 $font: Helvetica, "Helvetice Neue", "Segoe UI", Arial, sans-serif
 
 body
   font-family: $font
   margin: 0
+  background-color: $color2
 
-input
-  background-color: transparent
-  border: none
-  border-bottom: 3px solid $color1
-  &.light
-    border-bottom: 3px solid $color2
-    color: $color2
+//input
+//  background-color: transparent
+//  border: none
+//  border-bottom: 3px solid $color1
+//  &.light
+//    border-bottom: 3px solid $color2
+//    color: $color2
+
+// Forms
+
+
+//input
+//  border: none
+//  text-decoration: none
+//  padding: 0
+//  margin: 0
+
+
+.form-control-container
+  padding: 5px
+  label
+    background-color: #FFFFFF
+    position: absolute
+    margin-left: 5px
+    font-size: 0.8em
+    margin-top: -5px
+    padding-left: 2px
+    padding-right: 2px
+    color: $color3
+  input
+    padding: 10px
+    border: 1px solid $color5
+    transition: border 300ms
+    &:focus
+      border: 1px solid $color1
+
+.flex-container
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-direction: column
+
+.flex-container-horizontal
+  @extend .flex-container
+  flex-direction: row
+
+
 
 .btn
   cursor: pointer
   margin: 2px
-  border: 2px solid $color2
-  color: $color2
-  background-color: $color1
+  background-color: #FFFFFF
+  border: none
+  color: $color3
   padding: 10px 25px 10px 25px
   transition: background-color, border, color, 300ms
   text-transform: uppercase
+  &:hover
+    color: darken($color5, 12%)
   &.simple
-    border: none
+    background-color: $color1
+    color: $color2
     &:hover
       color: darken($color2, 12%)
   &.primary
     color: $color2
-    border-color: $color2
+    background-color: $color1
+    border: 2px solid $color2
     &:hover
       background-color: $color2
       border-color: $color1
@@ -41,29 +87,6 @@ input
 .alert
   border: 1px solid #A6A6A6
   color: #656565
-
-.form-wrapper
-  display: flex
-  align-items: center
-  justify-content: center
-
-.form-control-container
-  display: flex
-  label
-    color: $color3
-    flex: 1
-    margin-right: 20px
-    text-align: right
-  input
-    flex: 2
-    padding-left: 10px
-    caret-color: $color1
-    color: $color3
-
-.center-content
-  display: flex
-  align-items: center
-  justify-content: center
 
 .center
   text-align: center
@@ -76,19 +99,23 @@ input
   font-family: $font
   background-color: $color1
   color: $color2
-  padding: 10px
+  padding: 10px 40px 18px 40px
+  margin: 0
+  clip-path: polygon(0 0, 100% 0%, 100% 80%, 50% 100%, 0 80%)
+  h2
+    padding: 0
+    margin: 0
 
 .msg-empty
   color: #656565
   font-style: italic
 
-.container-horizontal
+.menu-container
   display: flex
   flex-direction: row
   align-items: center
   padding: 5px
   div
-    padding: 5px
     display: flex
     align-items: center
 
@@ -103,3 +130,61 @@ input
 
 .clickable
   cursor: pointer
+
+.center-content
+  display: flex
+  align-items: center
+  justify-content: center
+  text-align: center
+
+.spacein
+  &-small
+    padding: 5px
+  &-medium
+    padding: 10px
+  &-big
+    padding: 15px
+  &-none
+    padding: 0
+
+.spaceout
+  &-small
+    margin: 5px
+  &-medium
+    margin: 10px
+  &-big
+    margin: 15px
+  &-none
+    margin: 0
+
+// Modal
+
+.modal-background
+  background-color: rgba(0,0,0,0.35)
+  position: absolute
+  left: 0
+  top: 0
+  width: 100vw
+  height: 100vh
+  display: flex
+  justify-content: center
+  align-items: center
+
+.modal-window
+  background-color: #FFFFFF
+  width: 600px
+
+.modal-header
+  background-color: $color1
+  color: $color2
+  padding: 15px 15px 25px 15px
+  clip-path: polygon(0 0, 100% 0%, 100% 80%, 50% 100%, 0 80%)
+
+.modal-body
+  margin: 15px
+  padding: 10px
+
+.modal-footer
+  border-top: 1px solid $color5
+  text-align: right
+  padding: 10px

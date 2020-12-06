@@ -1,18 +1,19 @@
 <div class="board">
-  <div class="header-basic container-horizontal">
+  <div class="header-basic menu-container" style="padding-bottom: 18px">
     <div>
       <button class="btn simple" (click)="navigateBack()">Back</button>
     </div>
     <div>
-      <span class="subtitle">{{ data ? data.name : "Loading..." }}</span>
+      <app-inline-input [value]=getBoardDisplayName() (valueChanged)="handleRenameBoard($event)"></app-inline-input>
+<!--      <span class="subtitle">{{ data ? data.name : "Loading..." }}</span>-->
     </div>
     <div class="right-align">
-      <div>
+<!--      <div>
         <input *ngIf="renamingBoard" class="light" placeholder="Board name" (keyup)="setBoardName($event.target.value)">
         <button class="btn simple" (click)="handleRenameBoardClick()">
           {{ renamingBoard ? "Rename" : "Rename Board" }}
         </button>
-      </div>
+      </div>-->
       <div>
         <input *ngIf="addingUser" class="light" placeholder="Username" (keyup)="setUserToAdd($event.target.value)">
         <button class="btn simple" (click)="handleAddUserClick()">

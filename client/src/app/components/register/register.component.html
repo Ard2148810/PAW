@@ -1,36 +1,38 @@
 <div>
-  <div class="form-wrapper">
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
-      <div class="center">
-        <h2 class="header-basic">Create a new account</h2>
+  <div class="flex-container" style="margin-top: 15px">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)" style="background-color: #FFFFFF">
+      <div class="center header-basic">
+        <h2>Create a new account</h2>
       </div>
-      <div class="form-control-container">
-        <label for="username">
-          Login
-        </label>
-        <input id="username" type="text" formControlName="username">
-      </div>
-      <div class="form-control-container">
-        <label for="password">
-          Password
-        </label>
-        <input id="password" type="password" formControlName="password">
-      </div>
-      <div class="form-control-container">
-        <label for="email">
-          E-mail
-        </label>
-        <input id="email" type="email" formControlName="email">
-      </div>
-      <div class="form-control-container">
-        <label for="name">
-          Display name
-        </label>
-        <input id="name" type="text" formControlName="name">
-      </div>
-      <div class="center">
-        <button class="btn primary" type="submit">Register</button>
-        <div *ngIf="responseMessage" class="alert">{{responseMessage}}</div>
+      <div class="flex-container" style="background-color: white; padding: 20px">
+        <div class="form-control-container">
+          <label for="username">
+            Login
+          </label>
+          <input id="username" type="text" formControlName="username">
+        </div>
+        <div class="form-control-container">
+          <label for="password">
+            Password
+          </label>
+          <input id="password" type="password" formControlName="password">
+        </div>
+        <div class="form-control-container">
+          <label for="email">
+            E-mail
+          </label>
+          <input id="email" type="email" formControlName="email">
+        </div>
+        <div class="form-control-container">
+          <label for="name">
+            Display name
+          </label>
+          <input id="name" type="text" formControlName="name">
+        </div>
+        <div class="center" style="margin: 15px">
+          <button class="btn primary" type="submit">Register</button>
+          <div *ngIf="responseMessage" class="alert">{{responseMessage}}</div>
+        </div>
       </div>
     </form>
   </div>

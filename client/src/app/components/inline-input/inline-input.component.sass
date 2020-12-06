@@ -1,0 +1,39 @@
+@import "src/styles"
+
+.inline-input
+  display: inline-block
+
+.value-container
+  background-color: lightblue
+  font-size: 1em
+  font-family: $font
+  cursor: pointer
+  display: inline-block
+  padding: 10px
+
+
+.input-btn
+  padding: 10px
+  position: absolute
+  z-index: 1
+  display: none
+  &.left
+    background-color: lightcoral
+    right: 0
+    margin-right: 100%  // based on parent's width
+  &.right
+    background-color: lightgreen
+
+
+.editing
+  .value-container
+    background-color: #ffd077
+    cursor: initial
+  .input-btn
+    display: inline-block
+    cursor: pointer
+
+.wrapper
+  position: relative
+  display: inline-block
+  padding: 0
