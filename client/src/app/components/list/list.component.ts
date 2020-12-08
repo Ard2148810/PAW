@@ -8,6 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 export class ListComponent implements OnInit {
   @Input() title: string;
   @Input() id: string;
+  @Input() wildcard = false;
 
   constructor() { }
 
