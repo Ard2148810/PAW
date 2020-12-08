@@ -1,7 +1,8 @@
 import {
   Injectable,
-  BadRequestException,
   NotFoundException,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -18,23 +19,28 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    // if (!createUserDto || !createUserDto.username || !createUserDto.password) {
-    //   throw new BadRequestException(
-    //     `A user must have at least username and password defined`,
-    //   );
-    // }
-    return await this.userRepository.save(createUserDto);
+    const { username, name, email, password } = createUserDto;
+    let user = await this.findOneByUsername(username);
+    if (user) {
+      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+    }
+    user = await this.userRepository.create(createUserDto);
+    return await this.userRepository.save(user);
   }
 
   findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
 
-  findOne(id: number): Promise<User> {
+  findOne(id: string): Promise<User> {
     return this.userRepository.findOne(id);
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto){
+  findOneByUsername(username: string): Promise<User> {
+    return this.userRepository.findOne({ username: username });
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto) {
     const exists =
       ObjectID.isValid(id) && (await this.userRepository.findOne(id));
     if (!exists) {
@@ -43,7 +49,7 @@ export class UsersService {
     await this.userRepository.update(id, updateUserDto);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.userRepository.delete(id);
   }
 }
