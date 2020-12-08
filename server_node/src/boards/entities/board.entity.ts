@@ -1,9 +1,14 @@
-import { Entity, Column, ObjectIdColumn, BeforeInsert } from 'typeorm';
-import uuid = require('uuid');
+import {
+  Entity,
+  Column,
+  ObjectIdColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Board {
+  @PrimaryGeneratedColumn()
   @ObjectIdColumn()
   _id: string;
 
@@ -18,9 +23,4 @@ export class Board {
 
   @Column()
   teamMembers: [string];
-
-  @BeforeInsert()
-  async b4create() {
-    this._id = await uuid.v1();
-  }
 }

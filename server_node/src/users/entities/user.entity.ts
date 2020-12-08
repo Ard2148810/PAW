@@ -1,10 +1,17 @@
-import { Entity, Column, ObjectIdColumn, BeforeInsert } from 'typeorm';
-import uuid = require('uuid');
+import {
+  Entity,
+  Column,
+  ObjectIdColumn,
+  BeforeInsert,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { hash } from 'bcrypt';
 
 @Entity()
 export class User {
+  @PrimaryGeneratedColumn()
   @ObjectIdColumn()
-  _id: string;
+  id: string;
 
   @Column()
   username: string;
@@ -23,7 +30,7 @@ export class User {
   }
 
   @BeforeInsert()
-  async b4create() {
-    this._id = await uuid.v1();
+  async hashPassword() {
+    this.password = await hash(this.password, 10);
   }
 }

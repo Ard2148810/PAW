@@ -9,7 +9,7 @@ async function bootstrap() {
     .setTitle('Trello')
     .setDescription('The Trello API')
     .setVersion('1.0')
-    .addTag('users, boards')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
