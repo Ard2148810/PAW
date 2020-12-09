@@ -1,16 +1,10 @@
-import {
-  Entity,
-  Column,
-  ObjectIdColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { User } from '../../users/entities/user.entity';
+import { Entity, Column, ObjectIdColumn } from 'typeorm';
+import { List } from '../../lists/entities/list.entity';
 
 @Entity()
 export class Board {
-  @PrimaryGeneratedColumn()
   @ObjectIdColumn()
-  _id: string;
+  id: string;
 
   @Column()
   name: string;
@@ -18,9 +12,9 @@ export class Board {
   @Column()
   description: string;
 
-  @Column((type) => User)
-  owner: User;
-
   @Column()
-  teamMembers: [string];
+  teamMembers: string[];
+
+  @Column((type) => List)
+  lists: List[];
 }

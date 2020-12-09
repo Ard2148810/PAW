@@ -1,15 +1,9 @@
-import {
-  Entity,
-  Column,
-  ObjectIdColumn,
-  BeforeInsert,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Entity, Column, ObjectIdColumn, BeforeInsert } from 'typeorm';
 import { hash } from 'bcrypt';
+import { Board } from '../../boards/entities/board.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
   @ObjectIdColumn()
   id: string;
 
@@ -24,6 +18,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column((type) => Board)
+  boards: Board[];
 
   constructor(user?: Partial<User>) {
     Object.assign(this, user);
