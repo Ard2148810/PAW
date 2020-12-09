@@ -6,7 +6,7 @@
     "start": "ng serve",
     "start-prod": "ng serve --prod=true",
     "build": "ng build",
-    "build-server": "ng build --prod --outputPath=../server/public",
+    "build-server": "./node_modules/@angular/cli/bin/ng build --prod --outputPath=../server/public",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
