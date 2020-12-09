@@ -11,11 +11,20 @@ import { Get, Post, Put, Delete } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AssignUserDto } from './dto/assign-user.dto';
+import { Board } from './entities/board.entity';
 
 @ApiTags('boards')
 @ApiBearerAuth()
+@ApiUnauthorizedResponse()
 @UseGuards(JwtAuthGuard)
 @Controller('boards')
 export class BoardsController {
@@ -54,5 +63,31 @@ export class BoardsController {
   @Delete(':id')
   async remove(@Request() req, @Param('id') id: string) {
     await this.boardsService.remove(req.user.username, id);
+  }
+
+  @Put(':id/assignment')
+  addTeamMember(
+    @Request() req,
+    @Param('id') id: string,
+    @Body() assignUserDto: AssignUserDto,
+  ) {
+    return this.boardsService.addUser(
+      req.user.username,
+      id,
+      assignUserDto.username,
+    );
+  }
+
+  @Delete(':id/assignment')
+  async removeTeamMember(
+    @Request() req,
+    @Param('id') id: string,
+    @Body() assignUserDto: AssignUserDto,
+  ) {
+    return this.boardsService.removeUser(
+      req.user.username,
+      id,
+      assignUserDto.username,
+    );
   }
 }

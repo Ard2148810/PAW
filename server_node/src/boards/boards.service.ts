@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -55,8 +59,36 @@ export class BoardsService {
       },
     });
     if (!board) {
-      throw new NotFoundException();
+      throw new NotFoundException(
+        'No board found or request not made by owner.',
+      );
     }
     return await this.boardRepository.delete(id);
+  }
+
+  async addUser(username: string, id: string, user: string) {
+    const board = await this.findOne(username, id);
+    if (!board) {
+      throw new NotFoundException();
+    }
+    if (board.teamMembers.includes(user)) {
+      throw new BadRequestException('User already belongs to the board.');
+    }
+    board.teamMembers.push(user);
+    await this.boardRepository.update(board.id, board);
+    return board.teamMembers;
+  }
+
+  async removeUser(username: string, id: string, user: string) {
+    const board = await this.findOne(username, id);
+    if (!board) {
+      throw new NotFoundException();
+    }
+    if (board.owner == user) {
+      throw new BadRequestException("Can't delete owner from the board.");
+    }
+    board.teamMembers.splice(board.teamMembers.indexOf(user), 1);
+    await this.boardRepository.update(board.id, board);
+    return board.teamMembers;
   }
 }
