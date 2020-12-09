@@ -10,4 +10,4 @@ import { UsersModule } from '../users/users.module';
   controllers: [BoardsController],
   providers: [BoardsService],
 })
-export class BoardsModule {}
+export class BoardsModule { }
