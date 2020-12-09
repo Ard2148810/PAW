@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start-prod": "ng serve --prod=true",
     "build": "ng build",
     "build-server": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod --outputPath=../server/public",
     "test": "ng test",
@@ -12,6 +13,17 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/cli": "~10.2.0",
+    "@angular/compiler-cli": "~10.2.0",
+    "@angular-devkit/build-angular": "~0.1002.0",
+    "@angular/animations": "~10.2.0",
+    "@angular/common": "~10.2.0",
+    "@angular/compiler": "~10.2.0",
+    "@angular/core": "~10.2.0",
+    "@angular/forms": "~10.2.0",
+    "@angular/platform-browser": "~10.2.0",
+    "@angular/platform-browser-dynamic": "~10.2.0",
+    "@angular/router": "~10.2.0",
     "@types/node": "^12.11.1",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
@@ -32,16 +44,5 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular/cli": "~10.2.0",
-    "@angular/compiler-cli": "~10.2.0",
-    "@angular-devkit/build-angular": "~0.1002.0",
-    "@angular/animations": "~10.2.0",
-    "@angular/common": "~10.2.0",
-    "@angular/compiler": "~10.2.0",
-    "@angular/core": "~10.2.0",
-    "@angular/forms": "~10.2.0",
-    "@angular/platform-browser": "~10.2.0",
-    "@angular/platform-browser-dynamic": "~10.2.0",
-    "@angular/router": "~10.2.0"
   }
 }
