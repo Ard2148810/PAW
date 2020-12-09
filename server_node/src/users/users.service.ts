@@ -9,7 +9,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { ObjectID } from 'mongodb';
 
 @Injectable()
 export class UsersService {
@@ -40,16 +39,16 @@ export class UsersService {
     return this.userRepository.findOne({ username: username });
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    const exists =
-      ObjectID.isValid(id) && (await this.userRepository.findOne(id));
-    if (!exists) {
+  async update(username: string, updateUserDto: UpdateUserDto) {
+    const user = await this.findOneByUsername(username);
+    if (!user) {
       throw new NotFoundException();
     }
-    await this.userRepository.update(id, updateUserDto);
+    await this.userRepository.update(user.id, updateUserDto);
   }
 
-  async remove(id: string): Promise<void> {
-    await this.userRepository.delete(id);
+  async remove(username: string): Promise<void> {
+    const user = await this.findOneByUsername(username);
+    await this.userRepository.delete(user.id);
   }
 }
