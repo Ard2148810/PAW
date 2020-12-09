@@ -6,13 +6,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import {
   ApiBearerAuth,
   ApiBody,
-  ApiCreatedResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { Board } from '../boards/entities/board.entity';
-import { User } from './entities/user.entity';
 
 @ApiTags('users')
 @ApiBearerAuth()

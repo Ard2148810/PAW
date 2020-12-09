@@ -5,20 +5,26 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { List } from './entities/list.entity';
 import { ObjectID } from 'mongodb';
+import { BoardsService } from '../boards/boards.service';
 
 @Injectable()
 export class ListsService {
   constructor(
     @InjectRepository(List)
     private readonly listRepository: Repository<List>,
-  ) { }
+    private readonly boardsService: BoardsService,
+  ) {}
 
   create(createListDto: CreateListDto) {
     return 'This action adds a new list';
   }
 
-  findAll() {
-    return this.listRepository.find();
+  async findAll(username: string, boardId: string) {
+    const board = await this.boardsService.findOne(username, boardId);
+    if (!board) {
+      throw new NotFoundException('Board not found');
+    }
+    return board.lists;
   }
 
   findOne(id: string) {

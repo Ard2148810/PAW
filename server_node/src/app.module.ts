@@ -13,12 +13,12 @@ import { CardsModule } from './cards/cards.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
+    AuthModule,
     UsersModule,
     BoardsModule,
     ListsModule,
-    AuthModule,
-    CommentsModule,
     CardsModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
