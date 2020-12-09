@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AssignUserDto {
-  @ApiProperty()
+  @ApiProperty({ required: true })
   username: string;
 }

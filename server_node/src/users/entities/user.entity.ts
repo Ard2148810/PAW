@@ -1,13 +1,12 @@
 import { Entity, Column, ObjectIdColumn, BeforeInsert } from 'typeorm';
 import { hash } from 'bcrypt';
-import { Board } from '../../boards/entities/board.entity';
 
 @Entity()
 export class User {
   @ObjectIdColumn()
   id: string;
 
-  @Column()
+  @Column({ readonly: true })
   username: string;
 
   @Column()
