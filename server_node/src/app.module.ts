@@ -7,6 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ListsModule } from './lists/lists.module';
+import { CommentsModule } from './comments/comments.module';
+import { CardsModule } from './cards/cards.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { ListsModule } from './lists/lists.module';
     BoardsModule,
     ListsModule,
     AuthModule,
+    CommentsModule,
+    CardsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
