@@ -1,16 +1,11 @@
-import {
-    Entity,
-    Column,
-    ObjectIdColumn,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Entity, Column, ObjectIdColumn } from 'typeorm';
 import { Comment } from '../../comments/entities/comment.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @Entity()
 export class Card {
-    @PrimaryGeneratedColumn()
     @ObjectIdColumn()
-    _id: string;
+    id: string;
 
     @Column()
     name: string;
@@ -18,10 +13,11 @@ export class Card {
     @Column()
     description: string;
 
-    @Column()
-    comments: [Comment]
-    @Column()
-    teamMembers: [string];
+    @Column((type) => Comment)
+    comments: Comment[];
+
+    @Column((type) => User)
+    members: User[];
 
     @Column({ type: 'timestamp' })
     date: Date;
