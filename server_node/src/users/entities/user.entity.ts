@@ -19,9 +19,6 @@ export class User {
   @Column()
   password: string;
 
-  @Column((type) => Board)
-  boards: Board[];
-
   constructor(user?: Partial<User>) {
     Object.assign(this, user);
   }

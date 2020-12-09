@@ -20,11 +20,6 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
-  }
-
-  @Get()
   findOne(@Request() req) {
     return this.usersService.findOneByUsername(req.user.username);
   }

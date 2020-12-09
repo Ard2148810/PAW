@@ -12,6 +12,9 @@ export class Board {
   @Column()
   description: string;
 
+  @Column({ readonly: true })
+  owner: string;
+
   @Column()
   teamMembers: string[];
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,23 +12,51 @@ export class BoardsService {
     private readonly boardRepository: Repository<Board>,
   ) {}
 
-  create(createBoardDto: CreateBoardDto) {
-    return 'This action adds a new board';
+  async create(username: string, createBoardDto: CreateBoardDto) {
+    const { name, description } = createBoardDto;
+    const board = await this.boardRepository.create({
+      name: name,
+      description: description,
+      owner: username,
+      teamMembers: [username],
+      lists: [],
+    });
+    return await this.boardRepository.save(board);
   }
 
-  async findAll(): Promise<Board[]> {
-    return await this.boardRepository.find();
+  async findAll(username: string) {
+    return await this.boardRepository.find({
+      where: {
+        teamMembers: { $in: [username] },
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} board`;
+  async findOne(username: string, id: string) {
+    return await this.boardRepository.findOne(id, {
+      where: {
+        teamMembers: { $in: [username] },
+      },
+    });
   }
 
-  update(id: number, updateBoardDto: UpdateBoardDto) {
-    return `This action updates a #${id} board`;
+  async update(username: string, id: string, updateBoardDto: UpdateBoardDto) {
+    const board = await this.findOne(username, id);
+    if (!board) {
+      throw new NotFoundException();
+    }
+    await this.boardRepository.update(id, updateBoardDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} board`;
+  async remove(username: string, id: string) {
+    const board = await this.boardRepository.findOne(id, {
+      where: {
+        owner: username,
+      },
+    });
+    if (!board) {
+      throw new NotFoundException();
+    }
+    return await this.boardRepository.delete(id);
   }
 }
