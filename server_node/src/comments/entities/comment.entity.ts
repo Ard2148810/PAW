@@ -3,6 +3,9 @@ import { Entity, Column, ObjectIdColumn } from 'typeorm';
 @Entity()
 export class Comment {
     @ObjectIdColumn()
+    id: string;
+
+    @Column()
     author: User;
 
     @Column()
