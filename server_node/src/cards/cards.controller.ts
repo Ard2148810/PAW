@@ -11,7 +11,7 @@ import { UpdateCardDto } from './dto/update-card.dto';
 @UseGuards(JwtAuthGuard)
 @Controller('cards')
 export class CardsController {
-  constructor(private readonly cardsService: CardsService) {}
+  constructor(private readonly cardsService: CardsService) { }
 
   @ApiBody({ type: CreateCardDto })
   @Post()
@@ -28,6 +28,7 @@ export class CardsController {
   findOne(@Param('id') id: string) {
     return this.cardsService.findOne(+id);
   }
+  
   @ApiBody({ type: UpdateCardDto })
   @Put(':id')
   update(@Param('id') id: string, @Body() updateCardDto: UpdateCardDto) {
