@@ -1,0 +1,14 @@
+<div class="list">
+  <div class="title" [class.title-wildcard]="wildcard">
+    <app-inline-input *ngIf="wildcard else listName" value="Add another list"></app-inline-input>
+  </div>
+  <div *ngIf="!wildcard" class="card-container">
+    <app-card text="First card"></app-card>
+    <app-card text="Second"></app-card>
+    <app-card text="Another one"></app-card>
+  </div>
+</div>
+
+<ng-template #listName>
+  {{ title || '[Unnamed list]' }}
+</ng-template>

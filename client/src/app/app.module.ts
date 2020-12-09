@@ -16,6 +16,7 @@ import { BoardComponent } from './components/board/board.component';
 import { CardComponent } from './components/card/card.component';
 import { InlineInputComponent } from './components/inline-input/inline-input.component';
 import { LoginComponent } from './components/login/login.component';
+import { ListComponent } from './components/list/list.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { LoginComponent } from './components/login/login.component';
     NavigationBarComponent,
     BoardComponent,
     CardComponent,
-    InlineInputComponent
+    InlineInputComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,
