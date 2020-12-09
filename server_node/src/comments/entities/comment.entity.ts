@@ -1,18 +1,8 @@
-import {
-    Entity,
-    Column,
-    ObjectIdColumn,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
-import { User } from '../../users/entities/user.entity';
-
+import { User } from 'src/users/entities/user.entity';
+import { Entity, Column, ObjectIdColumn } from 'typeorm';
 @Entity()
 export class Comment {
-    @PrimaryGeneratedColumn()
     @ObjectIdColumn()
-    _id: string;
-
-    @Column()
     author: User;
 
     @Column()
