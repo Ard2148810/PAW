@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  backendURL: `${window.location.protocol}`
+  backendURL: `${window.location.origin}`
 };
