@@ -16,8 +16,8 @@ export class Card {
     @Column((type) => Comment)
     comments: Comment[];
 
-    @Column((type) => User)
-    members: User[];
+    @Column()
+    members: string;
 
     @Column({ type: 'timestamp' })
     date: Date;

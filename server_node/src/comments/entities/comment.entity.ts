@@ -6,8 +6,8 @@ export class Comment {
     @ObjectIdColumn()
     id: string;
 
-    @Column((type) => User)
-    author: User;
+    @Column()
+    author: string;
 
     @Column()
     description: string;
