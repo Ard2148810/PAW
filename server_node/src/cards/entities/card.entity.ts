@@ -16,7 +16,7 @@ export class Card {
   comments: Comment[];
 
   @Column()
-  members: string;
+  members: string[];
 
   @Column({ type: 'timestamp' })
   date: Date;

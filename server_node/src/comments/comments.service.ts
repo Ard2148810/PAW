@@ -21,7 +21,7 @@ export class CommentsService {
     return this.commentRepository.find();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.commentRepository.findOne(id);
   }
 
@@ -34,7 +34,7 @@ export class CommentsService {
     await this.commentRepository.update(id, UpdateCommentDto);
   }
 
-  async remove(id: number): Promise<void>  {
+  async remove(id: string): Promise<void>  {
     await this.commentRepository.delete(id);
   }
 }

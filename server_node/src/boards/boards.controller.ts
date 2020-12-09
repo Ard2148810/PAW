@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Body,
-  Param,
-  UseGuards,
-  Request,
-  ForbiddenException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Controller, Body, Param, UseGuards, Request } from '@nestjs/common';
 import { Get, Post, Put, Delete } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -14,13 +6,11 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 import {
   ApiBearerAuth,
   ApiBody,
-  ApiCreatedResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AssignUserDto } from './dto/assign-user.dto';
-import { Board } from './entities/board.entity';
 
 @ApiTags('boards')
 @ApiBearerAuth()

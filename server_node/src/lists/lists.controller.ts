@@ -26,17 +26,17 @@ export class ListsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.listsService.findOne(+id);
+    return this.listsService.findOne(id);
   }
 
   @ApiBody({ type: UpdateListDto })
   @Put(':id')
   update(@Param('id') id: string, @Body() updateListDto: UpdateListDto) {
-    return this.listsService.update(+id, updateListDto);
+    return this.listsService.update(id, updateListDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.listsService.remove(+id);
+    return this.listsService.remove(id);
   }
 }
