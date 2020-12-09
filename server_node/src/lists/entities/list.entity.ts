@@ -9,9 +9,9 @@ export class List {
   @Column()
   name: string;
 
-  @Column((type) => Card)
-  cards: Card[];
-
   @Column()
   position: BigInteger;
+
+  @Column((type) => Card)
+  cards: Card[];
 }
