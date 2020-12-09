@@ -18,6 +18,9 @@ export class Board {
   @Column()
   teamMembers: string[];
 
+  @Column()
+  isVisible: boolean;
+
   @Column((type) => List)
   lists: List[];
 }
