@@ -122,12 +122,12 @@ export class BoardComponent implements OnInit {
   }
 
   deleteBoard(): void{
-    if (!this.data._id){
+    if (!this.data.id){
       this.navigateBack();
       return;
     }
 
-    this.boardService.deleteBoard(this.data._id)
+    this.boardService.deleteBoard(this.data.id)
       .pipe(first())
       .subscribe(
         response => {

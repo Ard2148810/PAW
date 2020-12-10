@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
   }
-S
+
   onSubmit(userData: UserRegisterData): void {
     this.responseMessage = 'Please wait...';
     this.authenticationService.registerUser(userData).subscribe(response => {
