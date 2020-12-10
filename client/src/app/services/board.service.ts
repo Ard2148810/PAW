@@ -25,7 +25,7 @@ export class BoardService {
   }
 
   refreshBoards(): any {
-    return this.http.get<Board[]>(`${environment.backendURL}/boards`).subscribe(data => {
+    return this.http.get<Board[]>(`${environment.backendURL}/api/boards`).subscribe(data => {
       this.boards.next(data);
       console.log(this.boards.value);
     });
@@ -36,11 +36,11 @@ export class BoardService {
       name,
       description
     };
-    return this.http.post(`${environment.backendURL}/boards`, body);
+    return this.http.post(`${environment.backendURL}/api/boards`, body);
   }
 
   getBoard(id: string): any {
-    return this.http.get(`${environment.backendURL}/boards/${id}`);
+    return this.http.get(`${environment.backendURL}/api/boards/${id}`);
   }
 
   renameBoard(boardId: string, newBoardName: string): any {
@@ -60,6 +60,6 @@ export class BoardService {
   }
 
   deleteBoard(id: string): any {
-    return this.http.delete(`${environment.backendURL}/boards/${id}`);
+    return this.http.delete(`${environment.backendURL}/api/boards/${id}`);
   }
 }
