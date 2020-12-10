@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
   }
 
   createBoard(name: string): void {
-    this.boardService.createBoard(name).subscribe(data => {
+    this.boardService.createBoard(name, '').subscribe(data => {
       this.updateBoardList();
     });
   }

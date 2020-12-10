@@ -10,7 +10,7 @@
 
   <div class="container" style="padding: 10px">
     <ul *ngIf="boards && boards.value.length > 0 else noBoards">
-      <li *ngFor="let item of boards.value" (click)="openBoard(item._id)" class="clickable">
+      <li *ngFor="let item of boards.value" (click)="openBoard(item.id)" class="clickable">
           <p class="title"><strong>{{ item.name }}</strong></p>
       </li>
     </ul>
