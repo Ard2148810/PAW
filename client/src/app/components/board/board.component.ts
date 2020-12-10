@@ -37,6 +37,7 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.boardService.getBoard(this.id).subscribe(data => {
       this.data = data;
+      console.log(this.data);
     });
   }
 

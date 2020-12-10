@@ -7,6 +7,9 @@
       <app-inline-input [value]=getBoardDisplayName() (valueChanged)="handleRenameBoard($event)"></app-inline-input>
 <!--      <span class="subtitle">{{ data ? data.name : "Loading..." }}</span>-->
     </div>
+    <div class="member-list" *ngFor="let member of data.teamMembers">
+      <span class="member-name">{{member}}</span>
+    </div>
     <div class="right-align">
 <!--      <div>
         <input *ngIf="renamingBoard" class="light" placeholder="Board name" (keyup)="setBoardName($event.target.value)">
