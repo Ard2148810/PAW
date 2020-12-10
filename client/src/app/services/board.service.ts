@@ -47,16 +47,19 @@ export class BoardService {
     // TODO
   }
 
-  addUserToBoard(boardId: string, userId: string): any {
-    // TODO
-    // const body = {
-    //   board: { name }
-    // };
-    // return this.http.post(`${environment.backendURL}/api/boards/${boardId}/assignment`, body);
+  addUserToBoard(boardId: string, username: string): any {
+    const body = {
+      username
+    };
+    return this.http.put(`${environment.backendURL}/api/boards/${boardId}/assignment`, body);
   }
 
-  deleteUserFromBoard(boardId: string, userId: string): any {
-    // TODO
+  deleteUserFromBoard(boardId: string, username: string): any {
+    const body = {
+      username
+    };
+    // return this.http.delete(`${environment.backendURL}/api/boards/${boardId}/assignment`, body);
+    return this.http.request('delete', `${environment.backendURL}/api/boards/${boardId}/assignment`, { body });
   }
 
   deleteBoard(id: string): any {

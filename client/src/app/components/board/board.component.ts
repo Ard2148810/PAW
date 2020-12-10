@@ -17,10 +17,7 @@ export class BoardComponent implements OnInit {
   renamingBoard: boolean;
   addingUser: boolean;
   deletingUser: boolean;
-
-  boardName: string;
-  userToAdd: string;
-  userToDelete: string;
+  deletingBoard: boolean;
 
   constructor(private boardService: BoardService,
               private route: ActivatedRoute,
@@ -29,9 +26,7 @@ export class BoardComponent implements OnInit {
     this.renamingBoard = false;
     this.addingUser = false;
     this.deletingUser = false;
-    this.boardName = '';
-    this.userToAdd = '';
-    this.userToDelete = '';
+    this.deletingBoard = false;
   }
 
   ngOnInit(): void {
@@ -50,76 +45,56 @@ export class BoardComponent implements OnInit {
       .catch(console.log);
   }
 
-  setBoardName(name: string): void {
-    this.boardName = name;
-  }
-
-  setUserToAdd(name: string): void {
-    this.userToAdd = name;
-  }
-
-  setUserToDelete(name: string): void {
-    this.userToDelete = name;
-  }
-
   handleRenameBoard(name: string): void { // TODO
     console.log(`New board name: ${name}`);
   }
 
-  handleRenameBoardClick(): void {
-    if (this.renamingBoard) {
-      if (this.boardName.length > 0) {
-        this.renameBoard(this.boardName);
-        this.renamingBoard = false;
-        this.boardName = '';
-      }
-    } else {
-      this.renamingBoard = true;
-    }
+  toggleDeletingBoardModal(): void{
+    this.deletingBoard = !this.deletingBoard;
   }
 
-  handleAddUserClick(): void {
-    if (this.addingUser) {
-      if (this.userToAdd.length > 0) {
-        this.addUserToBoard(this.userToAdd);
-        this.addingUser = false;
-        this.userToAdd = '';
-      }
-    } else {
-      this.addingUser = true;
-    }
+  toggleRenamingBoardModal(): void{
+    this.renamingBoard = !this.renamingBoard;
   }
 
-  handleDeleteUserClick(): void {
-    if (this.deletingUser) {
-      if (this.userToDelete.length > 0) {
-        this.deleteUserFromBoard(this.userToDelete);
-        this.deletingUser = false;
-        this.userToDelete = '';
-      }
-    } else {
-      this.deletingUser = true;
-    }
+  toggleAddingUserModal(): void{
+    this.addingUser = !this.addingUser;
   }
 
-  handleDeleteBoardClick(): void {
-    this.deleteBoard();
+  toggleDeletingUserModal(): void{
+    this.deletingUser = !this.deletingUser;
   }
 
   renameBoard(newBoardName: string): void {
     // this.boardService.renameBoard(this.data._id, newBoardName)
     // this.updateBoardName()
     // TODO
+    this.renamingBoard = false;
   }
 
   addUserToBoard(username: string): void{
-    // this.boardService.addUserToBoard(this.data._id, username)
-    // TODO
+    this.boardService.addUserToBoard(this.data.id, username)
+    .subscribe(
+      response => {
+        console.log(response);
+      },
+      error => {
+        console.log('ERROR', error);
+      });
+
+    this.addingUser = false;
   }
 
   deleteUserFromBoard(username: string): void{
-    // this.boardService.deleteUserFromBoard(this.data._id, username)
-    // TODO
+    this.boardService.deleteUserFromBoard(this.data.id, username)
+    .subscribe(
+      response => {
+        console.log(response);
+      },
+      error => {
+        console.log('ERROR', error);
+      });
+    this.deletingUser = false;
   }
 
   deleteBoard(): void{
@@ -141,4 +116,5 @@ export class BoardComponent implements OnInit {
     this.boardService.refreshBoards();
     this.navigateBack();
   }
+
 }

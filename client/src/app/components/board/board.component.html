@@ -18,19 +18,13 @@
         </button>
       </div>-->
       <div>
-        <input *ngIf="addingUser" class="light" placeholder="Username" (keyup)="setUserToAdd($event.target.value)">
-        <button class="btn simple" (click)="handleAddUserClick()">
-          {{ addingUser ? "Add" : "Add User" }}
-        </button>
+        <button class="btn simple" (click)="toggleAddingUserModal()">Add user</button>
       </div>
       <div>
-        <input *ngIf="deletingUser" class="light" placeholder="Username" (keyup)="setUserToDelete($event.target.value)">
-        <button class="btn simple" (click)="handleDeleteUserClick()">
-          {{ deletingUser ? "Delete" : "Delete User" }}
-        </button>
+        <button class="btn simple" (click)="toggleDeletingUserModal()">Delete User</button>
       </div>
       <div>
-        <button class="btn simple" (click)="handleDeleteBoardClick()">Delete Board</button>
+        <button class="btn simple" (click)="toggleDeletingBoardModal()">Delete Board</button>
       </div>
     </div>
   </div>
@@ -40,6 +34,71 @@
       <app-list title="My list name"></app-list>
       <app-list title="Hello"></app-list>
       <app-list wildcard=true></app-list>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="addingUser" class="modal">
+  <div class="modal-background">
+    <div class="modal-window">
+      <div class="modal-header">
+        Choose user that you want to add to board.
+      </div>
+      <div class="modal-body">
+        <div class="form-control-container">
+          <label for="userToAdd">
+            username
+          </label>
+          <input id="userToAdd" type="text" #userToAdd>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" (click)="toggleAddingUserModal()">Cancel</button>
+        <button type="submit" (click)="addUserToBoard(userToAdd.value)" class="btn primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="deletingUser" class="modal">
+  <div class="modal-background">
+    <div class="modal-window">
+      <div class="modal-header">
+        Choose user that you want to delete from board.
+      </div>
+      <div class="modal-body">
+        <div class="form-control-container">
+          <label for="userToDelete">
+            username
+          </label>
+          <input id="userToDelete" type="text" #userToDelete>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" (click)="toggleDeletingUserModal()">Cancel</button>
+        <button type="submit" (click)="deleteUserFromBoard(userToDelete.value)" class="btn primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="deletingBoard" class="modal">
+  <div class="modal-background">
+    <div class="modal-window">
+      <div class="modal-header">
+        Are you sure you want to delete this board?
+      </div>
+      <div class="modal-body">
+        <div class="form-control-container">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" (click)="toggleDeletingBoardModal()">Cancel</button>
+        <button type="submit" (click)="deleteBoard()" class="btn primary">Confirm</button>
+      </div>
     </div>
   </div>
 </div>
