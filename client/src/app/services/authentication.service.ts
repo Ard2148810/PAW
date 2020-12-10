@@ -37,20 +37,22 @@ export class AuthenticationService {
     return this.http.post(url, JSON.stringify(userRegisterData), { headers });
   }
 
-  login(username: string, userPassword: string): Observable<any> {
+  login(userName: string, userPassword: string): Observable<any> {
     const url = `${environment.backendURL}/auth/login`;
     const headers = {
       'content-type': 'application/json'
     };
-    return this.http.post<any>(url, JSON.stringify({login: username, password: userPassword}), {headers})
+    return this.http.post<any>(url, JSON.stringify({username: userName, password: userPassword}), {headers})
       .pipe(map(response => {
         // set current user
+        console.log(response);
         const user = new User();
-        user.username = response.user.username;
-        user.name = response.user.name;
-        user.email = response.user.email;
-        user.password = response.user.password;
+        user.id = response.id;
+        user.username = response.username;
+        user.name = response.name;
+        user.email = response.email;
         user.token = response.token;
+        // console.log(user);
 
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUser.next(user);

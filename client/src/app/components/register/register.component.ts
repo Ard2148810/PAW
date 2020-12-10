@@ -26,12 +26,12 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+S
   onSubmit(userData: UserRegisterData): void {
     this.responseMessage = 'Please wait...';
     this.authenticationService.registerUser(userData).subscribe(response => {
       console.log(response);
-      this.responseMessage = `Hello ${response.user.name}! You can log in now.`;
+      this.responseMessage = `Hello ${response.name}! You can log in now.`;
     }, error => {
       this.responseMessage = `Something went wrong :( ${error.status}: ${error.statusText}`;
     });
