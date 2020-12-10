@@ -1,5 +1,14 @@
-import { Controller, Body, Param, UseGuards, Request } from '@nestjs/common';
-import { Get, Post, Put, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
@@ -16,18 +25,14 @@ import { AssignUserDto } from './dto/assign-user.dto';
 @ApiBearerAuth()
 @ApiUnauthorizedResponse()
 @UseGuards(JwtAuthGuard)
-@Controller('boards')
+@Controller('api/boards')
 export class BoardsController {
   constructor(private readonly boardsService: BoardsService) {}
 
   @ApiBody({ type: CreateBoardDto })
   @Post()
   async create(@Request() req, @Body() createBoardDto: CreateBoardDto) {
-    const board = await this.boardsService.create(
-      req.user.username,
-      createBoardDto,
-    );
-    return board;
+    return await this.boardsService.create(req.user.username, createBoardDto);
   }
 
   @Get()

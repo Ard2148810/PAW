@@ -17,7 +17,7 @@ import { UpdateCardDto } from './dto/update-card.dto';
 @ApiTags('cards')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller('cards')
+@Controller('api/cards')
 export class CardsController {
   constructor(private readonly cardsService: CardsService) {}
 

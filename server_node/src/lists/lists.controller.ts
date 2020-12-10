@@ -18,7 +18,7 @@ import { UpdateListDto } from './dto/update-list.dto';
 @ApiTags('lists')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller('boards/:board/lists')
+@Controller('api/boards/:board/lists')
 export class ListsController {
   constructor(private readonly listsService: ListsService) {}
 
