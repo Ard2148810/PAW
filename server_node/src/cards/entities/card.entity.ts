@@ -1,5 +1,4 @@
 import { Entity, Column, ObjectIdColumn } from 'typeorm';
-import { Comment } from '../../comments/entities/comment.entity';
 
 @Entity()
 export class Card {
@@ -11,9 +10,6 @@ export class Card {
 
   @Column()
   description: string;
-
-  @Column((type) => Comment)
-  comments: Comment[];
 
   @Column()
   members: string[];

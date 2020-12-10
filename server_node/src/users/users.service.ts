@@ -3,12 +3,15 @@ import {
   NotFoundException,
   HttpException,
   HttpStatus,
+  BadRequestException,
+  ConflictException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
+import { SignupResponseDto } from '../auth/dto/signup-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -21,7 +24,7 @@ export class UsersService {
     const { username, name, email, password } = createUserDto;
     let user = await this.findOneByUsername(username);
     if (user) {
-      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+      throw new ConflictException('User already exists.');
     }
     user = await this.userRepository.create(createUserDto);
     return await this.userRepository.save(user);

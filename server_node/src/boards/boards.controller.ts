@@ -40,48 +40,48 @@ export class BoardsController {
     return this.boardsService.findAll(req.user.username);
   }
 
-  @Get(':id')
-  findOne(@Request() req, @Param('id') id: string) {
-    return this.boardsService.findOne(req.user.username, id);
+  @Get(':board')
+  findOne(@Request() req, @Param('board') board: string) {
+    return this.boardsService.findOne(req.user.username, board);
   }
 
   @ApiBody({ type: UpdateBoardDto })
-  @Put(':id')
+  @Put(':board')
   update(
     @Request() req,
-    @Param('id') id: string,
+    @Param('board') board: string,
     @Body() updateBoardDto: UpdateBoardDto,
   ) {
-    return this.boardsService.update(req.user.username, id, updateBoardDto);
+    return this.boardsService.update(req.user.username, board, updateBoardDto);
   }
 
-  @Delete(':id')
-  async remove(@Request() req, @Param('id') id: string) {
-    await this.boardsService.remove(req.user.username, id);
+  @Delete(':board')
+  async remove(@Request() req, @Param('board') board: string) {
+    await this.boardsService.remove(req.user.username, board);
   }
 
-  @Put(':id/assignment')
+  @Put(':board/assignment')
   addTeamMember(
     @Request() req,
-    @Param('id') id: string,
+    @Param('board') board: string,
     @Body() assignUserDto: AssignUserDto,
   ) {
     return this.boardsService.addUser(
       req.user.username,
-      id,
+      board,
       assignUserDto.username,
     );
   }
 
-  @Delete(':id/assignment')
+  @Delete(':board/assignment')
   async removeTeamMember(
     @Request() req,
-    @Param('id') id: string,
+    @Param('board') board: string,
     @Body() assignUserDto: AssignUserDto,
   ) {
     return this.boardsService.removeUser(
       req.user.username,
-      id,
+      board,
       assignUserDto.username,
     );
   }

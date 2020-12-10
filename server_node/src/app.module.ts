@@ -7,7 +7,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ListsModule } from './lists/lists.module';
-import { CommentsModule } from './comments/comments.module';
 import { CardsModule } from './cards/cards.module';
 
 @Module({
@@ -18,7 +17,6 @@ import { CardsModule } from './cards/cards.module';
     BoardsModule,
     ListsModule,
     CardsModule,
-    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
