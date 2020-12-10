@@ -77,6 +77,7 @@ export class BoardComponent implements OnInit {
     .subscribe(
       response => {
         console.log(response);
+        this.data.teamMembers = response;
       },
       error => {
         console.log('ERROR', error);
@@ -90,6 +91,7 @@ export class BoardComponent implements OnInit {
     .subscribe(
       response => {
         console.log(response);
+        this.data.teamMembers = response;
       },
       error => {
         console.log('ERROR', error);
@@ -110,7 +112,7 @@ export class BoardComponent implements OnInit {
           console.log(response);
         },
         error => {
-          console.log(error);
+          console.log('ERROR', error);
         });
 
     this.boardService.refreshBoards();
