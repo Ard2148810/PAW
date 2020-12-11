@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
-import { SignupResponseDto } from './dto/signup-response.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 
 @Injectable()

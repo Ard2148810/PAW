@@ -1,4 +1,4 @@
-import { Controller, Body, UseGuards, Request } from '@nestjs/common';
+import { Controller, Body, UseGuards, Request, Param } from '@nestjs/common';
 import { Get, Post, Put, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -6,38 +6,65 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UserResponseDto } from './dto/user-response.dto';
 
 @ApiTags('users')
 @ApiBearerAuth()
-@ApiUnauthorizedResponse()
+@ApiUnauthorizedResponse({ description: 'Unauthorized' })
 @UseGuards(JwtAuthGuard)
 @Controller('api/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @ApiBody({ type: CreateUserDto })
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @ApiOperation({
+    description:
+      'Returns details of a user. Accepts username as the parameter.',
+  })
+  @ApiOkResponse({ type: UserResponseDto })
+  @ApiNotFoundResponse({ description: 'User not found' })
+  @Get(':username')
+  findOneWithParam(@Param('username') username: string) {
+    console.log(username);
+    return this.usersService.findOneByUsernameAndReturn(username);
   }
 
+  @ApiOperation({
+    description:
+      'Returns details of a logged in user based on token passed in auth bearer.',
+  })
+  @ApiOkResponse({ type: UserResponseDto })
+  @ApiNotFoundResponse({ description: 'User not found' })
   @Get()
   findOne(@Request() req) {
-    return this.usersService.findOneByUsername(req.user.username);
+    console.log(req.user.username);
+    return this.usersService.findOneByUsernameAndReturn(req.user.username);
   }
 
+  @ApiOperation({ description: 'Updates user details specified in body.' })
   @ApiBody({ type: UpdateUserDto })
+  @ApiOkResponse({ description: 'User successfully updated' })
+  @ApiNotFoundResponse({ description: 'User not found' })
   @Put()
-  update(@Request() req, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(req.user.username, updateUserDto);
+  async update(@Request() req, @Body() updateUserDto: UpdateUserDto) {
+    await this.usersService.update(req.user.username, updateUserDto);
+    return 'User successfully updated';
   }
 
+  @ApiOperation({ description: 'Deletes logged in user.' })
+  @ApiOkResponse({ description: 'User successfully deleted' })
+  @ApiNotFoundResponse({ description: 'User not found' })
   @Delete()
-  remove(@Request() req) {
-    return this.usersService.remove(req.user.username);
+  async remove(@Request() req) {
+    await this.usersService.remove(req.user.username);
+    return 'User successfully deleted';
   }
 }
