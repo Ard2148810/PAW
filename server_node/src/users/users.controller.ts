@@ -33,7 +33,6 @@ export class UsersController {
   @ApiNotFoundResponse({ description: 'User not found' })
   @Get(':username')
   findOneWithParam(@Param('username') username: string) {
-    console.log(username);
     return this.usersService.findOneByUsernameAndReturn(username);
   }
 
@@ -59,7 +58,9 @@ export class UsersController {
     return 'User successfully updated';
   }
 
-  @ApiOperation({ description: 'Deletes logged in user.' })
+  @ApiOperation({
+    description: 'Deletes logged in user and all their owned boards.',
+  })
   @ApiOkResponse({ description: 'User successfully deleted' })
   @ApiNotFoundResponse({ description: 'User not found' })
   @Delete()

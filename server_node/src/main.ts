@@ -7,7 +7,10 @@ async function bootstrap() {
 
   const options = new DocumentBuilder()
     .setTitle('Trello')
-    .setDescription('The Trello API')
+    .setDescription(
+      'The Trello API.\n' +
+        'Mind which fields are optional, especially in responses.',
+    )
     .setVersion('1.0')
     .addBearerAuth()
     .build();

@@ -8,4 +8,7 @@ export class UpdateBoardDto extends PartialType(CreateBoardDto) {
 
   @ApiProperty({ required: false })
   description: string;
+
+  @ApiProperty({ required: false })
+  isPublic: boolean;
 }

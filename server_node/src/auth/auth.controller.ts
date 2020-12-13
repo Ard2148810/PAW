@@ -6,10 +6,7 @@ import {
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
-  ApiDefaultResponse,
   ApiOperation,
-  ApiProperty,
-  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -23,8 +20,8 @@ import { UserResponseDto } from '../users/dto/user-response.dto';
 @Controller('auth')
 export class AuthController {
   constructor(
-    private authService: AuthService,
-    private usersService: UsersService,
+    private readonly authService: AuthService,
+    private readonly userService: UsersService,
   ) {}
 
   @UseGuards(LocalAuthGuard)
@@ -45,6 +42,6 @@ export class AuthController {
   @ApiConflictResponse({ description: 'User already exists' })
   @Post('signup')
   async create(@Body() createUserDto: CreateUserDto) {
-    return await this.usersService.createAndReturn(createUserDto);
+    return await this.userService.createAndReturn(createUserDto);
   }
 }

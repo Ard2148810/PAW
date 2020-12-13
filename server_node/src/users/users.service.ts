@@ -1,10 +1,9 @@
 import {
   Injectable,
   NotFoundException,
-  HttpException,
-  HttpStatus,
-  BadRequestException,
   ConflictException,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -12,13 +11,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { UserResponseDto } from './dto/user-response.dto';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { BoardsService } from '../boards/boards.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @Inject(forwardRef(() => BoardsService))
+    private readonly boardService: BoardsService,
   ) {}
 
   async createAndReturn(
@@ -58,11 +59,16 @@ export class UsersService {
   }
 
   async remove(username: string) {
-    const user = await this.findOneByUsername(username);
-    if (!user) {
-      throw new NotFoundException('User not found.');
-    }
-    await this.userRepository.delete(user.id);
+    await this.findOneByUsername(username).then(async (user) => {
+      if (!user) {
+        throw new NotFoundException('User not found.');
+      }
+      await this.boardService.removeAll(username).then(async () => {
+        // await this.boardService.updateTeamMembers(username).then(async () => {
+        await this.userRepository.delete(user.id);
+        // });
+      });
+    });
   }
 
   toReturn(user: User): UserResponseDto {
