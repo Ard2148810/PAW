@@ -11,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Board } from './entities/board.entity';
 import { UsersService } from '../users/users.service';
+import { createCipher, createDecipher } from 'crypto';
 
 @Injectable()
 export class BoardsService {
@@ -50,23 +51,31 @@ export class BoardsService {
     });
     if (!board) {
       throw new NotFoundException('Board not found');
+    } else return board;
+  }
+
+  async findOnePublic(encryptedId: string) {
+    const id = this.decipher(encryptedId);
+    const board = await this.boardRepository.findOne(id);
+    if (!board) {
+      throw new NotFoundException('Board not found');
+    }
+    if (!board.isPublic) {
+      throw new BadRequestException('Board is not public');
     }
     return board;
   }
 
   async update(username: string, id: string, updateBoardDto: UpdateBoardDto) {
-    await this.boardRepository
-      .findOne(id, {
-        where: {
-          teamMembers: { $in: [username] },
-        },
-      })
-      .then(async (board) => {
-        if (!board) {
-          throw new NotFoundException('Board not found');
-        }
-        return await this.boardRepository.update(id, updateBoardDto);
-      });
+    const board = await this.boardRepository.findOne(id, {
+      where: {
+        teamMembers: { $in: [username] },
+      },
+    });
+    if (!board) {
+      throw new NotFoundException('Board not found');
+    }
+    return await this.boardRepository.update(id, updateBoardDto);
   }
 
   async remove(username: string, id: string) {
@@ -169,5 +178,35 @@ export class BoardsService {
             return board.teamMembers;
           });
       });
+  }
+
+  generateLink(id: string) {
+    return (
+      `${process.env.HOST}` +
+      ':' +
+      `${process.env.PORT}` +
+      '/api/boards/' +
+      this.encrypt(id) +
+      '/public'
+    );
+  }
+
+  encrypt(id: string) {
+    const cipher = createCipher('aes-256-ctr', `'${process.env.AES_KEY}'`);
+
+    return Buffer.concat([
+      cipher.update(id.toString()),
+      cipher.final(),
+    ]).toString('base64');
+  }
+
+  decipher(encryptedId: string) {
+    const decipher = createDecipher('aes-256-ctr', `'${process.env.AES_KEY}'`);
+    const buffer = Buffer.from(encryptedId, 'base64');
+
+    return Buffer.concat([
+      decipher.update(buffer),
+      decipher.final(),
+    ]).toString();
   }
 }

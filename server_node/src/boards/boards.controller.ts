@@ -66,6 +66,33 @@ export class BoardsController {
   }
 
   @ApiOperation({
+    description:
+      'Accepts encrypted id as a param. Returns a board if a board is public.',
+  })
+  @ApiOkResponse({ type: BoardResponseDto })
+  @ApiNotFoundResponse({ description: 'Board not found' })
+  @ApiBadRequestResponse({ description: 'Board is not public' })
+  @Get('/:board/public')
+  async findOnePublic(@Request() req, @Param('board') board: string) {
+    return await this.boardsService.findOnePublic(board);
+  }
+
+  @ApiOperation({
+    description: 'Returns a link provided a board is public.',
+  })
+  @ApiOkResponse({ type: String })
+  @ApiNotFoundResponse({ description: 'Board not found' })
+  @ApiBadRequestResponse({ description: 'Board is not public' })
+  @Get(':board/link')
+  async getLink(@Request() req, @Param('board') board: string) {
+    const boardEntity = await this.boardsService.findOne(
+      req.user.username,
+      board,
+    );
+    return this.boardsService.generateLink(boardEntity.id);
+  }
+
+  @ApiOperation({
     description: 'Updates board details specified in body.',
   })
   @ApiBody({ type: UpdateBoardDto })
