@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-inline-input',
@@ -11,6 +12,8 @@ export class InlineInputComponent implements OnInit {
   @Output() valueChanged = new EventEmitter<string>();
   @Output() canceledChange = new EventEmitter<string>();
   isEditing = false;
+  iconConfirm = faCheck;
+  iconCancel = faTimes;
 
   ngOnInit(): void {
   }

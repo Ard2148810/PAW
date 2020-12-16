@@ -1,22 +1,31 @@
 @import "src/styles"
 
+$height: 30px
+
 .inline-input
   display: inline-block
 
 .value-container
-  background-color: lightblue
+  background-color: transparent
   font-size: 1em
   font-family: $font
   cursor: pointer
   display: inline-block
-  padding: 10px
+  height: $height
+  line-height: $height
+  padding-left: 10px
+  padding-right: 10px
 
 
 .input-btn
-  padding: 10px
+  //padding: 10px
   position: absolute
   z-index: 1
   display: none
+  height: $height
+  width: $height
+  text-align: center
+  line-height: $height
   &.left
     background-color: lightcoral
     right: 0
@@ -27,7 +36,7 @@
 
 .editing
   .value-container
-    background-color: #ffd077
+    background-color: transparentize(#FFFFFF, 0.7)
     cursor: initial
   .input-btn
     display: inline-block
@@ -37,3 +46,4 @@
   position: relative
   display: inline-block
   padding: 0
+

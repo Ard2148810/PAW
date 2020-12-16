@@ -1,6 +1,5 @@
 <div class="inline-input" [class.editing]="isEditing">
   <div class="wrapper">
-
     <div
       class="value-container"
       (click)=setEditing(true)
@@ -10,7 +9,11 @@
       contenteditable="true"
       #valueContainer
     >{{value}}</div>
-    <div class="input-btn left" (click)=handleCancel()>X</div>
-    <div class="input-btn right" (click)=handleConfirm()>V</div>
+    <div class="input-btn left" (click)=handleCancel()>
+      <fa-icon [icon]="iconCancel"></fa-icon>
+    </div>
+    <div class="input-btn right" (click)=handleConfirm()>
+      <fa-icon [icon]="iconConfirm"></fa-icon>
+    </div>
   </div>
 </div>
