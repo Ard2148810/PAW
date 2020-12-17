@@ -51,7 +51,13 @@ export class BoardComponent implements OnInit {
   handleRenameBoard(name: string): void { // TODO
     console.log(`New board name: ${name}`);
 
-    this.boardService.renameBoard(this.data.id, name);
+    this.boardService.updateBoard(this.data.id, name, this.data.description, this.data.isPublic).subscribe(
+      response => {
+        console.log(response);
+      },
+      error => {
+        console.log('ERROR:', error);
+      });
   }
 
   toggleDeletingBoardModal(): void{
@@ -78,7 +84,7 @@ export class BoardComponent implements OnInit {
         this.data.teamMembers = response;
       },
       error => {
-        console.log('ERROR', error);
+        console.log('ERROR:', error);
       });
 
     this.addingUser = false;
@@ -92,7 +98,7 @@ export class BoardComponent implements OnInit {
         this.data.teamMembers = response;
       },
       error => {
-        console.log('ERROR', error);
+        console.log('ERROR:', error);
       });
     this.deletingUser = false;
   }
@@ -110,7 +116,7 @@ export class BoardComponent implements OnInit {
           console.log(response);
         },
         error => {
-          console.log('ERROR', error);
+          console.log('ERROR:', error);
         });
 
     this.boardService.refreshBoards();
