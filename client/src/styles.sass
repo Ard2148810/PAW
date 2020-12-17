@@ -102,9 +102,9 @@ body
   font-family: $font
   background-color: $color1
   color: $color2
-  padding: 10px 40px 18px 40px
+  padding: 10px 40px 10px 40px
   margin: 0
-  clip-path: polygon(0 0, 100% 0%, 100% 80%, 50% 100%, 0 80%)
+  //clip-path: polygon(0 0, 100% 0%, 100% 80%, 50% 100%, 0 80%)
   h2
     padding: 0
     margin: 0
@@ -118,11 +118,11 @@ body
   flex-direction: row
   align-items: center
   padding: 5px
-  div
+  .menu-item
     display: flex
     align-items: center
 
-  div.right-align
+  .menu-item.right-align
     margin-left: auto
 
 
@@ -191,3 +191,30 @@ body
   border-top: 1px solid $color5
   text-align: right
   padding: 10px
+
+// Dropdown
+
+.dropdown
+  position: relative
+  display: inline-block
+  &:hover
+    .dropdown-content
+      display: block
+    .primary
+      background-color: $color2
+      border-color: $color1
+      color: $color1
+
+.dropdown-content
+  position: absolute
+  background-color: #FFFFFF
+  display: none
+  box-shadow: 0 0 1em rgba(97, 97, 97, 0.5)
+  overflow: visible
+  z-index: 100
+
+.dropdown-item
+  display: block
+  padding: 10px 15px
+  &:hover
+    background-color: lighten($color4, 20%)
