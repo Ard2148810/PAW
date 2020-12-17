@@ -1,22 +1,25 @@
 <div class="board">
-  <div class="header-basic menu-container" style="padding-bottom: 18px">
-    <div>
+  <div class="header-basic menu-container">
+    <div class="menu-item">
       <button class="btn simple" (click)="navigateBack()">Back</button>
     </div>
-    <div>
+    <div class="menu-item">
       <app-inline-input [value]=getBoardDisplayName() (valueChanged)="handleRenameBoard($event)"></app-inline-input>
-<!--      <span class="subtitle">{{ data ? data.name : "Loading..." }}</span>-->
     </div>
-    <div class="member-list" *ngFor="let member of data.teamMembers">
+    <div class="menu-item member-list" *ngFor="let member of data.teamMembers">
       <span class="member-name">{{member}}</span>
     </div>
-    <div class="right-align">
-<!--      <div>
-        <input *ngIf="renamingBoard" class="light" placeholder="Board name" (keyup)="setBoardName($event.target.value)">
-        <button class="btn simple" (click)="handleRenameBoardClick()">
-          {{ renamingBoard ? "Rename" : "Rename Board" }}
-        </button>
-      </div>-->
+    <div class="menu-item">
+      <div class="dropdown">
+        <button class="btn primary">Dropdown</button>
+        <div class="dropdown-content">
+          <a class="dropdown-item" href="#">Link 1</a>
+          <a class="dropdown-item" href="#">Link 2</a>
+          <a class="dropdown-item" href="#">Link 3</a>
+        </div>
+      </div>
+    </div>
+    <div class="menu-item right-align">
       <div>
         <button class="btn simple" (click)="toggleAddingUserModal()">Add user</button>
       </div>
