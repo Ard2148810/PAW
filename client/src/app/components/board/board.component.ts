@@ -18,10 +18,12 @@ export class BoardComponent implements OnInit {
   addingUser: boolean;
   deletingUser: boolean;
   deletingBoard: boolean;
+  boardReady: boolean;
 
   constructor(private boardService: BoardService,
               private route: ActivatedRoute,
               private router: Router) {
+    this.boardReady = false;
     route.params.subscribe(params => this.id = params.id);
     this.renamingBoard = false;
     this.addingUser = false;
@@ -32,6 +34,7 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.boardService.getBoard(this.id).subscribe(data => {
       this.data = data;
+      this.boardReady = true;
       console.log(this.data);
     });
   }
@@ -47,6 +50,8 @@ export class BoardComponent implements OnInit {
 
   handleRenameBoard(name: string): void { // TODO
     console.log(`New board name: ${name}`);
+
+    this.boardService.renameBoard(this.data.id, name);
   }
 
   toggleDeletingBoardModal(): void{
@@ -63,13 +68,6 @@ export class BoardComponent implements OnInit {
 
   toggleDeletingUserModal(): void{
     this.deletingUser = !this.deletingUser;
-  }
-
-  renameBoard(newBoardName: string): void {
-    // this.boardService.renameBoard(this.data._id, newBoardName)
-    // this.updateBoardName()
-    // TODO
-    this.renamingBoard = false;
   }
 
   addUserToBoard(username: string): void{
