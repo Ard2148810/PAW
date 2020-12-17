@@ -43,8 +43,13 @@ export class BoardService {
     return this.http.get(`${environment.backendURL}/api/boards/${id}`);
   }
 
-  renameBoard(boardId: string, newBoardName: string): any {
-    // TODO
+  updateBoard(boardId: string, name: string, description: string, isPublic: string): any {
+    const body = {
+      name,
+      description,
+      isPublic
+    };
+    return this.http.put(`${environment.backendURL}/api/boards/${boardId}`, body);
   }
 
   addUserToBoard(boardId: string, username: string): any {

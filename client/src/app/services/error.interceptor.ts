@@ -20,7 +20,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
       if (err.status === 404) {
         // if 404 not found
-        this.router.navigate(['..']).catch(console.log);
+        // this.router.navigate(['..']).catch(console.log);
       }
 
       const error = err.error.message || err.statusText;

@@ -1,4 +1,4 @@
-<div class="board">
+<div *ngIf="boardReady" class="board">
   <div class="header-basic menu-container">
     <div class="menu-item">
       <button class="btn simple" (click)="navigateBack()">Back</button>
@@ -101,6 +101,23 @@
       <div class="modal-footer">
         <button class="btn" (click)="toggleDeletingBoardModal()">Cancel</button>
         <button type="submit" (click)="deleteBoard()" class="btn primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="error" class="modal">
+  <div class="modal-background">
+    <div class="modal-window">
+
+      <div class="modal-body">
+        <div class="form-control-container" style="color: red">
+          {{errorMessage}}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn primary" (click)="toggleErrorModal()">OK</button>
       </div>
     </div>
   </div>

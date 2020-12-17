@@ -14,24 +14,30 @@ export class BoardComponent implements OnInit {
   id: string;
   data: Board;
 
-  renamingBoard: boolean;
+  boardReady: boolean;
+
   addingUser: boolean;
   deletingUser: boolean;
   deletingBoard: boolean;
 
+  error: boolean;
+  errorMessage: string;
+
   constructor(private boardService: BoardService,
               private route: ActivatedRoute,
               private router: Router) {
+    this.boardReady = false;
     route.params.subscribe(params => this.id = params.id);
-    this.renamingBoard = false;
     this.addingUser = false;
     this.deletingUser = false;
     this.deletingBoard = false;
+    this.error = false;
   }
 
   ngOnInit(): void {
     this.boardService.getBoard(this.id).subscribe(data => {
       this.data = data;
+      this.boardReady = true;
       console.log(this.data);
     });
   }
@@ -45,16 +51,8 @@ export class BoardComponent implements OnInit {
       .catch(console.log);
   }
 
-  handleRenameBoard(name: string): void { // TODO
-    console.log(`New board name: ${name}`);
-  }
-
   toggleDeletingBoardModal(): void{
     this.deletingBoard = !this.deletingBoard;
-  }
-
-  toggleRenamingBoardModal(): void{
-    this.renamingBoard = !this.renamingBoard;
   }
 
   toggleAddingUserModal(): void{
@@ -65,11 +63,18 @@ export class BoardComponent implements OnInit {
     this.deletingUser = !this.deletingUser;
   }
 
-  renameBoard(newBoardName: string): void {
-    // this.boardService.renameBoard(this.data._id, newBoardName)
-    // this.updateBoardName()
-    // TODO
-    this.renamingBoard = false;
+  toggleErrorModal(): void{
+    this.error = !this.error;
+  }
+
+  handleRenameBoard(name: string): void {
+    this.boardService.updateBoard(this.data.id, name, this.data.description, this.data.isPublic).subscribe(
+      response => {
+        console.log(response);
+      },
+      error => {
+        this.displayError(error);
+      });
   }
 
   addUserToBoard(username: string): void{
@@ -80,7 +85,7 @@ export class BoardComponent implements OnInit {
         this.data.teamMembers = response;
       },
       error => {
-        console.log('ERROR', error);
+        this.displayError(error);
       });
 
     this.addingUser = false;
@@ -94,8 +99,9 @@ export class BoardComponent implements OnInit {
         this.data.teamMembers = response;
       },
       error => {
-        console.log('ERROR', error);
+        this.displayError(error);
       });
+
     this.deletingUser = false;
   }
 
@@ -112,11 +118,17 @@ export class BoardComponent implements OnInit {
           console.log(response);
         },
         error => {
-          console.log('ERROR', error);
+          this.displayError(error);
         });
 
     this.boardService.refreshBoards();
     this.navigateBack();
+  }
+
+  displayError(message: string): void{
+    this.errorMessage = 'ERROR: ' + message;
+    console.log(this.errorMessage);
+    this.error = true;
   }
 
 }
