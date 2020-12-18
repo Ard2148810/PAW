@@ -17,10 +17,14 @@ export class BoardComponent implements OnInit {
   boardReady: boolean;
 
   addingUser: boolean;
+  makingPublic: boolean;
   deletingBoard: boolean;
 
   error: boolean;
   errorMessage: string;
+
+  makingPublicMessage: string;
+  publicLink: string;
 
   constructor(private boardService: BoardService,
               private route: ActivatedRoute,
@@ -28,8 +32,11 @@ export class BoardComponent implements OnInit {
     route.params.subscribe(params => this.id = params.id);
     this.boardReady = false;
     this.addingUser = false;
+    this.makingPublic = false;
     this.deletingBoard = false;
     this.error = false;
+    this.makingPublicMessage = 'Are you sure you want to make this board public?';
+    this.publicLink = 'None';
   }
 
   ngOnInit(): void {
@@ -49,12 +56,16 @@ export class BoardComponent implements OnInit {
       .catch(console.log);
   }
 
-  toggleDeletingBoardModal(): void{
-    this.deletingBoard = !this.deletingBoard;
-  }
-
   toggleAddingUserModal(): void{
     this.addingUser = !this.addingUser;
+  }
+
+  toggleMakingPublicModal(): void{
+    this.makingPublic = !this.makingPublic;
+  }
+
+  toggleDeletingBoardModal(): void{
+    this.deletingBoard = !this.deletingBoard;
   }
 
   toggleErrorModal(): void{
@@ -122,6 +133,32 @@ export class BoardComponent implements OnInit {
     this.errorMessage = 'ERROR: ' + message;
     console.log(this.errorMessage);
     this.error = true;
+  }
+
+  makePublic(): void{
+    this.boardService.updateBoard(this.data.id, this.data.name, this.data.description, true).subscribe(
+      response => {
+        console.log(response);
+      },
+      error => {
+        // this.displayError(error);
+        if (error === 'OK'){
+          this.data.isPublic = true;
+          this.makingPublicMessage = 'Board is already public';
+          this.getPublicLink();
+        }
+      });
+  }
+
+  getPublicLink(): any {
+    this.boardService.getPublicLink(this.id).subscribe(
+      response => {
+        console.log(response);
+        this.publicLink = response;
+      }, error => {
+        console.log(error);
+        this.publicLink = error;
+      });
   }
 
 }

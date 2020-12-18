@@ -20,6 +20,9 @@
         <button class="btn simple" (click)="toggleAddingUserModal()">Add user</button>
       </div>
       <div>
+        <button class="btn simple" (click)="toggleMakingPublicModal()">Make public</button>
+      </div>
+      <div>
         <button class="btn simple" (click)="toggleDeletingBoardModal()">Delete Board</button>
       </div>
       <div>
@@ -55,6 +58,26 @@
       <div class="modal-footer">
         <button class="btn" (click)="toggleAddingUserModal()">Cancel</button>
         <button type="submit" (click)="addUserToBoard(userToAdd.value)" class="btn primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="makingPublic" class="modal">
+  <div class="modal-background">
+    <div class="modal-window">
+      <div class="modal-header">
+        {{makingPublicMessage}}
+      </div>
+      <div class="modal-body">
+        <div class="form-control-container">
+          <span *ngIf="data.isPublic">Link: {{publicLink}}</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" (click)="toggleMakingPublicModal()">Close</button>
+        <button type="submit" (click)="makePublic()" class="btn primary" *ngIf="!data.isPublic">Confirm</button>
       </div>
     </div>
   </div>

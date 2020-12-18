@@ -32,6 +32,24 @@ export class PublicBoardComponent implements OnInit {
       this.boardReady = true;
       console.log(this.data);
     });
+
+    // this.boardService.getPublicLink(this.id).subscribe(
+    //   response => {
+    //     console.log(response);
+    //   }, error => {
+    //     console.log(error);
+    //   });
+
+    // this.boardService.getPublicBoard(this.id)
+    // .subscribe(
+    //   response => {
+    //     this.data = response;
+    //     this.boardReady = true;
+    //     console.log(this.data);
+    //   },
+    //   error => {
+    //     // this.displayError(error);
+    //   });
   }
 
   getBoardDisplayName(): string {
