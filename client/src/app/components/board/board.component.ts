@@ -17,7 +17,6 @@ export class BoardComponent implements OnInit {
   boardReady: boolean;
 
   addingUser: boolean;
-  deletingUser: boolean;
   deletingBoard: boolean;
 
   error: boolean;
@@ -29,7 +28,6 @@ export class BoardComponent implements OnInit {
     this.boardReady = false;
     route.params.subscribe(params => this.id = params.id);
     this.addingUser = false;
-    this.deletingUser = false;
     this.deletingBoard = false;
     this.error = false;
   }
@@ -57,10 +55,6 @@ export class BoardComponent implements OnInit {
 
   toggleAddingUserModal(): void{
     this.addingUser = !this.addingUser;
-  }
-
-  toggleDeletingUserModal(): void{
-    this.deletingUser = !this.deletingUser;
   }
 
   toggleErrorModal(): void{
@@ -101,8 +95,6 @@ export class BoardComponent implements OnInit {
       error => {
         this.displayError(error);
       });
-
-    this.deletingUser = false;
   }
 
   deleteBoard(): void{
