@@ -17,19 +17,22 @@ export class BoardComponent implements OnInit {
   boardReady: boolean;
 
   addingUser: boolean;
-  deletingUser: boolean;
+  makingPublic: boolean;
   deletingBoard: boolean;
 
   error: boolean;
   errorMessage: string;
 
+  makingPublicMessage: string;
+  publicLink: string;
+
   constructor(private boardService: BoardService,
               private route: ActivatedRoute,
               private router: Router) {
-    this.boardReady = false;
     route.params.subscribe(params => this.id = params.id);
+    this.boardReady = false;
     this.addingUser = false;
-    this.deletingUser = false;
+    this.makingPublic = false;
     this.deletingBoard = false;
     this.error = false;
   }
@@ -38,6 +41,14 @@ export class BoardComponent implements OnInit {
     this.boardService.getBoard(this.id).subscribe(data => {
       this.data = data;
       this.boardReady = true;
+
+      if (!this.data.isPublic){
+        this.setPrivate();
+      }
+      else{
+        this.setPublic();
+      }
+
       console.log(this.data);
     });
   }
@@ -51,16 +62,16 @@ export class BoardComponent implements OnInit {
       .catch(console.log);
   }
 
-  toggleDeletingBoardModal(): void{
-    this.deletingBoard = !this.deletingBoard;
-  }
-
   toggleAddingUserModal(): void{
     this.addingUser = !this.addingUser;
   }
 
-  toggleDeletingUserModal(): void{
-    this.deletingUser = !this.deletingUser;
+  toggleMakingPublicModal(): void{
+    this.makingPublic = !this.makingPublic;
+  }
+
+  toggleDeletingBoardModal(): void{
+    this.deletingBoard = !this.deletingBoard;
   }
 
   toggleErrorModal(): void{
@@ -73,7 +84,8 @@ export class BoardComponent implements OnInit {
         console.log(response);
       },
       error => {
-        this.displayError(error);
+        console.log(error);
+        // this.displayError(error);
       });
   }
 
@@ -101,8 +113,6 @@ export class BoardComponent implements OnInit {
       error => {
         this.displayError(error);
       });
-
-    this.deletingUser = false;
   }
 
   deleteBoard(): void{
@@ -129,6 +139,42 @@ export class BoardComponent implements OnInit {
     this.errorMessage = 'ERROR: ' + message;
     console.log(this.errorMessage);
     this.error = true;
+  }
+
+  setPublic(): any{
+    this.data.isPublic = true;
+    this.makingPublicMessage = 'THIS BOARD IS PUBLIC';
+    this.getPublicLink();
+  }
+
+  setPrivate(): any{
+    this.data.isPublic = false;
+    this.makingPublicMessage = 'ARE YOU SURE YOU WANT TO MAKE THIS BOARD PUBLIC?';
+    this.publicLink = 'None';
+  }
+
+  makePublic(): void{
+    this.boardService.updateBoard(this.data.id, this.data.name, this.data.description, true).subscribe(
+      response => {
+        console.log(response);
+      },
+      error => {
+        // this.displayError(error);
+        if (error === 'OK'){
+          this.setPublic();
+        }
+      });
+  }
+
+  getPublicLink(): any {
+    this.boardService.getPublicLink(this.id).subscribe(
+      response => {
+        console.log(response);
+        this.publicLink = response;
+      }, error => {
+        console.log(error);
+        // this.publicLink = error;
+      });
   }
 
 }

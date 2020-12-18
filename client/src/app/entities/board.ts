@@ -4,5 +4,5 @@ export interface Board {
   description: string;
   owner: string;
   teamMembers: string[];
-  isPublic: string;
+  isPublic: boolean;
 }

@@ -34,4 +34,8 @@ export class NavigationBarComponent implements OnInit {
     this.authenticationService.logout();
   }
 
+  home(): void{
+    this.router.navigate(['']);
+  }
+
 }

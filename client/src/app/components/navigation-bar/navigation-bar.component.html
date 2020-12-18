@@ -1,7 +1,7 @@
 <nav>
 
-  <div>
-    <p>Trollo</p>
+  <div (click)="home()">
+    <p class="trollo-title">Trollo</p>
   </div>
   <ng-container *ngIf="userObservable | async else NotLoggedBar">
     <div>

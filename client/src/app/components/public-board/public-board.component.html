@@ -1,0 +1,45 @@
+<div *ngIf="boardReady" class="board">
+  <div class="header-basic menu-container">
+    <div class="menu-item">
+      <span>BOARD:</span>
+      <span style="margin-left: 10px">{{getBoardDisplayName()}}</span>
+    </div>
+    <div style="margin-left: 50px">
+      <span>MEMBERS:</span>
+    </div>
+    <div class="menu-item member-list" *ngFor="let member of data.teamMembers">
+      <div class="dropdown">
+        <button class="btn member">{{member}}</button>
+      </div>
+    </div>
+    <div class="menu-item right-align">
+<!--      <div>-->
+<!--        <button class="btn simple" (click)="navigateBack()">Back</button>-->
+<!--      </div>-->
+    </div>
+  </div>
+  <div id="content">
+    <div class="list-container">
+      <app-list title="First"></app-list>
+      <app-list title="My list name"></app-list>
+      <app-list title="Hello"></app-list>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="error" class="modal">
+  <div class="modal-background">
+    <div class="modal-window">
+
+      <div class="modal-body">
+        <div class="form-control-container" style="color: red">
+          {{errorMessage}}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn primary" (click)="toggleErrorModal()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

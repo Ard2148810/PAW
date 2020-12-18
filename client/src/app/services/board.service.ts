@@ -43,31 +43,39 @@ export class BoardService {
     return this.http.get(`${environment.backendURL}/api/boards/${id}`);
   }
 
-  updateBoard(boardId: string, name: string, description: string, isPublic: string): any {
+  getPublicBoard(id: string): any {
+    return this.http.get(`${environment.backendURL}/api/boards/${id}/public`);
+  }
+
+  updateBoard(id: string, name: string, description: string, isPublic: boolean): any {
     const body = {
       name,
       description,
       isPublic
     };
-    return this.http.put(`${environment.backendURL}/api/boards/${boardId}`, body);
+    return this.http.put(`${environment.backendURL}/api/boards/${id}`, body);
   }
 
-  addUserToBoard(boardId: string, username: string): any {
+  addUserToBoard(id: string, username: string): any {
     const body = {
       username
     };
-    return this.http.put(`${environment.backendURL}/api/boards/${boardId}/assignment`, body);
+    return this.http.put(`${environment.backendURL}/api/boards/${id}/assignment`, body);
   }
 
-  deleteUserFromBoard(boardId: string, username: string): any {
+  deleteUserFromBoard(id: string, username: string): any {
     const body = {
       username
     };
-    // return this.http.delete(`${environment.backendURL}/api/boards/${boardId}/assignment`, body);
-    return this.http.request('delete', `${environment.backendURL}/api/boards/${boardId}/assignment`, { body });
+    // return this.http.delete(`${environment.backendURL}/api/boards/${id}/assignment`, body);
+    return this.http.request('delete', `${environment.backendURL}/api/boards/${id}/assignment`, { body });
   }
 
   deleteBoard(id: string): any {
     return this.http.delete(`${environment.backendURL}/api/boards/${id}`);
+  }
+
+  getPublicLink(id: string): any{
+    return this.http.get(`${environment.backendURL}/api/boards/${id}/link`);
   }
 }

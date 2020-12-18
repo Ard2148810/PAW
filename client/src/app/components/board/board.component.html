@@ -1,21 +1,17 @@
 <div *ngIf="boardReady" class="board">
   <div class="header-basic menu-container">
     <div class="menu-item">
-      <button class="btn simple" (click)="navigateBack()">Back</button>
-    </div>
-    <div class="menu-item">
+      <span>BOARD:</span>
       <app-inline-input [value]=getBoardDisplayName() (valueChanged)="handleRenameBoard($event)"></app-inline-input>
     </div>
-    <div class="menu-item member-list" *ngFor="let member of data.teamMembers">
-      <span class="member-name">{{member}}</span>
+    <div style="margin-left: 50px">
+      <span>MEMBERS:</span>
     </div>
-    <div class="menu-item">
+    <div class="menu-item member-list" *ngFor="let member of data.teamMembers">
       <div class="dropdown">
-        <button class="btn primary">Dropdown</button>
+        <button class="btn member">{{member}}</button>
         <div class="dropdown-content">
-          <a class="dropdown-item" href="#">Link 1</a>
-          <a class="dropdown-item" href="#">Link 2</a>
-          <a class="dropdown-item" href="#">Link 3</a>
+          <a class="dropdown-item" (click)="deleteUserFromBoard(member)">Remove user</a>
         </div>
       </div>
     </div>
@@ -24,10 +20,13 @@
         <button class="btn simple" (click)="toggleAddingUserModal()">Add user</button>
       </div>
       <div>
-        <button class="btn simple" (click)="toggleDeletingUserModal()">Delete User</button>
+        <button class="btn simple" (click)="toggleMakingPublicModal()">Make public</button>
       </div>
       <div>
         <button class="btn simple" (click)="toggleDeletingBoardModal()">Delete Board</button>
+      </div>
+      <div>
+        <button class="btn simple" (click)="navigateBack()">Back</button>
       </div>
     </div>
   </div>
@@ -46,7 +45,7 @@
   <div class="modal-background">
     <div class="modal-window">
       <div class="modal-header">
-        Choose user that you want to add to board.
+        Choose user that you want to add to the board.
       </div>
       <div class="modal-body">
         <div class="form-control-container">
@@ -65,23 +64,20 @@
 </div>
 
 
-<div *ngIf="deletingUser" class="modal">
+<div *ngIf="makingPublic" class="modal">
   <div class="modal-background">
     <div class="modal-window">
       <div class="modal-header">
-        Choose user that you want to delete from board.
+        {{makingPublicMessage}}
       </div>
       <div class="modal-body">
         <div class="form-control-container">
-          <label for="userToDelete">
-            username
-          </label>
-          <input id="userToDelete" type="text" #userToDelete>
+          <span *ngIf="data.isPublic">Link: {{publicLink}}</span>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn" (click)="toggleDeletingUserModal()">Cancel</button>
-        <button type="submit" (click)="deleteUserFromBoard(userToDelete.value)" class="btn primary">Confirm</button>
+        <button class="btn" (click)="toggleMakingPublicModal()">Close</button>
+        <button type="submit" (click)="makePublic()" class="btn primary" *ngIf="!data.isPublic">Confirm</button>
       </div>
     </div>
   </div>
