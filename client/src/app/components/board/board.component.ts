@@ -35,14 +35,20 @@ export class BoardComponent implements OnInit {
     this.makingPublic = false;
     this.deletingBoard = false;
     this.error = false;
-    this.makingPublicMessage = 'Are you sure you want to make this board public?';
-    this.publicLink = 'None';
   }
 
   ngOnInit(): void {
     this.boardService.getBoard(this.id).subscribe(data => {
       this.data = data;
       this.boardReady = true;
+
+      if (!this.data.isPublic){
+        this.setPrivate();
+      }
+      else{
+        this.setPublic();
+      }
+
       console.log(this.data);
     });
   }
@@ -135,6 +141,18 @@ export class BoardComponent implements OnInit {
     this.error = true;
   }
 
+  setPublic(): any{
+    this.data.isPublic = true;
+    this.makingPublicMessage = 'THIS BOARD IS PUBLIC';
+    this.getPublicLink();
+  }
+
+  setPrivate(): any{
+    this.data.isPublic = false;
+    this.makingPublicMessage = 'ARE YOU SURE YOU WANT TO MAKE THIS BOARD PUBLIC?';
+    this.publicLink = 'None';
+  }
+
   makePublic(): void{
     this.boardService.updateBoard(this.data.id, this.data.name, this.data.description, true).subscribe(
       response => {
@@ -143,9 +161,7 @@ export class BoardComponent implements OnInit {
       error => {
         // this.displayError(error);
         if (error === 'OK'){
-          this.data.isPublic = true;
-          this.makingPublicMessage = 'Board is already public';
-          this.getPublicLink();
+          this.setPublic();
         }
       });
   }
@@ -157,7 +173,7 @@ export class BoardComponent implements OnInit {
         this.publicLink = response;
       }, error => {
         console.log(error);
-        this.publicLink = error;
+        // this.publicLink = error;
       });
   }
 
