@@ -18,6 +18,7 @@ import { InlineInputComponent } from './components/inline-input/inline-input.com
 import { LoginComponent } from './components/login/login.component';
 import { ListComponent } from './components/list/list.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PublicBoardComponent } from './components/public-board/public-board.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     BoardComponent,
     CardComponent,
     InlineInputComponent,
-    ListComponent
+    ListComponent,
+    PublicBoardComponent
   ],
   imports: [
     BrowserModule,

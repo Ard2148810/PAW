@@ -25,8 +25,8 @@ export class BoardComponent implements OnInit {
   constructor(private boardService: BoardService,
               private route: ActivatedRoute,
               private router: Router) {
-    this.boardReady = false;
     route.params.subscribe(params => this.id = params.id);
+    this.boardReady = false;
     this.addingUser = false;
     this.deletingBoard = false;
     this.error = false;
@@ -67,7 +67,8 @@ export class BoardComponent implements OnInit {
         console.log(response);
       },
       error => {
-        this.displayError(error);
+        console.log(error);
+        // this.displayError(error);
       });
   }
 

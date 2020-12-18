@@ -6,12 +6,14 @@ import { RegisterComponent } from './components/register/register.component';
 import { NotLoggedGuard } from './guards/notlogged.guard';
 import { LoggedGuard } from './guards/logged.guard';
 import {BoardComponent} from './components/board/board.component';
+import {PublicBoardComponent} from './components/public-board/public-board.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [LoggedGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [NotLoggedGuard] },
   { path: 'login', component: LoginComponent, canActivate: [NotLoggedGuard] },
-  { path: 'board/:id', component: BoardComponent, canActivate: [LoggedGuard] }
+  { path: 'board/:id', component: BoardComponent, canActivate: [LoggedGuard] },
+  { path: 'public-board/:id', component: PublicBoardComponent, canActivate: [LoggedGuard] }
 ];
 
 @NgModule({
