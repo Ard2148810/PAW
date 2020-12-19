@@ -1,5 +1,5 @@
 import { Entity, Column, ObjectIdColumn } from 'typeorm';
-import { List } from '../../lists/entities/list.entity';
+import { List } from '../../models/list';
 
 @Entity()
 export class Board {

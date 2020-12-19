@@ -15,7 +15,6 @@ import { CardsModule } from './cards/cards.module';
     AuthModule,
     UsersModule,
     BoardsModule,
-    ListsModule,
     CardsModule,
   ],
   controllers: [AppController],

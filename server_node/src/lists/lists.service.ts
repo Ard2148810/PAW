@@ -3,7 +3,7 @@ import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { List } from './entities/list.entity';
+import { List } from '../models/list';
 import { ObjectID } from 'mongodb';
 import { BoardsService } from '../boards/boards.service';
 

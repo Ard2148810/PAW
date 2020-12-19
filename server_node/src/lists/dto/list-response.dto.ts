@@ -3,6 +3,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class ListResponseDto {
-  @ApiProperty()
-  id: string;
+  @ApiProperty({ required: true })
+  name: string;
+  @ApiProperty({ required: true })
+  position: number;
+  @ApiProperty({ required: false })
+  cards: []
 }

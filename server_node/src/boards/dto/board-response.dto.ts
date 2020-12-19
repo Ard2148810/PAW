@@ -22,6 +22,6 @@ export class BoardResponseDto {
   @ApiProperty()
   isPublic: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: true })
   lists: ListResponseDto[];
 }
