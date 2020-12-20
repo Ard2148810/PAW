@@ -180,13 +180,16 @@ export class BoardsService {
       });
   }
 
-  generateLink(id: string) {
+  generateLink(board: Board) {
+    if (!board.isPublic) {
+      throw new BadRequestException('Board is not public');
+    }
     return (
       `${process.env.HOST}` +
       ':' +
       `${process.env.PORT}` +
       '/api/boards/' +
-      this.encrypt(id) +
+      this.encrypt(board.id) +
       '/public'
     );
   }

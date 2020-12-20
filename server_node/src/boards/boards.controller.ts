@@ -89,7 +89,7 @@ export class BoardsController {
       req.user.username,
       board,
     );
-    return this.boardsService.generateLink(boardEntity.id);
+    return this.boardsService.generateLink(boardEntity);
   }
 
   @ApiOperation({
