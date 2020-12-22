@@ -32,9 +32,11 @@
   </div>
   <div id="content">
     <div class="list-container">
-      <app-list title="First"></app-list>
-      <app-list title="My list name"></app-list>
-      <app-list title="Hello"></app-list>
+      <app-list
+        *ngFor="let list of data.lists"
+        [id]="list.id" [title]="list.name"
+        [cards]="list.cards"
+        (cardClicked)="handleCardClicked($event)"></app-list>
       <app-list wildcard=true></app-list>
     </div>
   </div>
@@ -114,6 +116,23 @@
       </div>
       <div class="modal-footer">
         <button class="btn primary" (click)="toggleErrorModal()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="activeCard" class="modal">
+  <div class="modal-background">
+    <div class="modal-window">
+      <div class="modal-header">
+        {{ activeCard.name }}
+      </div>
+      <div class="modal-body">
+        {{ activeCard.id }}
+      </div>
+      <div class="modal-footer">
+        <button class="btn" (click)="closeCardModal()">Cancel</button>
+        <button type="submit" class="btn primary">Confirm</button>
       </div>
     </div>
   </div>

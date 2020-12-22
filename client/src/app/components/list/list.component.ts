@@ -1,4 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
+import { Card } from '../../entities/card';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-list',
@@ -9,6 +11,8 @@ export class ListComponent implements OnInit {
   @Input() title: string;
   @Input() id: string;
   @Input() wildcard = false;
+  @Input() cards: Card[];
+  @Output() cardClicked = new EventEmitter();
 
   constructor() { }
 
@@ -29,4 +33,13 @@ export class ListComponent implements OnInit {
     const data = event.dataTransfer.getData('text');
     (event.target as HTMLElement).appendChild(document.getElementById(data));
   }*/
+
+  handleCardClicked(cardId: string): void {
+    this.cardClicked.emit({ listId: this.id, cardId });
+  }
+}
+
+export interface CardClickedEvent {
+  listId: string;
+  cardId: string;
 }

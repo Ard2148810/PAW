@@ -3,9 +3,7 @@
     <app-inline-input *ngIf="wildcard else listName" value="Add another list"></app-inline-input>
   </div>
   <div *ngIf="!wildcard" class="card-container">
-    <app-card text="First card"></app-card>
-    <app-card text="Second"></app-card>
-    <app-card text="Another one"></app-card>
+    <app-card *ngFor="let card of cards" [text]="card.name" (click)="handleCardClicked(card.id)"></app-card>
   </div>
 </div>
 

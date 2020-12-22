@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BoardService } from '../../services/board.service';
 import { Board } from '../../entities/board';
 import { first } from 'rxjs/operators';
+import { Card } from '../../entities/card';
+import { CardClickedEvent } from '../list/list.component';
 
 @Component({
   selector: 'app-board',
@@ -26,6 +28,8 @@ export class BoardComponent implements OnInit {
   makingPublicMessage: string;
   publicLink: string;
 
+  activeCard: Card;
+
   constructor(private boardService: BoardService,
               private route: ActivatedRoute,
               private router: Router) {
@@ -48,6 +52,12 @@ export class BoardComponent implements OnInit {
       else{
         this.setPublic();
       }
+
+      // TODO: Delete when lists and cards when will be received from API
+      this.data.lists = [
+        { id: '1', name: 'List 1', position: 1, cards: [{ id: '1-1', name: 'Card 1', description: 'test description', members: [] }] },
+        { id: '2', name: 'List 2', position: 2, cards: [{ id: '2-1', name: 'Card 2', description: 'test description 2', members: [] }] }
+      ];
 
       console.log(this.data);
     });
@@ -177,4 +187,17 @@ export class BoardComponent implements OnInit {
       });
   }
 
+  setActiveCard(listId: string, cardId: string): void {
+    this.activeCard = this.data.lists
+      .find(list => list.id === listId).cards
+      .find(card => card.id === cardId);
+  }
+
+  closeCardModal(): void {
+    this.activeCard = null;
+  }
+
+  handleCardClicked(cardClickedEvent: CardClickedEvent): void {
+    this.setActiveCard(cardClickedEvent.listId, cardClickedEvent.cardId);
+  }
 }
