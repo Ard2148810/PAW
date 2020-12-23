@@ -7,13 +7,13 @@ import {
 } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
+import { UpdateListDto } from './dto/update-list.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Board } from './entities/board.entity';
 import { UsersService } from '../users/users.service';
 import { createCipher, createDecipher } from 'crypto';
 import { List } from '../models/list';
-import { Card } from '../cards/entities/card.entity';
 
 @Injectable()
 export class BoardsService {
@@ -257,5 +257,33 @@ export class BoardsService {
       throw new NotFoundException('List not found');
     }
     return newBoard.lists;
+  }
+
+  async updateList(
+    username: string,
+    board: string,
+    list: string,
+    UpdateListDto: UpdateListDto,
+  ) {
+    const newBoard = await this.findOne(username, board);
+    if (!newBoard) {
+      throw new NotFoundException('Board not found');
+    }
+    if (!newBoard.lists) {
+      throw new NotFoundException('List not found');
+    }
+    const newList = newBoard.lists.find((obj, i) => {
+      if (obj.id == list) {
+        return true;
+      }
+    });
+    if (!newList) {
+      throw new NotFoundException('List not found');
+    }
+    const index = newBoard.lists.findIndex((x) => newList);
+    newBoard.lists[index].position = UpdateListDto.position;
+    newBoard.lists[index].name = UpdateListDto.nameOfList;
+    newBoard.lists[index].cards = UpdateListDto.cards;
+    await this.boardRepository.update(board, newBoard);
   }
 }

@@ -193,6 +193,27 @@ export class BoardsController {
   }
 
   @ApiOperation({
+    description: 'update list',
+  })
+  @ApiOkResponse({ type: [String] })
+  @ApiBadRequestResponse({ description: '' })
+  @ApiNotFoundResponse({ description: 'Board not found / List not found' })
+  @Put(':board/lists/:list')
+  async updateList(
+    @Request() req,
+    @Param('board') board: string,
+    @Param('list') list: string,
+    @Body() updateListDto: UpdateListDto,
+  ) {
+    return await this.boardsService.updateList(
+      req.user.username,
+      board,
+      list,
+      updateListDto,
+    );
+  }
+
+  @ApiOperation({
     description:
       'Deletes user specified by username from the board and returns a list of team members.',
   })

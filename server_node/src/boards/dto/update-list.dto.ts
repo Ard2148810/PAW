@@ -5,4 +5,8 @@ import { ApiProperty } from '@nestjs/swagger';
 export class UpdateListDto {
   @ApiProperty({ required: true })
   nameOfList: string;
+  @ApiProperty({ required: false })
+  position: number;
+  @ApiProperty({ required: false })
+  cards: [];
 }
