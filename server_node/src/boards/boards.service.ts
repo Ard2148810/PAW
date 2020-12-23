@@ -165,9 +165,7 @@ export class BoardsService {
           board.lists = [];
         }
         const list = new List(nameOfList, board.lists.length);
-        board.lists.push(list);
         await this.boardRepository.update(board.id, board);
-        console.log(board);
         return board;
       });
   }
@@ -232,5 +230,32 @@ export class BoardsService {
       decipher.update(buffer),
       decipher.final(),
     ]).toString();
+  }
+
+  async getList(username: string, board: string, list: string) {
+    const newBoard = await this.findOne(username, board);
+    if (!newBoard) {
+      throw new NotFoundException('Board not found');
+    }
+    if (!newBoard.lists) {
+      throw new NotFoundException('List not found');
+    }
+    const newList = newBoard.lists.find((obj, i) => {
+      if (obj.id == list) {
+        return true;
+      }
+    });
+    console.log(newList);
+    return newList;
+  }
+  async getLists(username: string, board: string) {
+    const newBoard = await this.findOne(username, board);
+    if (!newBoard) {
+      throw new NotFoundException('Board not found');
+    }
+    if (!newBoard.lists) {
+      throw new NotFoundException('List not found');
+    }
+    return newBoard.lists;
   }
 }
