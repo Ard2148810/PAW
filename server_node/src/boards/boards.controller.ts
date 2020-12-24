@@ -12,7 +12,6 @@ import {
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
-import { UpdateListDto } from '../lists/dto/update-list.dto';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -28,7 +27,6 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AssignUserDto } from './dto/assign-user.dto';
 import { CreateBoardResponseDto } from './dto/create-board-response.dto';
 import { BoardResponseDto } from './dto/board-response.dto';
-import { List } from '../lists/entities/list.entity';
 
 @ApiTags('boards')
 @ApiBearerAuth()

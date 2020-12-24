@@ -80,18 +80,19 @@ export class ListsController {
   @ApiOkResponse({ description: 'List successfully updated.' })
   @ApiNotFoundResponse({ description: 'List not found.' })
   @Put(':list')
-  update(
+  async update(
     @Request() req,
     @Param('board') board: string,
     @Param('list') list: string,
     @Body() updateListDto: UpdateListDto,
   ) {
-    return this.listsService.update(
+    await this.listsService.update(
       req.user.username,
       board,
       list,
       updateListDto,
     );
+    return 'List successfully updated.';
   }
 
   @ApiOperation({
@@ -105,6 +106,7 @@ export class ListsController {
     @Param('board') board: string,
     @Param('list') list: string,
   ) {
-    return await this.listsService.remove(req.user.username, board, list);
+    await this.listsService.remove(req.user.username, board, list);
+    return 'List successfully deleted.';
   }
 }
