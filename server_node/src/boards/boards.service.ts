@@ -241,12 +241,11 @@ export class BoardsService {
     if (!newBoard.lists) {
       throw new NotFoundException('List not found');
     }
-    const newList = newBoard.lists.find((obj, i) => {
-      if (obj.id == list) {
+    const newList = newBoard.lists.find((obj,) => {
+      if (obj.id === list) {
         return true;
       }
     });
-    console.log(newList);
     return newList;
   }
   async getLists(username: string, board: string) {

@@ -24,7 +24,6 @@ import { CardsService } from './cards.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { CardResponseDto } from './dto/card-response.dto';
-import { CreateBoardResponseDto } from '../boards/dto/create-board-response.dto';
 
 @ApiTags('cards')
 @ApiBearerAuth()
@@ -67,22 +66,45 @@ export class CardsController {
     return this.cardsService.findAll(req.user.username, board, list);
   }
 
+  @ApiOperation({
+    description: 'Returns card',
+  })
+  @ApiOkResponse({ type: [CardResponseDto] })
   @Get(':card')
-  findOne(@Param('cardId') cardId: string) {
-    return this.cardsService.findOne(cardId);
+  findOne(
+    @Request() req,
+    @Param('board') board: string,
+    @Param('list') list: string,
+    @Param('card') card: string,
+  ) {
+    return this.cardsService.findOne(req.user.username, board, list, card);
   }
 
   @ApiBody({ type: UpdateCardDto })
   @Put(':card')
   update(
-    @Param('cardId') cardId: string,
+    @Request() req,
+    @Param('board') board: string,
+    @Param('list') list: string,
+    @Param('card') card: string,
     @Body() updateCardDto: UpdateCardDto,
   ) {
-    return this.cardsService.update(cardId, updateCardDto);
+    return this.cardsService.update(
+      req.user.username,
+      board,
+      list,
+      card,
+      updateCardDto,
+    );
   }
 
   @Delete(':card')
-  remove(@Param('cardId') cardId: string) {
-    return this.cardsService.remove(cardId);
+  remove(
+    @Request() req,
+    @Param('board') board: string,
+    @Param('list') list: string,
+    @Param('card') card: string,
+  ) {
+    return this.cardsService.remove(req.user.username, board, list, card);
   }
 }

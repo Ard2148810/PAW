@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException, Param, Request } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ObjectID, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Card } from './entities/card.entity';
 import { BoardsService } from '../boards/boards.service';
 
@@ -33,7 +33,6 @@ export class CardsService {
       createCardDto.date,
     );
     newList.cards.push(card);
-    console.log(card);
     await this.boardsService.updateList(username, board, list, newList);
     return card;
   }
@@ -49,20 +48,65 @@ export class CardsService {
     return newList.cards;
   }
 
-  findOne(id: string) {
-    return this.cardRepository.findOne(id);
-  }
-
-  async update(id: string, updateCardDto: UpdateCardDto) {
-    const exists =
-      ObjectID.isValid(id) && (await this.cardRepository.findOne(id));
-    if (!exists) {
-      throw new NotFoundException();
+  async findOne(
+    username: string,
+    boardId: string,
+    listId: string,
+    cardId: string,
+  ) {
+    const newList = await this.boardsService.getList(username, boardId, listId);
+    if (!newList) {
+      throw new NotFoundException('List/Board not found');
     }
-    await this.cardRepository.update(id, UpdateCardDto);
+    return newList.cards.find((obj) => {
+      if (obj.id === cardId) {
+        return true;
+      }
+    });
   }
 
-  async remove(id: string): Promise<void> {
-    await this.cardRepository.delete(id);
+  async update(
+    username: string,
+    boardId: string,
+    listId: string,
+    cardId: string,
+    updateCardDto: UpdateCardDto,
+  ) {
+    const newList = await this.boardsService.getList(username, boardId, listId);
+    if (!newList) {
+      throw new NotFoundException('List/Board not found');
+    }
+    const newCard = newList.cards.find((card) => {
+      if (card.id === cardId) {
+        return true;
+      }
+    });
+    if (!newCard) {
+      throw new NotFoundException('Card not found');
+    }
+    const indexOfCard = newList.cards.findIndex(() => newCard);
+    newList.cards[indexOfCard].name = updateCardDto.name;
+    newList.cards[indexOfCard].description = updateCardDto.description;
+    newList.cards[indexOfCard].comments = updateCardDto.comments;
+    newList.cards[indexOfCard].date = updateCardDto.date;
+    newList.cards[indexOfCard].members = updateCardDto.members;
+    await this.boardsService.updateList(username, boardId, listId, newList);
+    return newCard;
+  }
+
+  async remove(
+    username: string,
+    boardId: string,
+    listId: string,
+    cardId: string,
+  ) {
+    const newList = await this.boardsService.getList(username, boardId, listId);
+    newList.cards = newList.cards.filter((card) => card.id !== cardId);
+    return await this.boardsService.updateList(
+      username,
+      boardId,
+      listId,
+      newList,
+    );
   }
 }
