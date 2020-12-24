@@ -19,5 +19,8 @@ export class CardResponseDto {
   members: string[];
 
   @ApiProperty({ required: false })
+  labels: string[];
+
+  @ApiProperty({ required: false })
   date: Date;
 }

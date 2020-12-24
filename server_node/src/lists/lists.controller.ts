@@ -42,7 +42,6 @@ export class ListsController {
     @Param('board') board: string,
     @Body() createListDto: CreateListDto,
   ) {
-    console.log(board);
     return await this.listsService.create(
       req.user.username,
       board,

@@ -10,7 +10,7 @@ import { List } from './entities/list.entity';
 export class ListsService {
   constructor(
     @InjectRepository(List)
-    private readonly cardRepository: Repository<List>,
+    private readonly listRepository: Repository<List>,
     private readonly boardsService: BoardsService,
   ) {}
 

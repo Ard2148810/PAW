@@ -16,5 +16,8 @@ export class UpdateCardDto extends PartialType(CreateCardDto) {
   members: string[];
 
   @ApiProperty({ required: false })
+  labels: string[];
+
+  @ApiProperty({ required: false })
   date: Date;
 }

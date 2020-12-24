@@ -18,6 +18,9 @@ export class Card {
   @Column()
   members: string[];
 
+  @Column()
+  labels: string[];
+
   @Column({ type: 'timestamp' })
   date: Date;
 
