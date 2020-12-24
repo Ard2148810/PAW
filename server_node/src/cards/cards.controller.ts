@@ -36,7 +36,7 @@ export class CardsController {
   }
 
   @ApiOperation({
-    description: 'Returns all cards from list',
+    description: 'Return all cards from list',
   })
   @ApiOkResponse({ type: [CardResponseDto] })
   @Get()
