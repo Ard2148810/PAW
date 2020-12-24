@@ -4,7 +4,6 @@ import { UpdateCardDto } from './dto/update-card.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Card } from './entities/card.entity';
-import { BoardsService } from '../boards/boards.service';
 import { ListsService } from '../lists/lists.service';
 
 @Injectable()

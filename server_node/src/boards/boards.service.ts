@@ -7,13 +7,11 @@ import {
 } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
-import { UpdateListDto } from '../lists/dto/update-list.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Board } from './entities/board.entity';
 import { UsersService } from '../users/users.service';
 import { createCipher, createDecipher } from 'crypto';
-import { List } from '../lists/entities/list.entity';
 
 @Injectable()
 export class BoardsService {

@@ -23,7 +23,6 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ListResponseDto } from './dto/list-response.dto';
-import { UpdateBoardDto } from '../boards/dto/update-board.dto';
 
 @ApiTags('lists')
 @ApiBearerAuth()
