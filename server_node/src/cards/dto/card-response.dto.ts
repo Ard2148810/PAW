@@ -3,21 +3,21 @@ import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class CardResponseDto {
-  @ApiProperty()
+  @ApiProperty({ required: true })
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: true })
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   description: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   comments: [];
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   members: string[];
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   date: Date;
 }

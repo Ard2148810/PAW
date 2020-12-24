@@ -1,11 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCardDto {
-  @ApiProperty()
+  @ApiProperty({ required: true })
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   description: string;
-  @ApiProperty()
+
+  @ApiProperty({ required: false })
   date: Date;
 }
