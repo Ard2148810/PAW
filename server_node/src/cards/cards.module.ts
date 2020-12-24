@@ -4,9 +4,10 @@ import { CardsController } from './cards.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Card } from './entities/card.entity';
 import { BoardsModule } from '../boards/boards.module';
+import {ListsModule} from "../lists/lists.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Card]), BoardsModule],
+  imports: [TypeOrmModule.forFeature([Card]), ListsModule],
   controllers: [CardsController],
   providers: [CardsService],
 })

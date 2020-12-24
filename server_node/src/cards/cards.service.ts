@@ -5,13 +5,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Card } from './entities/card.entity';
 import { BoardsService } from '../boards/boards.service';
+import { ListsService } from '../lists/lists.service';
 
 @Injectable()
 export class CardsService {
   constructor(
     @InjectRepository(Card)
     private readonly cardRepository: Repository<Card>,
-    private readonly boardsService: BoardsService,
+    private readonly listsService: ListsService,
   ) {}
 
   async create(
@@ -20,7 +21,7 @@ export class CardsService {
     list: string,
     createCardDto: CreateCardDto,
   ) {
-    const newList = await this.boardsService.getList(username, board, list);
+    const newList = await this.listsService.findOne(username, board, list);
     if (!newList) {
       throw new NotFoundException('List not found');
     }
@@ -33,12 +34,12 @@ export class CardsService {
       createCardDto.date,
     );
     newList.cards.push(card);
-    await this.boardsService.updateList(username, board, list, newList);
+    await this.listsService.update(username, board, list, newList);
     return card;
   }
 
   async findAll(username: string, board: string, list: string) {
-    const newList = await this.boardsService.getList(username, board, list);
+    const newList = await this.listsService.findOne(username, board, list);
     if (!newList) {
       throw new NotFoundException('List/Board not found');
     }
@@ -54,7 +55,7 @@ export class CardsService {
     listId: string,
     cardId: string,
   ) {
-    const newList = await this.boardsService.getList(username, boardId, listId);
+    const newList = await this.listsService.findOne(username, boardId, listId);
     if (!newList) {
       throw new NotFoundException('List/Board not found');
     }
@@ -72,7 +73,7 @@ export class CardsService {
     cardId: string,
     updateCardDto: UpdateCardDto,
   ) {
-    const newList = await this.boardsService.getList(username, boardId, listId);
+    const newList = await this.listsService.findOne(username, boardId, listId);
     if (!newList) {
       throw new NotFoundException('List/Board not found');
     }
@@ -90,7 +91,7 @@ export class CardsService {
     newList.cards[indexOfCard].comments = updateCardDto.comments;
     newList.cards[indexOfCard].date = updateCardDto.date;
     newList.cards[indexOfCard].members = updateCardDto.members;
-    await this.boardsService.updateList(username, boardId, listId, newList);
+    await this.listsService.update(username, boardId, listId, newList);
     return newCard;
   }
 
@@ -100,13 +101,8 @@ export class CardsService {
     listId: string,
     cardId: string,
   ) {
-    const newList = await this.boardsService.getList(username, boardId, listId);
+    const newList = await this.listsService.findOne(username, boardId, listId);
     newList.cards = newList.cards.filter((card) => card.id !== cardId);
-    return await this.boardsService.updateList(
-      username,
-      boardId,
-      listId,
-      newList,
-    );
+    return await this.listsService.update(username, boardId, listId, newList);
   }
 }

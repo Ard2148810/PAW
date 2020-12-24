@@ -1,6 +1,6 @@
 import { Entity } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { ListResponseDto } from '../../dtos/list-response.dto';
+import { ListResponseDto } from '../../lists/dto/list-response.dto';
 
 @Entity()
 export class BoardResponseDto {

@@ -1,26 +1,106 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { BoardsService } from '../boards/boards.service';
+import { List } from './entities/list.entity';
 
 @Injectable()
 export class ListsService {
-  create(createListDto: CreateListDto) {
-    return 'This action adds a new list';
+  constructor(
+    @InjectRepository(List)
+    private readonly cardRepository: Repository<List>,
+    private readonly boardsService: BoardsService,
+  ) {}
+
+  async create(
+    username: string,
+    boardId: string,
+    createListDto: CreateListDto,
+  ) {
+    const board = await this.boardsService.findOne(username, boardId);
+    if (!board) {
+      throw new NotFoundException('Board not found');
+    }
+    if (!board.lists) {
+      board.lists = [];
+    }
+    const list = new List(createListDto.name, board.lists.length);
+    board.lists.push(list);
+    await this.boardsService.update(username, boardId, board);
+    return list;
   }
 
-  findAll() {
-    return `This action returns all lists`;
+  async findAll(username: string, boardId: string) {
+    const board = await this.boardsService.findOne(username, boardId);
+    if (!board) {
+      throw new NotFoundException('Board not found');
+    }
+    if (!board.lists) {
+      throw new NotFoundException('List not found');
+    }
+    return board.lists;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} list`;
+  async findOne(username: string, boardId: string, listId: string) {
+    const board = await this.boardsService.findOne(username, boardId);
+    if (!board) {
+      throw new NotFoundException('Board not found');
+    }
+    if (!board.lists) {
+      throw new NotFoundException('List not found');
+    }
+    const list = board.lists.find((list) => {
+      if (list.id === listId) return true;
+    });
+    if (!list) {
+      throw new NotFoundException('List not found');
+    }
+    return list;
   }
 
-  update(id: number, updateListDto: UpdateListDto) {
-    return `This action updates a #${id} list`;
+  async update(
+    username: string,
+    boardId: string,
+    listId: string,
+    updateListDto: UpdateListDto,
+  ) {
+    const board = await this.boardsService.findOne(username, boardId);
+    if (!board) {
+      throw new NotFoundException('Board not found');
+    }
+    if (!board.lists) {
+      throw new NotFoundException('List not found');
+    }
+    const list = board.lists.find((list) => {
+      if (list.id === listId) return true;
+    });
+    if (!list) {
+      throw new NotFoundException('List not found');
+    }
+    const indexOfList = board.lists.findIndex(() => list);
+    board.lists[indexOfList].position = updateListDto.position;
+    board.lists[indexOfList].name = updateListDto.name;
+    await this.boardsService.update(username, boardId, board);
+    return board.lists[indexOfList];
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} list`;
+  async remove(username: string, boardId: string, listId: string) {
+    const board = await this.boardsService.findOne(username, boardId);
+    if (!board) {
+      throw new NotFoundException('Board not found');
+    }
+    if (!board.lists) {
+      throw new NotFoundException('List not found');
+    }
+    const list = board.lists.find((list) => {
+      if (list.id === listId) return true;
+    });
+    if (!list) {
+      throw new NotFoundException('List not found');
+    }
+    board.lists = board.lists.filter((list) => list.id !== listId);
+    return;
   }
 }

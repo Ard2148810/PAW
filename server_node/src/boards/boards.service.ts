@@ -7,13 +7,13 @@ import {
 } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
-import { UpdateListDto } from './dto/update-list.dto';
+import { UpdateListDto } from '../lists/dto/update-list.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Board } from './entities/board.entity';
 import { UsersService } from '../users/users.service';
 import { createCipher, createDecipher } from 'crypto';
-import { List } from '../models/list';
+import { List } from '../lists/entities/list.entity';
 
 @Injectable()
 export class BoardsService {
@@ -150,27 +150,6 @@ export class BoardsService {
       });
   }
 
-  async addList(username: string, boardId: string, nameOfList: string) {
-    await this.boardRepository
-      .findOne(boardId, {
-        where: {
-          teamMembers: { $in: [username] },
-        },
-      })
-      .then(async (board) => {
-        if (!board) {
-          throw new NotFoundException('Board not found');
-        }
-        if (board.lists === undefined) {
-          board.lists = [];
-        }
-        const list = new List(nameOfList, board.lists.length);
-        board.lists.push(list);
-        await this.boardRepository.update(board.id, board);
-        return list;
-      });
-  }
-
   async removeUser(username: string, id: string, teamMember: string) {
     await this.boardRepository
       .findOne(id, {
@@ -231,58 +210,5 @@ export class BoardsService {
       decipher.update(buffer),
       decipher.final(),
     ]).toString();
-  }
-
-  async getList(username: string, board: string, list: string) {
-    const newBoard = await this.findOne(username, board);
-    if (!newBoard) {
-      throw new NotFoundException('Board not found');
-    }
-    if (!newBoard.lists) {
-      throw new NotFoundException('List not found');
-    }
-    return newBoard.lists.find((obj) => {
-      if (obj.id === list) {
-        return true;
-      }
-    });
-  }
-  async getLists(username: string, board: string) {
-    const newBoard = await this.findOne(username, board);
-    if (!newBoard) {
-      throw new NotFoundException('Board not found');
-    }
-    if (!newBoard.lists) {
-      throw new NotFoundException('List not found');
-    }
-    return newBoard.lists;
-  }
-
-  async updateList(
-    username: string,
-    board: string,
-    list: string,
-    UpdateListDto: UpdateListDto,
-  ) {
-    const newBoard = await this.findOne(username, board);
-    if (!newBoard) {
-      throw new NotFoundException('Board not found');
-    }
-    if (!newBoard.lists) {
-      throw new NotFoundException('List not found');
-    }
-    const newList = newBoard.lists.find((obj) => {
-      if (obj.id == list) {
-        return true;
-      }
-    });
-    if (!newList) {
-      throw new NotFoundException('List not found');
-    }
-    const index = newBoard.lists.findIndex(() => newList);
-    newBoard.lists[index].position = UpdateListDto.position;
-    newBoard.lists[index].name = UpdateListDto.name;
-    newBoard.lists[index].cards = UpdateListDto.cards;
-    await this.boardRepository.update(board, newBoard);
   }
 }

@@ -12,7 +12,7 @@ import {
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
-import { UpdateListDto } from './dto/update-list.dto';
+import { UpdateListDto } from '../lists/dto/update-list.dto';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -28,7 +28,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AssignUserDto } from './dto/assign-user.dto';
 import { CreateBoardResponseDto } from './dto/create-board-response.dto';
 import { BoardResponseDto } from './dto/board-response.dto';
-import { List } from '../models/list';
+import { List } from '../lists/entities/list.entity';
 
 @ApiTags('boards')
 @ApiBearerAuth()
@@ -144,73 +144,6 @@ export class BoardsController {
     );
     const newBoard = await this.boardsService.findOne(req.user.username, board);
     return newBoard.teamMembers;
-  }
-
-  @ApiOperation({
-    description: 'Assign new list',
-  })
-  @ApiOkResponse({ type: [String] })
-  @ApiBadRequestResponse({ description: '' })
-  @ApiNotFoundResponse({ description: 'Board not found' })
-  @Post(':board/lists')
-  async addList(
-    @Request() req,
-    @Param('board') board: string,
-    @Body() UpdateListDto: UpdateListDto,
-  ) {
-    await this.boardsService.addList(
-      req.user.username,
-      board,
-      UpdateListDto.name,
-    );
-    return await this.boardsService.findOne(req.user.username, board);
-  }
-
-  @ApiOperation({
-    description: 'Get list',
-  })
-  @ApiOkResponse({ type: [List] })
-  @ApiBadRequestResponse({ description: '' })
-  @ApiNotFoundResponse({ description: 'List not found' })
-  @Get(':board/lists/:list')
-  async getList(
-    @Request() req,
-    @Param('board') board: string,
-    @Param('list') list: string,
-  ) {
-    return await this.boardsService.getList(req.user.username, board, list);
-  }
-
-  @ApiOperation({
-    description: 'Get lists',
-  })
-  @ApiOkResponse({ type: [List] })
-  @ApiBadRequestResponse({ description: '' })
-  @ApiNotFoundResponse({ description: 'List not found' })
-  @Get(':board/lists')
-  async getLists(@Request() req, @Param('board') board: string) {
-    return await this.boardsService.getLists(req.user.username, board);
-  }
-
-  @ApiOperation({
-    description: 'update list',
-  })
-  @ApiOkResponse({ type: [String] })
-  @ApiBadRequestResponse({ description: '' })
-  @ApiNotFoundResponse({ description: 'Board not found / List not found' })
-  @Put(':board/lists/:list')
-  async updateList(
-    @Request() req,
-    @Param('board') board: string,
-    @Param('list') list: string,
-    @Body() updateListDto: UpdateListDto,
-  ) {
-    return await this.boardsService.updateList(
-      req.user.username,
-      board,
-      list,
-      updateListDto,
-    );
   }
 
   @ApiOperation({

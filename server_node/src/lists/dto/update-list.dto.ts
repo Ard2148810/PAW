@@ -1,4 +1,9 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateListDto } from './create-list.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { Card } from '../../cards/entities/card.entity';
 
-export class UpdateListDto extends PartialType(CreateListDto) {}
+export class UpdateListDto {
+  @ApiProperty({ required: true })
+  name: string;
+  @ApiProperty({ required: false })
+  position: number;
+}

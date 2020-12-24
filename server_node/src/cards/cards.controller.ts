@@ -39,7 +39,7 @@ export class CardsController {
   @ApiBadRequestResponse({ description: '' })
   @ApiNotFoundResponse({ description: 'Board/ List not found' })
   @Post()
-  create(
+  async create(
     @Request() req,
     @Param('board') board: string,
     @Param('list') list: string,
