@@ -1,11 +1,10 @@
-import {Injectable, NotFoundException, Param, Request} from '@nestjs/common';
+import { Injectable, NotFoundException, Param, Request } from '@nestjs/common';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectID, Repository } from 'typeorm';
 import { Card } from './entities/card.entity';
-import {BoardsService} from "../boards/boards.service";
-
+import { BoardsService } from '../boards/boards.service';
 
 @Injectable()
 export class CardsService {
@@ -15,8 +14,28 @@ export class CardsService {
     private readonly boardsService: BoardsService,
   ) {}
 
-  create(createCardDto: CreateCardDto) {
-    return 'This action adds a new card';
+  async create(
+    username: string,
+    board: string,
+    list: string,
+    createCardDto: CreateCardDto,
+  ) {
+    const newList = await this.boardsService.getList(username, board, list);
+    if (!newList) {
+      throw new NotFoundException('List not found');
+    }
+    if (!newList.cards) {
+      newList.cards = [];
+    }
+    const card = new Card(
+      createCardDto.name,
+      createCardDto.description,
+      createCardDto.date,
+    );
+    newList.cards.push(card);
+    console.log(card);
+    await this.boardsService.updateList(username, board, list, newList);
+    return card;
   }
 
   async findAll(username: string, board: string, list: string) {

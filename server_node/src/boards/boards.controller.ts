@@ -161,7 +161,7 @@ export class BoardsController {
     await this.boardsService.addList(
       req.user.username,
       board,
-      UpdateListDto.nameOfList,
+      UpdateListDto.name,
     );
     return await this.boardsService.findOne(req.user.username, board);
   }

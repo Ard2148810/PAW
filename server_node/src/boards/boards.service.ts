@@ -165,8 +165,9 @@ export class BoardsService {
           board.lists = [];
         }
         const list = new List(nameOfList, board.lists.length);
+        board.lists.push(list);
         await this.boardRepository.update(board.id, board);
-        return board;
+        return list;
       });
   }
 
@@ -282,7 +283,7 @@ export class BoardsService {
     }
     const index = newBoard.lists.findIndex((x) => newList);
     newBoard.lists[index].position = UpdateListDto.position;
-    newBoard.lists[index].name = UpdateListDto.nameOfList;
+    newBoard.lists[index].name = UpdateListDto.name;
     newBoard.lists[index].cards = UpdateListDto.cards;
     await this.boardRepository.update(board, newBoard);
   }

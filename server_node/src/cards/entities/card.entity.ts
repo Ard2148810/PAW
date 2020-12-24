@@ -25,6 +25,7 @@ export class Card {
     this.id = uuid4().replace(/-/g, '');
     this.name = name;
     this.description = description;
+    this.members = [];
     this.comments = [];
     this.date = date;
   }

@@ -6,4 +6,6 @@ export class CreateCardDto {
 
   @ApiProperty()
   description: string;
+  @ApiProperty()
+  date: Date;
 }

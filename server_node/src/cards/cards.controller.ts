@@ -10,8 +10,11 @@ import {
   Request,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -21,6 +24,7 @@ import { CardsService } from './cards.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { CardResponseDto } from './dto/card-response.dto';
+import { CreateBoardResponseDto } from '../boards/dto/create-board-response.dto';
 
 @ApiTags('cards')
 @ApiBearerAuth()
@@ -28,15 +32,30 @@ import { CardResponseDto } from './dto/card-response.dto';
 @Controller('api/boards/:board/lists/:list/cards')
 export class CardsController {
   constructor(private readonly cardsService: CardsService) {}
-
+  @ApiOperation({
+    description: 'Creates a new card.',
+  })
   @ApiBody({ type: CreateCardDto })
+  @ApiCreatedResponse({ type: CardResponseDto })
+  @ApiBadRequestResponse({ description: '' })
+  @ApiNotFoundResponse({ description: 'Board/ List not found' })
   @Post()
-  create(@Body() createCardDto: CreateCardDto) {
-    return this.cardsService.create(createCardDto);
+  create(
+    @Request() req,
+    @Param('board') board: string,
+    @Param('list') list: string,
+    @Body() createCardDto: CreateCardDto,
+  ) {
+    return this.cardsService.create(
+      req.user.username,
+      board,
+      list,
+      createCardDto,
+    );
   }
 
   @ApiOperation({
-    description: 'Return all cards from list',
+    description: 'Returns all cards from list',
   })
   @ApiOkResponse({ type: [CardResponseDto] })
   @Get()
