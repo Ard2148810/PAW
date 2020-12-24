@@ -241,12 +241,11 @@ export class BoardsService {
     if (!newBoard.lists) {
       throw new NotFoundException('List not found');
     }
-    const newList = newBoard.lists.find((obj,) => {
+    return newBoard.lists.find((obj) => {
       if (obj.id === list) {
         return true;
       }
     });
-    return newList;
   }
   async getLists(username: string, board: string) {
     const newBoard = await this.findOne(username, board);
@@ -272,7 +271,7 @@ export class BoardsService {
     if (!newBoard.lists) {
       throw new NotFoundException('List not found');
     }
-    const newList = newBoard.lists.find((obj, i) => {
+    const newList = newBoard.lists.find((obj) => {
       if (obj.id == list) {
         return true;
       }
@@ -280,7 +279,7 @@ export class BoardsService {
     if (!newList) {
       throw new NotFoundException('List not found');
     }
-    const index = newBoard.lists.findIndex((x) => newList);
+    const index = newBoard.lists.findIndex(() => newList);
     newBoard.lists[index].position = UpdateListDto.position;
     newBoard.lists[index].name = UpdateListDto.name;
     newBoard.lists[index].cards = UpdateListDto.cards;

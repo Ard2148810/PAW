@@ -21,6 +21,6 @@ export class Board {
   @Column()
   isPublic: boolean;
 
-  @Column((type) => List)
+  @Column()
   lists: List[];
 }

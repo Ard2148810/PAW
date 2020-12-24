@@ -12,7 +12,7 @@ export class List {
   @Column()
   position: number;
 
-  @Column((type) => Card)
+  @Column()
   cards: Card[];
 
   constructor(name: string, position: number) {
