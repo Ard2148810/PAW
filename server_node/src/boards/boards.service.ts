@@ -29,7 +29,7 @@ export class BoardsService {
       description: description,
       owner: username,
       teamMembers: [username],
-      isPublic: false,
+      isPublic: true,
       lists: [],
     });
     return await this.boardRepository.save(board);

@@ -9,11 +9,20 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ListsService } from './lists.service';
 import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ListResponseDto } from './dto/list-response.dto';
 
 @ApiTags('lists')
 @ApiBearerAuth()
@@ -21,48 +30,82 @@ import { UpdateListDto } from './dto/update-list.dto';
 @Controller('api/boards/:board/lists')
 export class ListsController {
   constructor(private readonly listsService: ListsService) {}
-
+  @ApiOperation({
+    description: 'Creates a new list.',
+  })
   @ApiBody({ type: CreateListDto })
+  @ApiCreatedResponse({ type: ListResponseDto })
+  @ApiNotFoundResponse({ description: 'Board/ List not found' })
   @Post()
-  create(
+  async create(
     @Request() req,
     @Param('board') board: string,
     @Body() createListDto: CreateListDto,
   ) {
-    return this.listsService.create(createListDto);
+    console.log(board);
+    return await this.listsService.create(
+      req.user.username,
+      board,
+      createListDto,
+    );
   }
 
+  @ApiOperation({
+    description: 'Returns all lists.',
+  })
+  @ApiOkResponse({ type: [ListResponseDto] })
   @Get()
-  findAll(@Request() req, @Param('board') boardId: string) {
-    return this.listsService.findAll(req.user.username, boardId);
+  findAll(@Request() req, @Param('board') board: string) {
+    return this.listsService.findAll(req.user.username, board);
   }
 
-  @Get(':id')
+  @ApiOperation({
+    description: 'Returns list by id.',
+  })
+  @ApiOkResponse({ type: [ListResponseDto] })
+  @Get(':list')
   findOne(
     @Request() req,
-    @Param('board') boardId: string,
-    @Param('id') id: string,
+    @Param('board') board: string,
+    @Param('list') list: string,
   ) {
-    return this.listsService.findOne(id);
+    return this.listsService.findOne(req.user.username, board, list);
   }
 
+  @ApiOperation({
+    description: 'Updates list.',
+  })
   @ApiBody({ type: UpdateListDto })
-  @Put(':id')
-  update(
+  @ApiOkResponse({ description: 'List successfully updated.' })
+  @ApiNotFoundResponse({ description: 'List not found.' })
+  @Put(':list')
+  async update(
     @Request() req,
-    @Param('board') boardId: string,
-    @Param('id') id: string,
+    @Param('board') board: string,
+    @Param('list') list: string,
     @Body() updateListDto: UpdateListDto,
   ) {
-    return this.listsService.update(id, updateListDto);
+    await this.listsService.update(
+      req.user.username,
+      board,
+      list,
+      updateListDto,
+    );
+    return 'List successfully updated.';
   }
 
-  @Delete(':id')
-  remove(
+  @ApiOperation({
+    description: 'Deletes list by id.',
+  })
+  @ApiOkResponse({ description: 'List successfully deleted' })
+  @ApiNotFoundResponse({ description: 'List not found' })
+  @Delete(':list')
+  async remove(
     @Request() req,
-    @Param('board') boardId: string,
-    @Param('id') id: string,
+    @Param('board') board: string,
+    @Param('list') list: string,
   ) {
-    return this.listsService.remove(id);
+    await this.listsService.remove(req.user.username, board, list);
+    return 'List successfully deleted.';
   }
 }

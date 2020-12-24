@@ -1,9 +1,8 @@
 import { Entity } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { ListResponseDto } from '../../lists/dto/list-response.dto';
 
 @Entity()
-export class BoardResponseDto {
+export class CardResponseDto {
   @ApiProperty()
   id: string;
 
@@ -14,14 +13,11 @@ export class BoardResponseDto {
   description: string;
 
   @ApiProperty()
-  owner: string;
+  comments: [];
 
   @ApiProperty()
-  teamMembers: string[];
+  members: string[];
 
   @ApiProperty()
-  isPublic: string;
-
-  @ApiProperty({ required: true })
-  lists: ListResponseDto[];
+  date: Date;
 }
