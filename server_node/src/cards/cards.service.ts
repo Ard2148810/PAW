@@ -1,10 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Card } from './entities/card.entity';
 import { ListsService } from '../lists/lists.service';
+import { BoardsService } from '../boards/boards.service';
 
 @Injectable()
 export class CardsService {
@@ -12,40 +17,41 @@ export class CardsService {
     @InjectRepository(Card)
     private readonly cardRepository: Repository<Card>,
     private readonly listsService: ListsService,
+    private readonly boardsService: BoardsService,
   ) {}
 
   async create(
     username: string,
-    board: string,
-    list: string,
+    boardId: string,
+    listId: string,
     createCardDto: CreateCardDto,
   ) {
-    const newList = await this.listsService.findOne(username, board, list);
-    if (!newList) {
+    const list = await this.listsService.findOne(username, boardId, listId);
+    if (!list) {
       throw new NotFoundException('List not found');
     }
-    if (!newList.cards) {
-      newList.cards = [];
+    if (!list.cards) {
+      list.cards = [];
     }
     const card = new Card(
       createCardDto.name,
       createCardDto.description,
       createCardDto.date,
     );
-    newList.cards.push(card);
-    await this.listsService.update(username, board, list, newList);
+    list.cards.push(card);
+    await this.listsService.update(username, boardId, listId, list);
     return card;
   }
 
-  async findAll(username: string, board: string, list: string) {
-    const newList = await this.listsService.findOne(username, board, list);
-    if (!newList) {
+  async findAll(username: string, boardId: string, listId: string) {
+    const list = await this.listsService.findOne(username, boardId, listId);
+    if (!list) {
       throw new NotFoundException('List/Board not found');
     }
-    if (!newList.cards) {
+    if (!list.cards) {
       throw new NotFoundException('Cards not found');
     }
-    return newList.cards;
+    return list.cards;
   }
 
   async findOne(
@@ -54,11 +60,11 @@ export class CardsService {
     listId: string,
     cardId: string,
   ) {
-    const newList = await this.listsService.findOne(username, boardId, listId);
-    if (!newList) {
+    const list = await this.listsService.findOne(username, boardId, listId);
+    if (!list) {
       throw new NotFoundException('List/Board not found');
     }
-    return newList.cards.find((obj) => {
+    return list.cards.find((obj) => {
       if (obj.id === cardId) {
         return true;
       }
@@ -72,26 +78,49 @@ export class CardsService {
     cardId: string,
     updateCardDto: UpdateCardDto,
   ) {
-    const newList = await this.listsService.findOne(username, boardId, listId);
-    if (!newList) {
+    const list = await this.listsService.findOne(username, boardId, listId);
+    if (!list) {
       throw new NotFoundException('List/Board not found');
     }
-    const newCard = newList.cards.find((card) => {
+    const card = list.cards.find((card) => {
       if (card.id === cardId) {
         return true;
       }
     });
-    if (!newCard) {
+    if (!card) {
       throw new NotFoundException('Card not found');
     }
-    const indexOfCard = newList.cards.findIndex(() => newCard);
-    newList.cards[indexOfCard].name = updateCardDto.name;
-    newList.cards[indexOfCard].description = updateCardDto.description;
-    newList.cards[indexOfCard].comments = updateCardDto.comments;
-    newList.cards[indexOfCard].date = updateCardDto.date;
-    newList.cards[indexOfCard].members = updateCardDto.members;
-    await this.listsService.update(username, boardId, listId, newList);
-    return newCard;
+    const indexOfCard = list.cards.findIndex(() => card);
+    list.cards[indexOfCard].name = updateCardDto.name;
+    list.cards[indexOfCard].description = updateCardDto.description;
+    list.cards[indexOfCard].comments = updateCardDto.comments;
+    list.cards[indexOfCard].date = updateCardDto.date;
+    if (updateCardDto.members) {
+      const board = await this.boardsService.findOne(username, boardId);
+      updateCardDto.members.forEach((value) => {
+        if (list.cards[indexOfCard].members.includes(value))
+          throw new BadRequestException('User already belongs to the card');
+        board.teamMembers.forEach((value1) => {
+          if(!list.cards[indexOfCard].members.includes(value1)){
+            throw new BadRequestException('User does not belongs to the card');
+          }});
+        list.cards[indexOfCard].members.push(value);
+      });
+    }
+    if (updateCardDto.labels) {
+      const board = await this.boardsService.findOne(username, boardId);
+      updateCardDto.labels.forEach((value) => {
+        if (list.cards[indexOfCard].labels.includes(value))
+          throw new BadRequestException('Label already belongs to the card');
+        board.teamMembers.forEach((value1) => {
+          if(!list.cards[indexOfCard].labels.includes(value1)){
+            throw new BadRequestException('Label does not belongs to the card');
+          }});
+        list.cards[indexOfCard].labels.push(value);
+      });
+    }
+    await this.listsService.update(username, boardId, listId, list);
+    return card;
   }
 
   async remove(
@@ -100,8 +129,8 @@ export class CardsService {
     listId: string,
     cardId: string,
   ) {
-    const newList = await this.listsService.findOne(username, boardId, listId);
-    newList.cards = newList.cards.filter((card) => card.id !== cardId);
-    return await this.listsService.update(username, boardId, listId, newList);
+    const list = await this.listsService.findOne(username, boardId, listId);
+    list.cards = list.cards.filter((card) => card.id !== cardId);
+    return await this.listsService.update(username, boardId, listId, list);
   }
 }

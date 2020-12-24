@@ -8,6 +8,7 @@ import { Connection } from 'typeorm';
 import { AuthModule } from './auth/auth.module';
 import { CardsModule } from './cards/cards.module';
 import { ListsModule } from './lists/lists.module';
+import { LabelsModule } from './labels/labels.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ListsModule } from './lists/lists.module';
     BoardsModule,
     ListsModule,
     CardsModule,
+    LabelsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
