@@ -10,6 +10,8 @@ import { CardsModule } from './cards/cards.module';
 import { ListsModule } from './lists/lists.module';
 import { LabelsModule } from './labels/labels.module';
 import { CommentsModule } from './comments/comments.module';
+import { ChecklistsModule } from './checklists/checklists.module';
+import { ItemsModule } from './items/items.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { CommentsModule } from './comments/comments.module';
     CardsModule,
     LabelsModule,
     CommentsModule,
+    ChecklistsModule,
+    ItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,5 +1,7 @@
 import { Entity } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { CommentEntity } from '../../comments/entities/comment.entity';
+import { Checklist } from '../../checklists/entities/checklist.entity';
 
 @Entity()
 export class CardResponseDto {
@@ -13,7 +15,10 @@ export class CardResponseDto {
   description: string;
 
   @ApiProperty({ required: false })
-  comments: [];
+  checklists: Checklist[];
+
+  @ApiProperty({ required: false })
+  comments: CommentEntity[];
 
   @ApiProperty({ required: false })
   members: string[];

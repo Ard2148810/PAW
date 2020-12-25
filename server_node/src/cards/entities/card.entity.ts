@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 import { v4 as uuid4 } from 'uuid';
 import { CommentEntity } from '../../comments/entities/comment.entity';
+import { Checklist } from '../../checklists/entities/checklist.entity';
 
 @Entity()
 export class Card {
@@ -16,8 +17,8 @@ export class Card {
   @Column()
   comments: CommentEntity[];
 
-  // @Column()
-  // checklists: Checklist[];
+  @Column()
+  checklists: Checklist[];
 
   @Column()
   members: string[];
