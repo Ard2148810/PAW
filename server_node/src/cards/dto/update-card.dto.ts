@@ -1,6 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateCardDto } from './create-card.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { CommentEntity } from '../../comments/entities/comment.entity';
 
 export class UpdateCardDto extends PartialType(CreateCardDto) {
   @ApiProperty({ required: true })
@@ -10,7 +11,7 @@ export class UpdateCardDto extends PartialType(CreateCardDto) {
   description: string;
 
   @ApiProperty({ required: false })
-  comments: [];
+  comments: CommentEntity[];
 
   @ApiProperty({ required: false })
   members: string[];

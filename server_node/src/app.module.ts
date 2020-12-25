@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { CardsModule } from './cards/cards.module';
 import { ListsModule } from './lists/lists.module';
 import { LabelsModule } from './labels/labels.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { LabelsModule } from './labels/labels.module';
     ListsModule,
     CardsModule,
     LabelsModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
