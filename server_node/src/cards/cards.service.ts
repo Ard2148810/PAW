@@ -101,9 +101,10 @@ export class CardsService {
         if (list.cards[indexOfCard].members.includes(value))
           throw new BadRequestException('User already belongs to the card');
         board.teamMembers.forEach((value1) => {
-          if(!list.cards[indexOfCard].members.includes(value1)){
+          if (!list.cards[indexOfCard].members.includes(value1)) {
             throw new BadRequestException('User does not belongs to the card');
-          }});
+          }
+        });
         list.cards[indexOfCard].members.push(value);
       });
     }
@@ -113,9 +114,10 @@ export class CardsService {
         if (list.cards[indexOfCard].labels.includes(value))
           throw new BadRequestException('Label already belongs to the card');
         board.teamMembers.forEach((value1) => {
-          if(!list.cards[indexOfCard].labels.includes(value1)){
+          if (!list.cards[indexOfCard].labels.includes(value1)) {
             throw new BadRequestException('Label does not belongs to the card');
-          }});
+          }
+        });
         list.cards[indexOfCard].labels.push(value);
       });
     }
