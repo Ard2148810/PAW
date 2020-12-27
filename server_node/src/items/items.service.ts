@@ -1,26 +1,154 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Item } from './entities/item.entity';
+import { ChecklistsService } from '../checklists/checklists.service';
 
 @Injectable()
 export class ItemsService {
-  create(createItemDto: CreateItemDto) {
-    return 'This action adds a new item';
+  constructor(
+    @InjectRepository(Item)
+    private readonly checklistsService: ChecklistsService,
+  ) {}
+
+  async create(
+    usernameId: string,
+    boardId: string,
+    listId: string,
+    cardId: string,
+    checklistId: string,
+    createItemDto: CreateItemDto,
+  ) {
+    const checklist = await this.checklistsService.findOne(
+      usernameId,
+      boardId,
+      listId,
+      cardId,
+      checklistId,
+    );
+    if (!checklist) {
+      throw new NotFoundException('Checklist not found');
+    }
+    const item = new Item(createItemDto.description);
+    checklist.items.push(item);
+    await this.checklistsService.update(
+      usernameId,
+      boardId,
+      listId,
+      cardId,
+      checklistId,
+      checklist,
+    );
+    return item;
   }
 
-  findAll() {
-    return `This action returns all items`;
+  async findAll(
+    usernameId: string,
+    boardId: string,
+    listId: string,
+    cardId: string,
+    checklistId: string,
+  ) {
+    const checklist = await this.checklistsService.findOne(
+      usernameId,
+      boardId,
+      listId,
+      cardId,
+      checklistId,
+    );
+    if (!checklist) {
+      throw new NotFoundException('Checklist not found');
+    }
+    return checklist.items;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} item`;
+  async findOne(
+    usernameId: string,
+    boardId: string,
+    listId: string,
+    cardId: string,
+    checklistId: string,
+    itemId: string,
+  ) {
+    const checklist = await this.checklistsService.findOne(
+      usernameId,
+      boardId,
+      listId,
+      cardId,
+      checklistId,
+    );
+    if (!checklist) {
+      throw new NotFoundException('Checklist not found');
+    }
+    return checklist.items.find((item) => {
+      if (item.id == itemId) return true;
+    });
   }
 
-  update(id: number, updateItemDto: UpdateItemDto) {
-    return `This action updates a #${id} item`;
+  async update(
+    usernameId: string,
+    boardId: string,
+    listId: string,
+    cardId: string,
+    checklistId: string,
+    itemId,
+    updateItemDto: UpdateItemDto,
+  ) {
+    const checklist = await this.checklistsService.findOne(
+      usernameId,
+      boardId,
+      listId,
+      cardId,
+      checklistId,
+    );
+    if (!checklist) throw new NotFoundException('Checklist not found');
+    const item = checklist.items.find((item) => {
+      if (item.id === itemId) return true;
+    });
+    if (!item) throw new NotFoundException('Item not found');
+    const indexOfItem = checklist.items.findIndex(() => item);
+    if (updateItemDto.description) {
+      checklist.items[indexOfItem].description = updateItemDto.description;
+    }
+    if (updateItemDto.status) {
+      checklist.items[indexOfItem].status = updateItemDto.status;
+    }
+    return await this.checklistsService.update(
+      usernameId,
+      boardId,
+      listId,
+      cardId,
+      checklistId,
+      checklist,
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} item`;
+  async remove(
+    usernameId: string,
+    boardId: string,
+    listId: string,
+    cardId: string,
+    checklistId: string,
+    itemId: string,
+  ) {
+    const checklist = await this.checklistsService.findOne(
+      usernameId,
+      boardId,
+      listId,
+      cardId,
+      checklistId,
+    );
+    if (!checklist) throw new NotFoundException('Checklist not found');
+    checklist.items = checklist.items.filter((item) => item.id !== itemId);
+    return await this.checklistsService.update(
+      usernameId,
+      boardId,
+      listId,
+      cardId,
+      checklistId,
+      checklist,
+    );
   }
 }

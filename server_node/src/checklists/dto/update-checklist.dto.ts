@@ -4,7 +4,7 @@ import { Item } from '../../items/entities/item.entity';
 import { CreateChecklistDto } from './create-checklist.dto';
 
 export class UpdateChecklistDto extends PartialType(CreateChecklistDto) {
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: false })
   description: string;
 
   @ApiProperty({ required: false })
