@@ -93,6 +93,7 @@ export class CardsService {
     const indexOfCard = list.cards.findIndex(() => card);
     list.cards[indexOfCard].name = updateCardDto.name;
     list.cards[indexOfCard].description = updateCardDto.description;
+    list.cards[indexOfCard].checklists = updateCardDto.checklists;
     list.cards[indexOfCard].comments = updateCardDto.comments;
     list.cards[indexOfCard].date = updateCardDto.date;
     if (updateCardDto.members) {
