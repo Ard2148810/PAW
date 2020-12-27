@@ -1,9 +1,8 @@
 import { Entity } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { Item } from '../../items/entities/item.entity';
 
 @Entity()
-export class ChecklistResponseDto {
+export class ItemResponseDto {
   @ApiProperty({ required: true })
   id: string;
 
@@ -11,5 +10,5 @@ export class ChecklistResponseDto {
   description: string;
 
   @ApiProperty({ required: true })
-  items: Item[];
+  status: boolean;
 }
