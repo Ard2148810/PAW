@@ -4,11 +4,13 @@ import { UpdateItemDto } from './dto/update-item.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Item } from './entities/item.entity';
 import { ChecklistsService } from '../checklists/checklists.service';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ItemsService {
   constructor(
     @InjectRepository(Item)
+    private readonly itemRepository: Repository<Item>,
     private readonly checklistsService: ChecklistsService,
   ) {}
 
@@ -81,9 +83,10 @@ export class ItemsService {
     if (!checklist) {
       throw new NotFoundException('Checklist not found');
     }
-    return checklist.items.find((item) => {
+    const item = checklist.items.find((item) => {
       if (item.id == itemId) return true;
     });
+    return item;
   }
 
   async update(
