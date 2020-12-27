@@ -75,9 +75,10 @@ export class ChecklistsService {
     if (!card) {
       throw new NotFoundException('List/Board/Card not found.');
     }
-    return card.checklists.find((checklist) => {
+    const checklist = card.checklists.find((checklist) => {
       if (checklist.id == checklistId) return true;
     });
+    return checklist;
   }
 
   async update(
@@ -95,15 +96,20 @@ export class ChecklistsService {
       cardId,
     );
     if (!card) throw new NotFoundException('List/Board/Card not found.');
-    const checklist = card.checklists.find((card) => {
-      if (card.id === cardId) return true;
+    const checklist = card.checklists.find((checklist) => {
+      if (checklist.id === checklistId) return true;
     });
     if (!checklist) throw new NotFoundException('Checklist not found');
     const indexOfChecklist = card.checklists.findIndex(() => checklist);
-    card.checklists[indexOfChecklist].description =
-      updateChecklistDto.description;
+    if (updateChecklistDto.description) {
+      card.checklists[indexOfChecklist].description =
+        updateChecklistDto.description;
+    }
+    if (updateChecklistDto.items) {
+      card.checklists[indexOfChecklist].items = updateChecklistDto.items;
+    }
     await this.cardsService.update(usernameId, boardId, listId, cardId, card);
-    return card;
+    return card.checklists[indexOfChecklist];
   }
 
   async remove(

@@ -9,6 +9,6 @@ import { Checklist } from './entities/checklist.entity';
   imports: [TypeOrmModule.forFeature([Checklist]), CardsModule],
   controllers: [ChecklistsController],
   providers: [ChecklistsService],
-  exports: [ChecklistsModule],
+  exports: [ChecklistsService],
 })
 export class ChecklistsModule {}
