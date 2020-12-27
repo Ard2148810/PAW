@@ -82,6 +82,9 @@ export class ListsService {
     const indexOfList = board.lists.findIndex(() => list);
     board.lists[indexOfList].position = updateListDto.position;
     board.lists[indexOfList].name = updateListDto.name;
+    if (updateListDto.cards) {
+      board.lists[indexOfList].cards = updateListDto.cards;
+    }
     await this.boardsService.update(username, boardId, board);
     return board.lists[indexOfList];
   }
