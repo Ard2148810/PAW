@@ -1,3 +1,7 @@
-<div class="card spacein-small clickable">
-  <span class="text">{{text}}</span>
+<div class="card spacein-small clickable" [class.wildcard]="wildcard">
+  <span *ngIf="!wildcard else wildcardCard" class="text">{{ text || '[Unnamed card]' }}</span>
 </div>
+
+<ng-template #wildcardCard>
+  <app-inline-input value="Add card" (valueChanged)="handleCardAdded($event)"></app-inline-input>
+</ng-template>

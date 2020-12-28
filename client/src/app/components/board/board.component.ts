@@ -4,7 +4,8 @@ import { BoardService } from '../../services/board.service';
 import { Board } from '../../entities/board';
 import { first } from 'rxjs/operators';
 import { Card } from '../../entities/card';
-import { CardClickedEvent } from '../list/list.component';
+import {CardAddedEvent, CardClickedEvent} from '../list/list.component';
+import {CardService} from '../../services/card.service';
 
 @Component({
   selector: 'app-board',
@@ -31,6 +32,7 @@ export class BoardComponent implements OnInit {
   activeCard: Card;
 
   constructor(private boardService: BoardService,
+              private cardService: CardService,
               private route: ActivatedRoute,
               private router: Router) {
     route.params.subscribe(params => this.id = params.id);
@@ -53,12 +55,7 @@ export class BoardComponent implements OnInit {
         this.setPublic();
       }
 
-      // TODO: Delete when lists and cards when will be received from API
-      this.data.lists = [
-        { id: '1', name: 'List 1', position: 1, cards: [{ id: '1-1', name: 'Card 1', description: 'test description', members: [] }] },
-        { id: '2', name: 'List 2', position: 2, cards: [{ id: '2-1', name: 'Card 2', description: 'test description 2', members: [] }] }
-      ];
-
+      console.log('Received board:');
       console.log(this.data);
     });
   }
@@ -199,5 +196,14 @@ export class BoardComponent implements OnInit {
 
   handleCardClicked(cardClickedEvent: CardClickedEvent): void {
     this.setActiveCard(cardClickedEvent.listId, cardClickedEvent.cardId);
+  }
+
+  handleCardAdded(cardData: CardAddedEvent): void {
+    console.log('Card added with data...:');
+    this.cardService.addCard(this.data.id, cardData.listId, cardData.cardName).subscribe(data => {
+      this.boardService.getBoard(this.id).subscribe(newData => {
+        this.data = newData;
+      });
+    });
   }
 }

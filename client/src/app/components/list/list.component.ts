@@ -13,6 +13,7 @@ export class ListComponent implements OnInit {
   @Input() wildcard = false;
   @Input() cards: Card[];
   @Output() cardClicked = new EventEmitter();
+  @Output() cardAdded = new EventEmitter();
 
   constructor() { }
 
@@ -37,9 +38,18 @@ export class ListComponent implements OnInit {
   handleCardClicked(cardId: string): void {
     this.cardClicked.emit({ listId: this.id, cardId });
   }
+
+  handleCardAdded(cardName: string): void {
+    this.cardAdded.emit({ listId: this.id, cardName });
+  }
 }
 
 export interface CardClickedEvent {
   listId: string;
   cardId: string;
+}
+
+export interface CardAddedEvent {
+  listId: string;
+  cardName: string;
 }

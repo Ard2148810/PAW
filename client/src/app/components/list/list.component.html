@@ -4,6 +4,7 @@
   </div>
   <div *ngIf="!wildcard" class="card-container">
     <app-card *ngFor="let card of cards" [text]="card.name" (click)="handleCardClicked(card.id)"></app-card>
+    <app-card wildcard=true (cardAdded)="handleCardAdded($event)"></app-card>
   </div>
 </div>
 
