@@ -13,5 +13,8 @@
 </div>
 
 <ng-template #listName>
-  {{ title || '[Unnamed list]' }}
+  <app-inline-input
+    [value]="title || '[Unnamed list]'"
+    (valueChanged)="handleListRenamed($event)"
+  ></app-inline-input>
 </ng-template>

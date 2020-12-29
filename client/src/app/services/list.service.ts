@@ -20,4 +20,10 @@ export class ListService {
   sortListsByOrder(lists: List[]): List[] {
     return lists.sort(((a, b) => a.position - b.position));
   }
+
+  updateList(boardId: string, listId: string, listName: string): Observable<any> {
+    const body = { name: listName };
+    return this.http
+      .put(`${environment.backendURL}/api/boards/${boardId}/lists/${listId}`, body);
+  }
 }

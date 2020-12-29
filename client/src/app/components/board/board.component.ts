@@ -216,4 +216,9 @@ export class BoardComponent implements OnInit {
       this.ngOnInit();
     });
   }
+
+  handleContentUpdated(): void {
+    console.log('Board: content updated');
+    this.ngOnInit();
+  }
 }
