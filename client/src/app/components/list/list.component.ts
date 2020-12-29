@@ -14,6 +14,7 @@ export class ListComponent implements OnInit {
   @Input() cards: Card[];
   @Output() cardClicked = new EventEmitter();
   @Output() cardAdded = new EventEmitter();
+  @Output() listAdded = new EventEmitter();
 
   constructor() { }
 
@@ -42,6 +43,10 @@ export class ListComponent implements OnInit {
   handleCardAdded(cardName: string): void {
     this.cardAdded.emit({ listId: this.id, cardName });
   }
+
+  handleListAdded(listName: string): void {
+    this.listAdded.emit({ listName });
+  }
 }
 
 export interface CardClickedEvent {
@@ -52,4 +57,8 @@ export interface CardClickedEvent {
 export interface CardAddedEvent {
   listId: string;
   cardName: string;
+}
+
+export interface ListAddedEvent {
+  listName: string;
 }

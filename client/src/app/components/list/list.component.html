@@ -1,6 +1,10 @@
 <div class="list">
   <div class="title" [class.title-wildcard]="wildcard">
-    <app-inline-input *ngIf="wildcard else listName" value="Add another list"></app-inline-input>
+    <app-inline-input
+      *ngIf="wildcard else listName"
+      value="Add another list"
+      (valueChanged)="handleListAdded($event)"
+    ></app-inline-input>
   </div>
   <div *ngIf="!wildcard" class="card-container">
     <app-card *ngFor="let card of cards" [text]="card.name" (click)="handleCardClicked(card.id)"></app-card>

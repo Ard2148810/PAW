@@ -4,8 +4,9 @@ import { BoardService } from '../../services/board.service';
 import { Board } from '../../entities/board';
 import { first } from 'rxjs/operators';
 import { Card } from '../../entities/card';
-import {CardAddedEvent, CardClickedEvent} from '../list/list.component';
+import {CardAddedEvent, CardClickedEvent, ListAddedEvent} from '../list/list.component';
 import {CardService} from '../../services/card.service';
+import {ListService} from '../../services/list.service';
 
 @Component({
   selector: 'app-board',
@@ -33,6 +34,7 @@ export class BoardComponent implements OnInit {
 
   constructor(private boardService: BoardService,
               private cardService: CardService,
+              private listService: ListService,
               private route: ActivatedRoute,
               private router: Router) {
     route.params.subscribe(params => this.id = params.id);
@@ -46,6 +48,9 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.boardService.getBoard(this.id).subscribe(data => {
       this.data = data;
+
+      this.data.lists = this.listService.sortListsByOrder(this.data.lists);
+
       this.boardReady = true;
 
       if (!this.data.isPublic){
@@ -201,9 +206,14 @@ export class BoardComponent implements OnInit {
   handleCardAdded(cardData: CardAddedEvent): void {
     console.log('Card added with data...:');
     this.cardService.addCard(this.data.id, cardData.listId, cardData.cardName).subscribe(data => {
-      this.boardService.getBoard(this.id).subscribe(newData => {
-        this.data = newData;
-      });
+      this.ngOnInit();
+    });
+  }
+
+  handleListAdded(listData: ListAddedEvent): void {
+    console.log('List added with data...:');
+    this.listService.addList(this.data.id, listData.listName).subscribe(data => {
+      this.ngOnInit();
     });
   }
 }
