@@ -104,6 +104,7 @@ export class ListsService {
       throw new NotFoundException('List not found');
     }
     board.lists = board.lists.filter((list) => list.id !== listId);
+    await this.boardsService.update(username, boardId, board);
     return;
   }
 }
