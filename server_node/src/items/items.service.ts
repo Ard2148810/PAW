@@ -83,10 +83,9 @@ export class ItemsService {
     if (!checklist) {
       throw new NotFoundException('Checklist not found');
     }
-    const item = checklist.items.find((item) => {
+    return checklist.items.find((item) => {
       if (item.id == itemId) return true;
     });
-    return item;
   }
 
   async update(
@@ -110,7 +109,9 @@ export class ItemsService {
       if (item.id === itemId) return true;
     });
     if (!item) throw new NotFoundException('Item not found');
-    const indexOfItem = checklist.items.findIndex(() => item);
+    const indexOfItem = checklist.items.findIndex(
+      (value) => item.id == value.id,
+    );
     if (updateItemDto.description) {
       checklist.items[indexOfItem].description = updateItemDto.description;
     }

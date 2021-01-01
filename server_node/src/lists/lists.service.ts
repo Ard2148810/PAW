@@ -79,12 +79,13 @@ export class ListsService {
     if (!list) {
       throw new NotFoundException('List not found');
     }
-    const indexOfList = board.lists.findIndex(() => list);
+    const indexOfList = board.lists.findIndex((value) => value.id == list.id);
     board.lists[indexOfList].position = updateListDto.position;
     board.lists[indexOfList].name = updateListDto.name;
     if (updateListDto.cards) {
       board.lists[indexOfList].cards = updateListDto.cards;
     }
+
     await this.boardsService.update(username, boardId, board);
     return board.lists[indexOfList];
   }
