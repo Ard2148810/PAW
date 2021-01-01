@@ -10,6 +10,6 @@ export class ChecklistResponseDto {
   @ApiProperty({ required: true })
   description: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: true })
   items: Item[];
 }
