@@ -31,7 +31,8 @@ import { LabelResponseDto } from './dto/label-response.dto';
 export class LabelsController {
   constructor(private readonly labelsService: LabelsService) {}
   @ApiOperation({
-    description: 'Creates a new label.',
+    description:
+      'Creates a new label. Accepts following formats: rgb(r, g, b), rgba(r, g, b, a), #??????.',
   })
   @ApiBody({ type: CreateLabelDto })
   @ApiCreatedResponse({ type: LabelResponseDto })

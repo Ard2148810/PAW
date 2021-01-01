@@ -31,6 +31,7 @@
     "@nestjs/typeorm": "^7.1.5",
     "@types/bcrypt": "^3.0.0",
     "bcrypt": "^5.0.0",
+    "hex-to-rgba": "^2.0.1",
     "mongoose": "^5.11.4",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",

@@ -27,15 +27,12 @@ export class ChecklistsService {
       cardId,
     );
     if (!card) {
-      throw new NotFoundException('List not found');
-    }
-    if (!card.checklists) {
-      card.checklists = [];
+      throw new NotFoundException('Card not found');
     }
     const checklist = new Checklist(createChecklistDto.description);
     card.checklists.push(checklist);
     await this.cardsService.update(usernameId, boardId, listId, cardId, card);
-    return card;
+    return checklist;
   }
 
   async findAll(
@@ -126,10 +123,16 @@ export class ChecklistsService {
       listId,
       cardId,
     );
+    if (!card) throw new NotFoundException('Card not found');
     card.checklists = card.checklists.filter(
       (checklist) => checklist.id !== checklistId,
     );
-    await this.cardsService.update(usernameId, boardId, listId, cardId, card);
-    return;
+    return await this.cardsService.update(
+      usernameId,
+      boardId,
+      listId,
+      cardId,
+      card,
+    );
   }
 }
