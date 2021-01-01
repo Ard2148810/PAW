@@ -24,6 +24,7 @@ import { CardsService } from './cards.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { CardResponseDto } from './dto/card-response.dto';
+import { AssignLabelDto } from './dto/assign-label.dto';
 
 @ApiTags('cards')
 @ApiBearerAuth()
@@ -118,5 +119,63 @@ export class CardsController {
   ) {
     await this.cardsService.remove(req.user.username, board, list, card);
     return 'Card successfully deleted';
+  }
+
+  @ApiOperation({
+    description: 'Adds a label to the card.',
+  })
+  @ApiOkResponse({ type: [String] })
+  @ApiNotFoundResponse({ description: 'Board/ List/ Card/ Label not found' })
+  @Put(':card/label')
+  async addLabel(
+    @Request() req,
+    @Param('board') board: string,
+    @Param('list') list: string,
+    @Param('card') card: string,
+    @Body() assignLabelDto: AssignLabelDto,
+  ) {
+    await this.cardsService.addLabel(
+      req.user.username,
+      board,
+      list,
+      card,
+      assignLabelDto.labelId,
+    );
+    const newCard = await this.cardsService.findOne(
+      req.user.username,
+      board,
+      list,
+      card,
+    );
+    return newCard.labels;
+  }
+
+  @ApiOperation({
+    description: 'Removes a label from the card.',
+  })
+  @ApiOkResponse({ type: [String] })
+  @ApiNotFoundResponse({ description: 'Board/ List/ Card/ Label not found' })
+  @Delete(':card/label')
+  async removeLabel(
+    @Request() req,
+    @Param('board') board: string,
+    @Param('list') list: string,
+    @Param('card') card: string,
+    @Body() assignLabelDto: AssignLabelDto,
+  ) {
+    await this.cardsService.removeLabel(
+      req.user.username,
+      board,
+      list,
+      card,
+      assignLabelDto.labelId,
+    );
+    const newCard = await this.cardsService.findOne(
+      req.user.username,
+      board,
+      list,
+      card,
+    );
+    return newCard.labels;
   }
 }

@@ -1,6 +1,6 @@
 import { Entity } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { Color } from '../entities/Color';
+import { ColorResponseDto } from './color-response.dto';
 
 @Entity()
 export class LabelResponseDto {
@@ -11,5 +11,5 @@ export class LabelResponseDto {
   name: string;
 
   @ApiProperty({ required: true })
-  color: Color;
+  color: ColorResponseDto;
 }

@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { Color } from './Color';
+import { Color } from './color';
 import { v4 as uuid4 } from 'uuid';
 
 @Entity()
@@ -13,9 +13,9 @@ export class Label {
   @Column()
   color: Color;
 
-  constructor(name: string, color: Color) {
+  constructor(name: string, color: string) {
     this.id = uuid4().replace(/-/g, '');
     this.name = name;
-    this.color = color;
+    this.color = new Color(color);
   }
 }

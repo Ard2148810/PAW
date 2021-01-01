@@ -1,10 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Card } from './entities/card.entity';
 import { ListsService } from '../lists/lists.service';
+import { BoardsService } from '../boards/boards.service';
 
 @Injectable()
 export class CardsService {
@@ -12,6 +17,7 @@ export class CardsService {
     @InjectRepository(Card)
     private readonly cardRepository: Repository<Card>,
     private readonly listsService: ListsService,
+    private readonly boardsService: BoardsService,
   ) {}
 
   async create(
@@ -124,5 +130,94 @@ export class CardsService {
     list.cards = list.cards.filter((card) => card.id !== cardId);
     await this.listsService.update(username, boardId, listId, list);
     return;
+  }
+
+  async addLabel(
+    username: string,
+    boardId: string,
+    listId: string,
+    cardId: string,
+    labelId: string,
+  ) {
+    const board = await this.boardsService.findOne(username, boardId);
+    if (!board) {
+      throw new NotFoundException('Board not found');
+    }
+    const label = board.labels.find((label) => {
+      if (label.id === labelId) {
+        return true;
+      }
+    });
+    if (!label) {
+      throw new NotFoundException('Label not found');
+    }
+    const list = await this.listsService.findOne(username, boardId, listId);
+    if (!list) {
+      throw new NotFoundException('List not found');
+    }
+    const card = list.cards.find((card) => {
+      if (card.id === cardId) {
+        return true;
+      }
+    });
+    if (!card) {
+      throw new NotFoundException('Card not found');
+    }
+    const cardLabel = card.labels.find((label) => {
+      if (label === labelId) {
+        return true;
+      }
+    });
+    if (!cardLabel) {
+      const indexOfCard = list.cards.findIndex((value) => card.id == value.id);
+      list.cards[indexOfCard].labels.push(labelId);
+      return await this.listsService.update(username, boardId, listId, list);
+    }
+  }
+
+  async removeLabel(
+    username: string,
+    boardId: string,
+    listId: string,
+    cardId: string,
+    labelId: string,
+  ) {
+    const board = await this.boardsService.findOne(username, boardId);
+    if (!board) {
+      throw new NotFoundException('Board not found');
+    }
+    const label = board.labels.find((label) => {
+      if (label.id === labelId) {
+        return true;
+      }
+    });
+    if (!label) {
+      throw new NotFoundException('Label not found');
+    }
+    const list = await this.listsService.findOne(username, boardId, listId);
+    if (!list) {
+      throw new NotFoundException('List not found');
+    }
+    const card = list.cards.find((card) => {
+      if (card.id === cardId) {
+        return true;
+      }
+    });
+    if (!card) {
+      throw new NotFoundException('Card not found');
+    }
+    const cardLabel = card.labels.find((label) => {
+      if (label === labelId) {
+        return true;
+      }
+    });
+    if (cardLabel) {
+      const indexOfCard = list.cards.findIndex((value) => card.id == value.id);
+      list.cards[indexOfCard].labels.splice(
+        list.cards[indexOfCard].labels.indexOf(labelId),
+        1,
+      );
+      return await this.listsService.update(username, boardId, listId, list);
+    }
   }
 }

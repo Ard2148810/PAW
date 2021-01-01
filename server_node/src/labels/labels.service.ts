@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BoardsService } from '../boards/boards.service';
 import { Label } from './entities/label.entity';
+import { Color } from './entities/color';
 
 @Injectable()
 export class LabelsService {
@@ -22,9 +23,6 @@ export class LabelsService {
     const board = await this.boardsService.findOne(username, boardId);
     if (!board) {
       throw new NotFoundException('Board not found');
-    }
-    if (!board.labels) {
-      board.labels = [];
     }
     const label = new Label(createLabelDto.name, createLabelDto.color);
     board.labels.push(label);
@@ -82,8 +80,12 @@ export class LabelsService {
     const indexOfLabel = board.labels.findIndex(
       (value) => label.id == value.id,
     );
-    board.labels[indexOfLabel].color = updateLabelDto.color;
-    board.labels[indexOfLabel].name = updateLabelDto.name;
+    if (updateLabelDto.color) {
+      board.labels[indexOfLabel].color = new Color(updateLabelDto.color);
+    }
+    if (updateLabelDto.name) {
+      board.labels[indexOfLabel].name = updateLabelDto.name;
+    }
     await this.boardsService.update(username, boardId, board);
     return board.labels[indexOfLabel];
   }
