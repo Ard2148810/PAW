@@ -75,10 +75,9 @@ export class ChecklistsService {
     if (!card) {
       throw new NotFoundException('List/Board/Card not found.');
     }
-    const checklist = card.checklists.find((checklist) => {
+    return card.checklists.find((checklist) => {
       if (checklist.id == checklistId) return true;
     });
-    return checklist;
   }
 
   async update(
@@ -100,7 +99,9 @@ export class ChecklistsService {
       if (checklist.id === checklistId) return true;
     });
     if (!checklist) throw new NotFoundException('Checklist not found');
-    const indexOfChecklist = card.checklists.findIndex(() => checklist);
+    const indexOfChecklist = card.checklists.findIndex(
+      (value) => checklist.id == value.id,
+    );
     if (updateChecklistDto.description) {
       card.checklists[indexOfChecklist].description =
         updateChecklistDto.description;

@@ -79,7 +79,9 @@ export class LabelsService {
     if (!label) {
       throw new NotFoundException('Label not found');
     }
-    const indexOfLabel = board.labels.findIndex(() => label);
+    const indexOfLabel = board.labels.findIndex(
+      (value) => label.id == value.id,
+    );
     board.labels[indexOfLabel].color = updateLabelDto.color;
     board.labels[indexOfLabel].name = updateLabelDto.name;
     await this.boardsService.update(username, boardId, board);

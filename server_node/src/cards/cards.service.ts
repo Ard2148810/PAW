@@ -84,7 +84,7 @@ export class CardsService {
     if (!card) {
       throw new NotFoundException('Card not found');
     }
-    const indexOfCard = list.cards.findIndex(() => card);
+    const indexOfCard = list.cards.findIndex((value) => card.id == value.id);
     list.cards[indexOfCard].name = updateCardDto.name;
     list.cards[indexOfCard].description = updateCardDto.description;
     list.cards[indexOfCard].checklists = updateCardDto.checklists;
@@ -115,5 +115,4 @@ export class CardsService {
     await this.listsService.update(username, boardId, listId, list);
     return;
   }
-
 }

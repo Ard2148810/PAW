@@ -103,7 +103,9 @@ export class CommentsService {
       if (card.id === cardId) return true;
     });
     if (!comment) throw new NotFoundException('Comment not found');
-    const indexOfComment = card.comments.findIndex(() => comment);
+    const indexOfComment = card.comments.findIndex(
+      (value) => comment.id == value.id,
+    );
     card.comments[indexOfComment].description = updateCommentDto.description;
     card.comments[indexOfComment].date = updateCommentDto.date;
     await this.cardsService.update(usernameId, boardId, listId, cardId, card);
