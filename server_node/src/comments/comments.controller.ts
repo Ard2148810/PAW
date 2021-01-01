@@ -96,7 +96,7 @@ export class CommentsController {
   @ApiOkResponse({ description: 'Comment successfully updated' })
   @ApiNotFoundResponse({ description: 'Comment not found' })
   @Put(':comment')
-  update(
+  async update(
     @Request() req,
     @Param('board') board: string,
     @Param('list') list: string,
@@ -104,7 +104,7 @@ export class CommentsController {
     @Param('comment') comment: string,
     @Body() updateCommentDto: UpdateCommentDto,
   ) {
-    return this.commentsService.update(
+    await this.commentsService.update(
       req.user.username,
       board,
       list,
@@ -112,6 +112,7 @@ export class CommentsController {
       comment,
       updateCommentDto,
     );
+    return 'Comment successfully updated.';
   }
 
   @ApiOperation({
@@ -123,19 +124,20 @@ export class CommentsController {
     description: 'Only owner can delete a comment',
   })
   @Delete(':comment')
-  remove(
+  async remove(
     @Request() req,
     @Param('board') board: string,
     @Param('list') list: string,
     @Param('card') card: string,
     @Param('comment') comment: string,
   ) {
-    return this.commentsService.remove(
+    await this.commentsService.remove(
       req.user.username,
       board,
       list,
       card,
       comment,
     );
+    return 'Comment successfully deleted.';
   }
 }

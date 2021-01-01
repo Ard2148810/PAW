@@ -122,12 +122,7 @@ export class ChecklistsService {
     card.checklists = card.checklists.filter(
       (checklist) => checklist.id !== checklistId,
     );
-    return await this.cardsService.update(
-      usernameId,
-      boardId,
-      listId,
-      cardId,
-      card,
-    );
+    await this.cardsService.update(usernameId, boardId, listId, cardId, card);
+    return;
   }
 }

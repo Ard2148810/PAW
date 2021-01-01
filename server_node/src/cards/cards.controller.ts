@@ -80,31 +80,43 @@ export class CardsController {
     return this.cardsService.findOne(req.user.username, board, list, card);
   }
 
+  @ApiOperation({
+    description: 'Updates list.',
+  })
   @ApiBody({ type: UpdateCardDto })
+  @ApiOkResponse({ description: 'Card successfully updated.' })
+  @ApiNotFoundResponse({ description: 'Card not found.' })
   @Put(':card')
-  update(
+  async update(
     @Request() req,
     @Param('board') board: string,
     @Param('list') list: string,
     @Param('card') card: string,
     @Body() updateCardDto: UpdateCardDto,
   ) {
-    return this.cardsService.update(
+    await this.cardsService.update(
       req.user.username,
       board,
       list,
       card,
       updateCardDto,
     );
+    return 'Card successfully updated.';
   }
 
+  @ApiOperation({
+    description: 'Deletes card by id.',
+  })
+  @ApiOkResponse({ description: 'Card successfully deleted' })
+  @ApiNotFoundResponse({ description: 'Card not found' })
   @Delete(':card')
-  remove(
+  async remove(
     @Request() req,
     @Param('board') board: string,
     @Param('list') list: string,
     @Param('card') card: string,
   ) {
-    return this.cardsService.remove(req.user.username, board, list, card);
+    await this.cardsService.remove(req.user.username, board, list, card);
+    return 'Card successfully deleted';
   }
 }

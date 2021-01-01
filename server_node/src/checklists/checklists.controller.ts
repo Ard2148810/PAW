@@ -96,7 +96,7 @@ export class ChecklistsController {
   @ApiOkResponse({ description: 'Checklist successfully updated' })
   @ApiNotFoundResponse({ description: 'Checklist not found' })
   @Put(':checklist')
-  update(
+  async update(
     @Request() req,
     @Param('board') board: string,
     @Param('list') list: string,
@@ -104,7 +104,7 @@ export class ChecklistsController {
     @Param('checklist') checklist: string,
     @Body() updateChecklistDto: UpdateChecklistDto,
   ) {
-    return this.checklistsService.update(
+    await this.checklistsService.update(
       req.user.username,
       board,
       list,
@@ -112,6 +112,7 @@ export class ChecklistsController {
       checklist,
       updateChecklistDto,
     );
+    return 'Checklist successfully updated.';
   }
 
   @ApiOperation({
@@ -123,19 +124,20 @@ export class ChecklistsController {
     description: 'Only owner can delete a checklist',
   })
   @Delete(':checklist')
-  remove(
+  async remove(
     @Request() req,
     @Param('board') board: string,
     @Param('list') list: string,
     @Param('card') card: string,
     @Param('checklist') checklist: string,
   ) {
-    return this.checklistsService.remove(
+    await this.checklistsService.remove(
       req.user.username,
       board,
       list,
       card,
       checklist,
     );
+    return 'Checklist successfully deleted.';
   }
 }

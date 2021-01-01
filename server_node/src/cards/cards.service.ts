@@ -1,15 +1,10 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Card } from './entities/card.entity';
 import { ListsService } from '../lists/lists.service';
-import { BoardsService } from '../boards/boards.service';
 
 @Injectable()
 export class CardsService {
@@ -17,7 +12,6 @@ export class CardsService {
     @InjectRepository(Card)
     private readonly cardRepository: Repository<Card>,
     private readonly listsService: ListsService,
-    private readonly boardsService: BoardsService,
   ) {}
 
   async create(
@@ -96,29 +90,13 @@ export class CardsService {
     list.cards[indexOfCard].checklists = updateCardDto.checklists;
     list.cards[indexOfCard].comments = updateCardDto.comments;
     list.cards[indexOfCard].date = updateCardDto.date;
-    if (updateCardDto.members) {
-      const board = await this.boardsService.findOne(username, boardId);
+    if (Array.isArray(updateCardDto.members) && updateCardDto.members.length) {
       updateCardDto.members.forEach((value) => {
-        if (list.cards[indexOfCard].members.includes(value))
-          throw new BadRequestException('User already belongs to the card');
-        board.teamMembers.forEach((value1) => {
-          if (!list.cards[indexOfCard].members.includes(value1)) {
-            throw new BadRequestException('User does not belongs to the card');
-          }
-        });
         list.cards[indexOfCard].members.push(value);
       });
     }
-    if (updateCardDto.labels) {
-      const board = await this.boardsService.findOne(username, boardId);
+    if (Array.isArray(updateCardDto.labels) && updateCardDto.labels.length) {
       updateCardDto.labels.forEach((value) => {
-        if (list.cards[indexOfCard].labels.includes(value))
-          throw new BadRequestException('Label already belongs to the card');
-        board.teamMembers.forEach((value1) => {
-          if (!list.cards[indexOfCard].labels.includes(value1)) {
-            throw new BadRequestException('Label does not belongs to the card');
-          }
-        });
         list.cards[indexOfCard].labels.push(value);
       });
     }
@@ -134,6 +112,7 @@ export class CardsService {
   ) {
     const list = await this.listsService.findOne(username, boardId, listId);
     list.cards = list.cards.filter((card) => card.id !== cardId);
-    return await this.listsService.update(username, boardId, listId, list);
+    await this.listsService.update(username, boardId, listId, list);
+    return;
   }
 }

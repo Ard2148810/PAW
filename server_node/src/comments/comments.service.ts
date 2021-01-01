@@ -124,12 +124,7 @@ export class CommentsService {
       cardId,
     );
     card.comments = card.comments.filter((comment) => comment.id !== commentId);
-    return await this.cardsService.update(
-      usernameId,
-      boardId,
-      listId,
-      cardId,
-      card,
-    );
+    await this.cardsService.update(usernameId, boardId, listId, cardId, card);
+    return;
   }
 }
