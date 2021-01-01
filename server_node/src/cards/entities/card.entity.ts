@@ -35,6 +35,8 @@ export class Card {
     this.description = description;
     this.members = [];
     this.comments = [];
+    this.checklists = [];
+    this.labels = [];
     this.date = date;
   }
 }

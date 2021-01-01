@@ -85,11 +85,21 @@ export class CardsService {
       throw new NotFoundException('Card not found');
     }
     const indexOfCard = list.cards.findIndex((value) => card.id == value.id);
-    list.cards[indexOfCard].name = updateCardDto.name;
-    list.cards[indexOfCard].description = updateCardDto.description;
-    list.cards[indexOfCard].checklists = updateCardDto.checklists;
-    list.cards[indexOfCard].comments = updateCardDto.comments;
-    list.cards[indexOfCard].date = updateCardDto.date;
+    if (updateCardDto.name) {
+      list.cards[indexOfCard].name = updateCardDto.name;
+    }
+    if (updateCardDto.description) {
+      list.cards[indexOfCard].description = updateCardDto.description;
+    }
+    if (updateCardDto.checklists) {
+      list.cards[indexOfCard].checklists = updateCardDto.checklists;
+    }
+    if (updateCardDto.comments) {
+      list.cards[indexOfCard].comments = updateCardDto.comments;
+    }
+    if (updateCardDto.date) {
+      list.cards[indexOfCard].date = updateCardDto.date;
+    }
     if (Array.isArray(updateCardDto.members) && updateCardDto.members.length) {
       updateCardDto.members.forEach((value) => {
         list.cards[indexOfCard].members.push(value);

@@ -5,22 +5,22 @@ import { LabelResponseDto } from '../../labels/dto/label-response.dto';
 
 @Entity()
 export class BoardResponseDto {
-  @ApiProperty()
+  @ApiProperty({ required: true })
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: true })
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: true })
   description: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: true })
   owner: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: true })
   teamMembers: string[];
 
-  @ApiProperty()
+  @ApiProperty({ required: true })
   isPublic: string;
 
   @ApiProperty({ required: true })

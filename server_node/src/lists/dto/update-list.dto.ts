@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Card } from '../../cards/entities/card.entity';
 
 export class UpdateListDto {
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: false })
   name: string;
 
   @ApiProperty({ required: false })

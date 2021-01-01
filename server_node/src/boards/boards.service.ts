@@ -31,6 +31,7 @@ export class BoardsService {
       teamMembers: [username],
       isPublic: true,
       lists: [],
+      labels: [],
     });
     return await this.boardRepository.save(board);
   }
