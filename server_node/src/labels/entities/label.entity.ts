@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { Color } from './color';
+import { Color } from './Color';
 import { v4 as uuid4 } from 'uuid';
 
 @Entity()

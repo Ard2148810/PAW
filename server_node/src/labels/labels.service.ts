@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BoardsService } from '../boards/boards.service';
 import { Label } from './entities/label.entity';
-import { Color } from './entities/color';
+import { Color } from './entities/Color';
 
 @Injectable()
 export class LabelsService {
