@@ -4,7 +4,9 @@ import { BoardService } from '../../services/board.service';
 import { Board } from '../../entities/board';
 import { first } from 'rxjs/operators';
 import { Card } from '../../entities/card';
-import { CardClickedEvent } from '../list/list.component';
+import {CardAddedEvent, CardClickedEvent, ListAddedEvent} from '../list/list.component';
+import {CardService} from '../../services/card.service';
+import {ListService} from '../../services/list.service';
 
 @Component({
   selector: 'app-board',
@@ -31,6 +33,8 @@ export class BoardComponent implements OnInit {
   activeCard: Card;
 
   constructor(private boardService: BoardService,
+              private cardService: CardService,
+              private listService: ListService,
               private route: ActivatedRoute,
               private router: Router) {
     route.params.subscribe(params => this.id = params.id);
@@ -44,6 +48,9 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.boardService.getBoard(this.id).subscribe(data => {
       this.data = data;
+
+      this.data.lists = this.listService.sortListsByOrder(this.data.lists);
+
       this.boardReady = true;
 
       if (!this.data.isPublic){
@@ -53,12 +60,7 @@ export class BoardComponent implements OnInit {
         this.setPublic();
       }
 
-      // TODO: Delete when lists and cards when will be received from API
-      this.data.lists = [
-        { id: '1', name: 'List 1', position: 1, cards: [{ id: '1-1', name: 'Card 1', description: 'test description', members: [] }] },
-        { id: '2', name: 'List 2', position: 2, cards: [{ id: '2-1', name: 'Card 2', description: 'test description 2', members: [] }] }
-      ];
-
+      console.log('Received board:');
       console.log(this.data);
     });
   }
@@ -199,5 +201,24 @@ export class BoardComponent implements OnInit {
 
   handleCardClicked(cardClickedEvent: CardClickedEvent): void {
     this.setActiveCard(cardClickedEvent.listId, cardClickedEvent.cardId);
+  }
+
+  handleCardAdded(cardData: CardAddedEvent): void {
+    console.log('Card added with data...:');
+    this.cardService.addCard(this.data.id, cardData.listId, cardData.cardName).subscribe(data => {
+      this.ngOnInit();
+    });
+  }
+
+  handleListAdded(listData: ListAddedEvent): void {
+    console.log('List added with data...:');
+    this.listService.addList(this.data.id, listData.listName).subscribe(data => {
+      this.ngOnInit();
+    });
+  }
+
+  handleContentUpdated(): void {
+    console.log('Board: content updated');
+    this.ngOnInit();
   }
 }
