@@ -128,13 +128,17 @@
   <div class="modal-background">
     <div class="modal-window">
       <div class="modal-header">
-        {{ activeCard.name }}
+        <app-inline-input
+          [value]="activeCard.name"
+          (valueChanged)="handleCardRenamed($event, this.activeCard, this.activeList)"
+        ></app-inline-input>
+
       </div>
       <div class="modal-body">
         {{ activeCard.id }}
       </div>
       <div class="modal-footer">
-        <button class="btn" (click)="closeCardModal()">Cancel</button>
+        <button class="btn" (click)="closeCardModal()">Close</button>
         <button type="submit" class="btn primary">Confirm</button>
       </div>
     </div>

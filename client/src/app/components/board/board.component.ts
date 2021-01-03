@@ -4,9 +4,10 @@ import { BoardService } from '../../services/board.service';
 import { Board } from '../../entities/board';
 import { first } from 'rxjs/operators';
 import { Card } from '../../entities/card';
-import {CardAddedEvent, CardClickedEvent, ListAddedEvent} from '../list/list.component';
-import {CardService} from '../../services/card.service';
-import {ListService} from '../../services/list.service';
+import { CardAddedEvent, CardClickedEvent, ListAddedEvent } from '../list/list.component';
+import { CardService } from '../../services/card.service';
+import { ListService } from '../../services/list.service';
+import { List } from '../../entities/list';
 
 @Component({
   selector: 'app-board',
@@ -31,6 +32,7 @@ export class BoardComponent implements OnInit {
   publicLink: string;
 
   activeCard: Card;
+  activeList: List;
 
   constructor(private boardService: BoardService,
               private cardService: CardService,
@@ -190,13 +192,15 @@ export class BoardComponent implements OnInit {
   }
 
   setActiveCard(listId: string, cardId: string): void {
-    this.activeCard = this.data.lists
-      .find(list => list.id === listId).cards
+    this.activeList = this.data.lists
+      .find(list => list.id === listId);
+    this.activeCard = this.activeList.cards
       .find(card => card.id === cardId);
   }
 
   closeCardModal(): void {
     this.activeCard = null;
+    this.activeList = null;
   }
 
   handleCardClicked(cardClickedEvent: CardClickedEvent): void {
@@ -220,5 +224,11 @@ export class BoardComponent implements OnInit {
   handleContentUpdated(): void {
     console.log('Board: content updated');
     this.ngOnInit();
+  }
+
+  handleCardRenamed(name: string, card: Card, list: List): void {
+    this.cardService
+      .renameCard(this.data.id, list.id, name, card)
+      .subscribe(data => this.ngOnInit(), err => console.log);
   }
 }
