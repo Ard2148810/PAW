@@ -53,7 +53,7 @@ export class BoardService {
       description,
       isPublic
     };
-    return this.http.put(`${environment.backendURL}/api/boards/${id}`, body);
+    return this.http.put(`${environment.backendURL}/api/boards/${id}`, body, { responseType: 'text'});
   }
 
   addUserToBoard(id: string, username: string): any {
@@ -76,6 +76,6 @@ export class BoardService {
   }
 
   getPublicLink(id: string): any{
-    return this.http.get(`${environment.backendURL}/api/boards/${id}/link`);
+    return this.http.get(`${environment.backendURL}/api/boards/${id}/link`, { responseType: 'text'});
   }
 }

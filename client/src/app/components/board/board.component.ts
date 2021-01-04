@@ -169,12 +169,13 @@ export class BoardComponent implements OnInit {
   getPublicLink(): any {
     this.boardService.getPublicLink(this.id).subscribe(
       response => {
-        console.log(response);
-        this.publicLink = response;
-      }, error => {
+        this.publicLink = 'https://' + response;
+      },
+      error => {
         console.log(error);
-        // this.publicLink = error;
-      });
+        this.publicLink = error;
+      }
+      );
   }
 
 }
