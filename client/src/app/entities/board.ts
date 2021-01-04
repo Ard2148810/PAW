@@ -1,4 +1,5 @@
 import { List } from './list';
+import {Label} from './label';
 
 export interface Board {
   id: string;
@@ -8,4 +9,5 @@ export interface Board {
   lists: List[];
   teamMembers: string[];
   isPublic: boolean;
+  labels: Label[];
 }

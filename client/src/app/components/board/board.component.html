@@ -135,11 +135,60 @@
 
       </div>
       <div class="modal-body">
+        <div class="card-section">
+          <span>Labels</span>
+          <div>
+            <app-label *ngFor="let labelId of activeCard.labels" [id]="labelId"></app-label>
+            <br>
+            <div class="dropdown">
+              <button class="btn" (click)="toggleManageLabels()">Manage labels</button>
+              <div *ngIf="managingLabels" class="dropdown-content" style="display: block" id="labelDropdown">
+                <div *ngIf="activeLabel else labelMenu">
+                  <button class="btn" (click)="activeLabel = null">Back</button>
+                  <div class="form-control-container">
+                    <label for="labelName">
+                      Name
+                    </label>
+                    <input id="labelName" name="labelName" type="text" [(ngModel)]="labelName">
+                  </div>
+                  <div class="form-control-container">
+                    <label for="labelColor">
+                      Color
+                    </label>
+                    <input id="labelColor" name="labelColor" style="min-height: 18px" type="color" [(ngModel)]="labelColor">
+                  </div>
+                  <button class="btn" (click)="handleLabelEditConfirm(labelName, labelColor)">Confirm</button>
+                </div>
+                <ng-template #labelMenu>
+                  <div *ngFor="let label of data.labels">
+                    <app-label  [id]="label.id"></app-label>
+                    <button class="btn" *ngIf="isLabelActive(label.id, activeCard)">Detach</button>
+                    <button class="btn" *ngIf="!isLabelActive(label.id, activeCard)">Attach</button>
+                    <button class="btn" (click)="handleLabelEditClicked(label.id)">Edit</button>
+                  </div>
+                  <button class="btn" (click)="handleLabelEditClicked(null)">+</button>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <span>Checklist</span>
+          <div>
+            <button class="btn">Checklist</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <span>Date</span>
+          <div>
+            <button class="btn">Date</button>
+          </div>
+        </div>
         {{ activeCard.id }}
       </div>
       <div class="modal-footer">
         <button class="btn" (click)="closeCardModal()">Close</button>
-        <button type="submit" class="btn primary">Confirm</button>
+        <button type="submit" class="btn primary" (click)="closeCardModal()">Confirm</button>
       </div>
     </div>
   </div>

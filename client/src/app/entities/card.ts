@@ -4,4 +4,5 @@ export interface Card {
   description: string;
   members: string[];
   date?: Date;
+  labels: string[]; // IDs
 }

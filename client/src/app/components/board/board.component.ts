@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BoardService } from '../../services/board.service';
-import { Board } from '../../entities/board';
-import { first } from 'rxjs/operators';
-import { Card } from '../../entities/card';
-import { CardAddedEvent, CardClickedEvent, ListAddedEvent } from '../list/list.component';
-import { CardService } from '../../services/card.service';
-import { ListService } from '../../services/list.service';
-import { List } from '../../entities/list';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BoardService} from '../../services/board.service';
+import {Board} from '../../entities/board';
+import {first} from 'rxjs/operators';
+import {Card} from '../../entities/card';
+import {CardAddedEvent, CardClickedEvent, ListAddedEvent} from '../list/list.component';
+import {CardService} from '../../services/card.service';
+import {ListService} from '../../services/list.service';
+import {List} from '../../entities/list';
+import {LabelService} from '../../services/label.service';
+import {Label} from '../../entities/label';
 
 @Component({
   selector: 'app-board',
@@ -33,10 +35,16 @@ export class BoardComponent implements OnInit {
 
   activeCard: Card;
   activeList: List;
+  activeLabel: Label;
+  managingLabels = false;
+
+  labelName = '';
+  labelColor = '';
 
   constructor(private boardService: BoardService,
               private cardService: CardService,
               private listService: ListService,
+              private labelService: LabelService,
               private route: ActivatedRoute,
               private router: Router) {
     route.params.subscribe(params => this.id = params.id);
@@ -50,8 +58,8 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.boardService.getBoard(this.id).subscribe(data => {
       this.data = data;
-
       this.data.lists = this.listService.sortListsByOrder(this.data.lists);
+      this.labelService.newBoardActivated(this.data.id, this.data.labels);
 
       this.boardReady = true;
 
@@ -230,5 +238,37 @@ export class BoardComponent implements OnInit {
     this.cardService
       .renameCard(this.data.id, list.id, name, card)
       .subscribe(data => this.ngOnInit(), err => console.log);
+  }
+
+  isLabelActive(labelId, card: Card): boolean {
+    return !!card.labels.find(label => label === labelId);
+  }
+
+  rgb2hex(rgb): string {
+    rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+    return (rgb && rgb.length === 4) ? '#' +
+      ('0' + parseInt(rgb[1], 10).toString(16)).slice(-2) +
+      ('0' + parseInt(rgb[2], 10).toString(16)).slice(-2) +
+      ('0' + parseInt(rgb[3], 10).toString(16)).slice(-2) : '';
+  }
+
+  handleLabelEditClicked(labelId: string): void {
+    if (labelId) {
+      this.activeLabel = this.labelService.getLabelDataById(labelId);
+    } else {
+      this.activeLabel = { id: '', name: 'Label name...', color: { r: 128, g: 128, b: 128, a: 255}};
+    }
+    this.labelName = this.activeLabel.name;
+    const colorRGBA = this.activeLabel.color;
+    this.labelColor = this.rgb2hex(`rgba(${colorRGBA.r}, ${colorRGBA.g}, ${colorRGBA.b}, ${colorRGBA.a})`);
+  }
+
+  toggleManageLabels(): void {
+    this.managingLabels = !this.managingLabels;
+  }
+
+  handleLabelEditConfirm(labelName: string, labelColor: string): void {   // TODO: Connect to API
+    console.log({msg: 'handleLabelEditConfirm', labelName, labelColor});
+    this.activeLabel = null;
   }
 }
