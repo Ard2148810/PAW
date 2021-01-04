@@ -1,5 +1,6 @@
 import { Entity, Column, ObjectIdColumn } from 'typeorm';
 import { List } from '../../lists/entities/list.entity';
+import { Label } from '../../labels/entities/label.entity';
 
 @Entity()
 export class Board {
@@ -21,6 +22,9 @@ export class Board {
   @Column()
   isPublic: boolean;
 
-  @Column((type) => List)
+  @Column()
   lists: List[];
+
+  @Column()
+  labels: Label[];
 }

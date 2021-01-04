@@ -25,7 +25,6 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AssignUserDto } from './dto/assign-user.dto';
-import { CreateBoardResponseDto } from './dto/create-board-response.dto';
 import { BoardResponseDto } from './dto/board-response.dto';
 
 @ApiTags('boards')
@@ -40,7 +39,7 @@ export class BoardsController {
     description: 'Creates a new board that will belong to user.',
   })
   @ApiBody({ type: CreateBoardDto })
-  @ApiCreatedResponse({ type: CreateBoardResponseDto })
+  @ApiCreatedResponse({ type: BoardResponseDto })
   @Post()
   async create(@Request() req, @Body() createBoardDto: CreateBoardDto) {
     return await this.boardsService.create(req.user.username, createBoardDto);
@@ -89,7 +88,7 @@ export class BoardsController {
       req.user.username,
       board,
     );
-    return this.boardsService.generateLink(boardEntity.id);
+    return this.boardsService.generateLink(boardEntity);
   }
 
   @ApiOperation({

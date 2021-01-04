@@ -6,8 +6,12 @@ import { BoardsModule } from './boards/boards.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { AuthModule } from './auth/auth.module';
-import { ListsModule } from './lists/lists.module';
 import { CardsModule } from './cards/cards.module';
+import { ListsModule } from './lists/lists.module';
+import { LabelsModule } from './labels/labels.module';
+import { CommentsModule } from './comments/comments.module';
+import { ChecklistsModule } from './checklists/checklists.module';
+import { ItemsModule } from './items/items.module';
 
 @Module({
   imports: [
@@ -17,6 +21,10 @@ import { CardsModule } from './cards/cards.module';
     BoardsModule,
     ListsModule,
     CardsModule,
+    LabelsModule,
+    CommentsModule,
+    ChecklistsModule,
+    ItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

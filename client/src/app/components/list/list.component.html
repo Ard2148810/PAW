@@ -1,14 +1,20 @@
 <div class="list">
   <div class="title" [class.title-wildcard]="wildcard">
-    <app-inline-input *ngIf="wildcard else listName" value="Add another list"></app-inline-input>
+    <app-inline-input
+      *ngIf="wildcard else listName"
+      value="Add another list"
+      (valueChanged)="handleListAdded($event)"
+    ></app-inline-input>
   </div>
   <div *ngIf="!wildcard" class="card-container">
-    <app-card text="First card"></app-card>
-    <app-card text="Second"></app-card>
-    <app-card text="Another one"></app-card>
+    <app-card *ngFor="let card of cards" [data]="card" (click)="handleCardClicked(card.id)"></app-card>
+    <app-card wildcard=true (cardAdded)="handleCardAdded($event)"></app-card>
   </div>
 </div>
 
 <ng-template #listName>
-  {{ title || '[Unnamed list]' }}
+  <app-inline-input
+    [value]="title || '[Unnamed list]'"
+    (valueChanged)="handleListRenamed($event)"
+  ></app-inline-input>
 </ng-template>

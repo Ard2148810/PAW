@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Card } from '../../entities/card';
 
 
 @Component({
@@ -7,11 +8,17 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./card.component.sass']
 })
 export class CardComponent implements OnInit {
-  @Input() text: string;
+  @Input() wildcard = false;
+  @Output() cardAdded = new EventEmitter();
+  @Input() data: Card;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  handleCardAdded(name: string): void {
+    this.cardAdded.emit(name);
+  }
 }
+

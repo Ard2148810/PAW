@@ -1,13 +1,10 @@
 import { Controller, Body, UseGuards, Request, Param } from '@nestjs/common';
-import { Get, Post, Put, Delete } from '@nestjs/common';
+import { Get, Put, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {
   ApiBearerAuth,
   ApiBody,
-  ApiConflictResponse,
-  ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,

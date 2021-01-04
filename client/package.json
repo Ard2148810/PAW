@@ -24,6 +24,7 @@
     "@fortawesome/angular-fontawesome": "^0.8.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "ng2-date-picker": "^11.0.0",
     "rxjs": "~6.6.0",
     "ts-node": "~8.3.0",
     "tslib": "^2.0.0",

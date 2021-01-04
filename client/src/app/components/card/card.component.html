@@ -1,3 +1,10 @@
-<div class="card spacein-small clickable">
-  <span class="text">{{text}}</span>
+<div class="card spacein-small clickable" [class.wildcard]="wildcard">
+  <span *ngIf="!wildcard else wildcardCard" class="text">{{ data.name ? data.name : '[Unnamed card]' }}</span>
+  <div *ngIf="!wildcard" class="label-container">
+    <app-label *ngFor="let labelId of data.labels" [id]="labelId" style="margin-right: 3px"></app-label>
+  </div>
 </div>
+
+<ng-template #wildcardCard>
+  <app-inline-input value="Add card" (valueChanged)="handleCardAdded($event)"></app-inline-input>
+</ng-template>

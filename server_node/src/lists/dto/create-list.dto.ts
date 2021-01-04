@@ -1,9 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateListDto {
-  @ApiProperty()
+  @ApiProperty({ required: true })
   name: string;
-
-  @ApiProperty()
-  position: BigInteger;
 }
