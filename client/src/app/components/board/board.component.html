@@ -132,9 +132,17 @@
           [value]="activeCard.name"
           (valueChanged)="handleCardRenamed($event, this.activeCard, this.activeList)"
         ></app-inline-input>
-
       </div>
       <div class="modal-body">
+        <div class="card-section">
+          <span>Description</span>
+          <div>
+            <app-inline-input
+              [value]="activeCard.description || 'description...'"
+              (valueChanged)="handleDescriptionChanged($event, activeList.id, activeCard.id, data.id)"
+            ></app-inline-input>
+          </div>
+        </div>
         <div class="card-section">
           <span>Labels</span>
           <div>

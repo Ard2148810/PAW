@@ -268,7 +268,11 @@ export class BoardComponent implements OnInit {
   }
 
   handleLabelEditConfirm(labelName: string, labelColor: string): void {   // TODO: Connect to API
-    console.log({msg: 'handleLabelEditConfirm', labelName, labelColor});
+    console.log({ msg: 'handleLabelEditConfirm', labelName, labelColor });
     this.activeLabel = null;
+  }
+
+  handleDescriptionChanged(description: string, listId: string, cardId: string, boardId: string): void {  // TODO: Connect to API
+    console.log({ msg: 'handleDescriptionChanged', description });
   }
 }
