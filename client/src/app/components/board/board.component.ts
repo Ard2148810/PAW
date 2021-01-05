@@ -44,7 +44,6 @@ export class BoardComponent implements OnInit {
   editingDate = false;
   currentDate: IDate;
 
-  dragStartElement: HTMLElement;
 
   labelName = '';
   labelColor = '';
@@ -283,59 +282,4 @@ export class BoardComponent implements OnInit {
     console.log({ msg: 'handleDateChanged', date: date.date.toISOString() });
   }
 
-  dragStart(event: DragEvent): void {
-    this.dragStartElement = event.target as HTMLElement;
-  }
-
-  findParentListComponent(HTMLElement: HTMLElement ): HTMLElement {  // Finds elements first parent element which is a List Component
-    if (!HTMLElement) {
-      return null;
-    }
-    if (HTMLElement.tagName === 'APP-LIST') {
-      return HTMLElement;
-    } else {
-      return this.findParentListComponent(HTMLElement.parentElement);
-    }
-  }
-
-  drop(event: DragEvent): void {
-    event.preventDefault();
-    const parentList = this.findParentListComponent(event.target as HTMLElement);
-    if (parentList) {
-      this.swapListElementsOrder(this.dragStartElement, parentList);
-    } else {
-      console.log('Wrong target');
-    }
-  }
-
-  swapListElementsOrder(startElement: HTMLElement, destinationElement: HTMLElement): void {
-    const startId = startElement.getAttribute('data-id') as string;
-    const startList = this.data.lists.find(list => list.id === startId);
-    const targetId = destinationElement.getAttribute('data-id') as string;
-    const targetList = this.data.lists.find(list => list.id === targetId);
-
-    const newStart = {...startList};
-    newStart.position = targetList.position;
-    const newTarget = {...targetList};
-    newTarget.position = startList.position;
-
-    console.log({
-      msg: 'test',
-      newStart,
-      newTarget
-    });
-
-    this.listService
-      .updateList(this.data.id, targetList.id, newTarget)
-      .subscribe(() => {
-        this.listService
-          .updateList(this.data.id, startList.id, newStart)
-          .subscribe(() => this.ngOnInit());
-
-      });
-  }
-
-  dragOver(event: DragEvent): void {
-    event.preventDefault();
-  }
 }

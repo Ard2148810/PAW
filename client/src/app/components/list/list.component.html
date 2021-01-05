@@ -7,14 +7,29 @@
     ></app-inline-input>
   </div>
   <div *ngIf="!wildcard" class="card-container">
-    <app-card *ngFor="let card of cards" [data]="card" (click)="handleCardClicked(card.id)" class="draggable"></app-card>
+    <app-card
+      *ngFor="let card of cards"
+      [data]="card"
+      (click)="handleCardClicked(card.id)"
+      (dragover)="dragOver($event)"
+      (dragstart)="dragStart(card, data)"
+      (drop)="drop(card, data)"
+      draggable="true"
+    ></app-card>
     <app-card wildcard=true (cardAdded)="handleCardAdded($event)"></app-card>
   </div>
 </div>
 
 <ng-template #listName>
-  <app-inline-input
-    [value]="title || '[Unnamed list]'"
-    (valueChanged)="handleListRenamed($event)"
-  ></app-inline-input>
+  <div
+    (dragstart)="dragStart(null, data)"
+    (dragover)="dragOver($event)"
+    (drop)="drop(null, data)"
+    draggable="true"
+  >
+    <app-inline-input
+      [value]="title || '[Unnamed list]'"
+      (valueChanged)="handleListRenamed($event)"
+    ></app-inline-input>
+  </div>
 </ng-template>

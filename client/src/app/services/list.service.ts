@@ -9,6 +9,7 @@ import { Observable} from 'rxjs';
 })
 export class ListService {
 
+
   constructor(private http: HttpClient) { }
 
   addList(boardId: string, listName: string): Observable<any> {
@@ -33,10 +34,6 @@ export class ListService {
       list,
       { responseType: 'text' }
       );
-  }
-
-  deleteList(boardID: string, listID: string, list: List): Observable<any> {
-    return this.http.delete(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}`);
   }
 
 }
