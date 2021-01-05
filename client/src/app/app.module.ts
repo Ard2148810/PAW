@@ -20,6 +20,7 @@ import { ListComponent } from './components/list/list.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PublicBoardComponent } from './components/public-board/public-board.component';
 import { LabelComponent } from './components/label/label.component';
+import { DpDatePickerModule } from 'ng2-date-picker';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { LabelComponent } from './components/label/label.component';
     HttpClientModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    FormsModule
+    FormsModule,
+    DpDatePickerModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

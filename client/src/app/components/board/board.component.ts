@@ -10,6 +10,8 @@ import {ListService} from '../../services/list.service';
 import {List} from '../../entities/list';
 import {LabelService} from '../../services/label.service';
 import {Label} from '../../entities/label';
+import {IDate} from 'ng2-date-picker';
+import {IDayTimeCalendarConfig} from 'ng2-date-picker/day-time-calendar/day-time-calendar-config.model';
 
 @Component({
   selector: 'app-board',
@@ -37,6 +39,8 @@ export class BoardComponent implements OnInit {
   activeList: List;
   activeLabel: Label;
   managingLabels = false;
+  editingDate = false;
+  currentDate: IDate;
 
   labelName = '';
   labelColor = '';
@@ -274,5 +278,13 @@ export class BoardComponent implements OnInit {
 
   handleDescriptionChanged(description: string, listId: string, cardId: string, boardId: string): void {  // TODO: Connect to API
     console.log({ msg: 'handleDescriptionChanged', description });
+  }
+
+  toggleEditingDate(): void {
+    this.editingDate = !this.editingDate;
+  }
+
+  handleDateChanged(date: IDate): void {  // TODO: Connect to API
+    console.log({ msg: 'handleDateChanged', date: date.date.toISOString() });
   }
 }

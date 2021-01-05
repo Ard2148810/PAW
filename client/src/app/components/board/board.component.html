@@ -189,7 +189,17 @@
         <div class="card-section">
           <span>Date</span>
           <div>
-            <button class="btn">Date</button>
+            <div class="dropdown">
+              <button class="btn" (click)="toggleEditingDate()">Date</button>
+              <div class="dropdown-content-click" [class.visible]="editingDate">
+                <dp-day-time-calendar
+                  [(ngModel)]="currentDate"
+                  (onChange)="handleDateChanged($event)"
+                  [config]="{}"
+                  theme="dp-material"
+                ></dp-day-time-calendar>
+              </div>
+            </div>
           </div>
         </div>
         {{ activeCard.id }}
