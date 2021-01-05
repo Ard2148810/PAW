@@ -21,9 +21,18 @@ export class ListService {
     return lists.sort(((a, b) => a.position - b.position));
   }
 
-  updateList(boardId: string, listId: string, listName: string): Observable<any> {
+  updateListName(boardId: string, listId: string, listName: string): Observable<any> {
     const body = { name: listName };
     return this.http
       .put(`${environment.backendURL}/api/boards/${boardId}/lists/${listId}`, body);
   }
+
+  updateList(boardID: string, listID: string, list: List): Observable<any> {
+    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}`, list);
+  }
+
+  deleteList(boardID: string, listID: string, list: List): Observable<any> {
+    return this.http.delete(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}`);
+  }
+
 }
