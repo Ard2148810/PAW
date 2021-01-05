@@ -12,6 +12,9 @@ import {LabelService} from '../../services/label.service';
 import {Label} from '../../entities/label';
 import {IDate} from 'ng2-date-picker';
 import {IDayTimeCalendarConfig} from 'ng2-date-picker/day-time-calendar/day-time-calendar-config.model';
+import {CommentService} from '../../services/comment.service';
+import {ChecklistService} from '../../services/checklist.service';
+import {ItemService} from '../../services/item.service';
 
 @Component({
   selector: 'app-board',
@@ -49,6 +52,9 @@ export class BoardComponent implements OnInit {
               private cardService: CardService,
               private listService: ListService,
               private labelService: LabelService,
+              private commentService: CommentService,
+              private checklistService: ChecklistService,
+              private itemService: ItemService,
               private route: ActivatedRoute,
               private router: Router) {
     route.params.subscribe(params => this.id = params.id);
@@ -77,6 +83,7 @@ export class BoardComponent implements OnInit {
       console.log('Received board:');
       console.log(this.data);
     });
+
   }
 
   getBoardDisplayName(): string {

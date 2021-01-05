@@ -11,8 +11,8 @@ export class ChecklistService {
 
   constructor(private http: HttpClient) { }
 
-  addChecklist(boardID: string, listID: string, cardID: string, description: string): Observable<any>{
-    const body = {description};
+  addChecklist(boardID: string, listID: string, cardID: string, checklistDescription: string): Observable<any>{
+    const body = {description: checklistDescription};
     return this.http.post(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists`, body);
   }
 
@@ -23,6 +23,13 @@ export class ChecklistService {
   updateChecklist(boardID: string, listID: string, cardID: string, checklistID: string, checklist: Checklist): Observable<any>{
     return this.http.post(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}`,
       checklist);
+  }
+
+  updateChecklistDescription(boardID: string,
+                             listID: string, cardID: string, checklistID: string, checklistDescription: string): Observable<any>{
+    const body = {description: checklistDescription};
+    return this.http.post(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}`,
+      body);
   }
 
   deleteChecklist(boardID: string, listID: string, cardID: string, checklistID: string): Observable<any>{

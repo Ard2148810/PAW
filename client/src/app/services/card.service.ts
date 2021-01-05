@@ -13,14 +13,22 @@ export class CardService {
 
   addCard(boardId: string, listId: string, cardName: string): Observable<any> {
     const body = { name: cardName, description: '', date: '' };
-    return this.http
-      .post(`${environment.backendURL}/api/boards/${boardId}/lists/${listId}/cards`, body);
+    return this.http.post(`${environment.backendURL}/api/boards/${boardId}/lists/${listId}/cards`, body);
   }
 
   renameCard(boardId: string, listId: string, cardName: string, card: Card): Observable<any> {
     card.name = cardName;
-    return this.http
-      .put(`${environment.backendURL}/api/boards/${boardId}/lists/${listId}/cards/${card.id}`, card);
+    return this.http.put(`${environment.backendURL}/api/boards/${boardId}/lists/${listId}/cards/${card.id}`, card);
+  }
+
+  updateCardDate(boardID: string, listID: string, cardID: string, date: Date): Observable<any>{
+    const body = {date: date.toISOString()};
+    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`, body);
+  }
+
+  addMemberToCard(boardID: string, listID: string, cardID: string, member: string): Observable<any>{
+    const body = {members: [member]};
+    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`, body);
   }
 
   updateCard(boardID: string, listID: string, cardID: string, card: Card): Observable<any>{
