@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BoardService} from '../../services/board.service';
 import {Board} from '../../entities/board';
@@ -44,6 +44,8 @@ export class BoardComponent implements OnInit {
   managingLabels = false;
   editingDate = false;
   currentDate: IDate;
+
+  dragStartElement: HTMLElement;
 
   labelName = '';
   labelColor = '';
@@ -217,21 +219,18 @@ export class BoardComponent implements OnInit {
   }
 
   handleCardAdded(cardData: CardAddedEvent): void {
-    console.log('Card added with data...:');
     this.cardService.addCard(this.data.id, cardData.listId, cardData.cardName).subscribe(data => {
       this.ngOnInit();
     });
   }
 
   handleListAdded(listData: ListAddedEvent): void {
-    console.log('List added with data...:');
     this.listService.addList(this.data.id, listData.listName).subscribe(data => {
       this.ngOnInit();
     });
   }
 
   handleContentUpdated(): void {
-    console.log('Board: content updated');
     this.ngOnInit();
   }
 
@@ -283,5 +282,65 @@ export class BoardComponent implements OnInit {
 
   handleDateChanged(date: IDate): void {  // TODO: Connect to API
     console.log({ msg: 'handleDateChanged', date: date.date.toISOString() });
+  }
+
+  dragStart(event: DragEvent): void {
+    this.dragStartElement = event.target as HTMLElement;
+  }
+
+  findParentListComponent(HTMLElement: HTMLElement ): HTMLElement {  // Finds elements first parent element which is a List Component
+    if (!HTMLElement) {
+      return null;
+    }
+    if (HTMLElement.tagName === 'APP-LIST') {
+      return HTMLElement;
+    } else {
+      return this.findParentListComponent(HTMLElement.parentElement);
+    }
+  }
+
+  drop(event: DragEvent): void {
+    event.preventDefault();
+    const parentList = this.findParentListComponent(event.target as HTMLElement);
+    if (parentList) {
+      this.swapListElementsOrder(this.dragStartElement, parentList);
+    } else {
+      console.log('Wrong target');
+    }
+  }
+
+  swapListElementsOrder(startElement: HTMLElement, destinationElement: HTMLElement): void {
+    const startId = startElement.getAttribute('data-id') as string;
+    const startList = this.data.lists.find(list => list.id === startId);
+    const targetId = destinationElement.getAttribute('data-id') as string;
+    const targetList = this.data.lists.find(list => list.id === targetId);
+    /*this.listService.swapOrder(
+      this.data.id,
+      startList,
+      targetList
+    ).subscribe(() => this.ngOnInit, console.log);*/
+    const newStart = {...startList};
+    newStart.position = targetList.position;
+    const newTarget = {...targetList};
+    newTarget.position = startList.position;
+
+    console.log({
+      msg: 'test',
+      newStart,
+      newTarget
+    });
+
+    this.listService
+      .updateList(this.data.id, targetList.id, newTarget)
+      .subscribe(() => {
+        this.listService
+          .updateList(this.data.id, startList.id, newStart)
+          .subscribe(() => this.ngOnInit());
+
+      });
+  }
+
+  dragOver(event: DragEvent): void {
+    event.preventDefault();
   }
 }

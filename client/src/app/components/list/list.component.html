@@ -7,7 +7,7 @@
     ></app-inline-input>
   </div>
   <div *ngIf="!wildcard" class="card-container">
-    <app-card *ngFor="let card of cards" [data]="card" (click)="handleCardClicked(card.id)"></app-card>
+    <app-card *ngFor="let card of cards" [data]="card" (click)="handleCardClicked(card.id)" class="draggable"></app-card>
     <app-card wildcard=true (cardAdded)="handleCardAdded($event)"></app-card>
   </div>
 </div>

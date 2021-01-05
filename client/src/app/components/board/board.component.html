@@ -39,6 +39,11 @@
         (cardClicked)="handleCardClicked($event)"
         (cardAdded)="handleCardAdded($event)"
         (contentUpdated)="handleContentUpdated()"
+        (dragstart)="dragStart($event)"
+        (dragover)="dragOver($event)"
+        (drop)="drop($event)"
+        draggable="true"
+        [attr.data-id]="list.id"
       ></app-list>
       <app-list wildcard=true (listAdded)="handleListAdded($event)"></app-list>
     </div>

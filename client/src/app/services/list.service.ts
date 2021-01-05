@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import {List} from '../entities/list';
+import { List } from '../entities/list';
+import { Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,11 @@ export class ListService {
   }
 
   updateList(boardID: string, listID: string, list: List): Observable<any> {
-    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}`, list);
+    return this.http.put(
+      `${environment.backendURL}/api/boards/${boardID}/lists/${listID}`,
+      list,
+      { responseType: 'text' }
+      );
   }
 
   deleteList(boardID: string, listID: string, list: List): Observable<any> {
