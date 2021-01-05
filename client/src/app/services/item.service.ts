@@ -12,10 +12,10 @@ export class ItemService {
 
   constructor(private http: HttpClient) { }
 
-  addItem(boardID: string, listID: string, cardID: string, description: string): Observable<any>{
-    const body = {description};
-    console.log(body);
-    return this.http.post(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists`, body);
+  addItem(boardID: string, listID: string, cardID: string, checklistID: string, itemDescription: string): Observable<any>{
+    const body = {description: itemDescription};
+    return this.http.post(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}`,
+      body);
   }
 
   getChecklistItems(boardID: string, listID: string, cardID: string, checklistID): Observable<any>{
@@ -25,6 +25,20 @@ export class ItemService {
   updateItem(boardID: string, listID: string, cardID: string, checklistID: string, itemID: string, item: Item): Observable<any>{
     return this.http.post(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}/item/${itemID}`,
       item);
+  }
+
+  updateItemDescription(boardID: string,
+                        listID: string, cardID: string, checklistID: string, itemID: string, itemDescription: string): Observable<any>{
+    const body = {description: itemDescription};
+    return this.http.post(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}/item/${itemID}`,
+      body);
+  }
+
+  updateItemStatus(boardID: string,
+                   listID: string, cardID: string, checklistID: string, itemID: string, itemStatus: boolean): Observable<any>{
+    const body = {status: itemStatus};
+    return this.http.post(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}/item/${itemID}`,
+      body);
   }
 
   deleteItem(boardID: string, listID: string, cardID: string, checklistID: string, itemID: string): Observable<any>{
