@@ -193,15 +193,7 @@ export class BoardComponent implements OnInit {
   }
 
   getPublicLink(): any {
-    this.boardService.getPublicLink(this.id).subscribe(
-      response => {
-        this.publicLink = 'https://' + response;
-      },
-      error => {
-        console.log(error);
-        this.publicLink = error;
-      }
-      );
+    this.publicLink = `${window.location.origin}` + '/public-board/' + this.id;
   }
 
   setActiveCard(listId: string, cardId: string): void {
