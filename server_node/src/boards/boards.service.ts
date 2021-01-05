@@ -29,7 +29,7 @@ export class BoardsService {
       description: description,
       owner: username,
       teamMembers: [username],
-      isPublic: true,
+      isPublic: false,
       lists: [],
       labels: [],
     });
