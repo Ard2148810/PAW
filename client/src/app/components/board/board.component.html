@@ -77,7 +77,8 @@
       </div>
       <div class="modal-body">
         <div class="form-control-container">
-          <span *ngIf="data.isPublic">Link: {{publicLink}}</span>
+          <span *ngIf="data.isPublic">Link:</span><br>
+          <a href="{{publicLink}}" *ngIf="data.isPublic">{{publicLink}}</a>
         </div>
       </div>
       <div class="modal-footer">

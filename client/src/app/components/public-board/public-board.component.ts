@@ -13,6 +13,8 @@ export class PublicBoardComponent implements OnInit {
   id: string;
   data: Board;
 
+  publicBoardLink: string;
+
   boardReady: boolean;
 
   error: boolean;
@@ -26,30 +28,23 @@ export class PublicBoardComponent implements OnInit {
     this.error = false;
   }
 
-  ngOnInit(): void {
-    this.boardService.getBoard(this.id).subscribe(data => {
-      this.data = data;
-      this.boardReady = true;
-      console.log(this.data);
-    });
+  async ngOnInit(): Promise<void> {
+    this.publicBoardLink = await this.boardService.getPublicLink(this.id);
+    this.publicBoardLink = 'http://' + this.publicBoardLink;
 
-    // this.boardService.getPublicLink(this.id).subscribe(
-    //   response => {
-    //     console.log(response);
-    //   }, error => {
-    //     console.log(error);
-    //   });
+    console.log(this.publicBoardLink);
 
-    // this.boardService.getPublicBoard(this.id)
-    // .subscribe(
-    //   response => {
-    //     this.data = response;
-    //     this.boardReady = true;
-    //     console.log(this.data);
-    //   },
-    //   error => {
-    //     // this.displayError(error);
-    //   });
+    this.boardService.getPublicBoard(this.publicBoardLink)
+      .subscribe(
+        response => {
+          this.data = response;
+          this.boardReady = true;
+          console.log(this.data);
+        },
+        error => {
+          console.log(error);
+          // this.displayError(error);
+        });
   }
 
   getBoardDisplayName(): string {

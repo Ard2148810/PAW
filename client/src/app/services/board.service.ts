@@ -43,8 +43,12 @@ export class BoardService {
     return this.http.get(`${environment.backendURL}/api/boards/${id}`);
   }
 
-  getPublicBoard(id: string): any {
-    return this.http.get(`${environment.backendURL}/api/boards/${id}/public`);
+  async getPublicLink(id: string): Promise<string>{
+    return this.http.get(`${environment.backendURL}/api/boards/${id}/link`, { responseType: 'text'}).toPromise();
+  }
+
+  getPublicBoard(link: string): any{
+    return this.http.get(link);
   }
 
   updateBoard(id: string, name: string, description: string, isPublic: boolean): any {
@@ -53,7 +57,7 @@ export class BoardService {
       description,
       isPublic
     };
-    return this.http.put(`${environment.backendURL}/api/boards/${id}`, body);
+    return this.http.put(`${environment.backendURL}/api/boards/${id}`, body, { responseType: 'text'});
   }
 
   addUserToBoard(id: string, username: string): any {
@@ -73,9 +77,5 @@ export class BoardService {
 
   deleteBoard(id: string): any {
     return this.http.delete(`${environment.backendURL}/api/boards/${id}`);
-  }
-
-  getPublicLink(id: string): any{
-    return this.http.get(`${environment.backendURL}/api/boards/${id}/link`);
   }
 }
