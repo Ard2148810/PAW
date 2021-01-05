@@ -110,8 +110,7 @@ export class BoardComponent implements OnInit {
         console.log(response);
       },
       error => {
-        console.log(error);
-        // this.displayError(error);
+        this.displayError(error);
       });
   }
 
@@ -183,12 +182,10 @@ export class BoardComponent implements OnInit {
     this.boardService.updateBoard(this.data.id, this.data.name, this.data.description, true).subscribe(
       response => {
         console.log(response);
+        this.setPublic();
       },
       error => {
-        // this.displayError(error);
-        if (error === 'OK'){
-          this.setPublic();
-        }
+        this.displayError(error);
       });
   }
 
