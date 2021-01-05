@@ -58,7 +58,7 @@ export class ListComponent implements OnInit {
   }
 
   handleListRenamed(newName: string): void {
-    this.listService.updateList(this.ownerBoardId, this.id, newName).subscribe(data => {
+    this.listService.updateListName(this.ownerBoardId, this.id, newName).subscribe(data => {
       this.handleContentUpdated();
     }, error => {
       if (error === 'OK') {

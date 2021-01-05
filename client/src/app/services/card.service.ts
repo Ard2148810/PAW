@@ -23,4 +23,23 @@ export class CardService {
       .put(`${environment.backendURL}/api/boards/${boardId}/lists/${listId}/cards/${card.id}`, card);
   }
 
+  updateCard(boardID: string, listID: string, cardID: string, card: Card): Observable<any>{
+    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`, card);
+  }
+
+  deleteCard(boardID: string, listID: string, cardID: string): Observable<any>{
+    return this.http.delete(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`);
+  }
+
+  addLabelToCard(boardID: string, listID: string, cardID: string, labelID): Observable<any>{
+    const body = {labelId: labelID};
+    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`, body);
+  }
+
+  removeLabelFromCard(boardID: string, listID: string, cardID: string, labelID): Observable<any>{
+    const body = {labelId: labelID};
+    return this.http.request('delete', `${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`,
+      { body });
+  }
+
 }
