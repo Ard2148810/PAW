@@ -27,6 +27,11 @@ export class CardService {
     return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`, card);
   }
 
+  updateCardDate(boardID: string, listID: string, cardID: string, date: Date): Observable<any>{
+    const body = {date: date.toISOString()};
+    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`, body);
+  }
+
   deleteCard(boardID: string, listID: string, cardID: string): Observable<any>{
     return this.http.delete(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`);
   }

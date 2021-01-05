@@ -14,10 +14,11 @@ export class CommentService {
     private authenticationService: AuthenticationService) { }
 
   addComment(boardID: string, listID: string, cardID: string, content: string): Observable<any>{
+    const date = new Date();
     const body = {
       username: this.authenticationService.getCurrentUserValue().username,
       description: content,
-      date: new Date()
+      date: date.toISOString()
     };
     return this.http.post(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/comments`, body);
   }
