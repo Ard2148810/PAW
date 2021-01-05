@@ -1,20 +1,19 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BoardService} from '../../services/board.service';
-import {Board} from '../../entities/board';
-import {first} from 'rxjs/operators';
-import {Card} from '../../entities/card';
-import {CardAddedEvent, CardClickedEvent, ListAddedEvent} from '../list/list.component';
-import {CardService} from '../../services/card.service';
-import {ListService} from '../../services/list.service';
-import {List} from '../../entities/list';
-import {LabelService} from '../../services/label.service';
-import {Label} from '../../entities/label';
-import {IDate} from 'ng2-date-picker';
-import {IDayTimeCalendarConfig} from 'ng2-date-picker/day-time-calendar/day-time-calendar-config.model';
-import {CommentService} from '../../services/comment.service';
-import {ChecklistService} from '../../services/checklist.service';
-import {ItemService} from '../../services/item.service';
+import { Component, ElementRef, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BoardService } from '../../services/board.service';
+import { Board } from '../../entities/board';
+import { first } from 'rxjs/operators';
+import { Card } from '../../entities/card';
+import { CardAddedEvent, CardClickedEvent, ListAddedEvent } from '../list/list.component';
+import { CardService } from '../../services/card.service';
+import { ListService } from '../../services/list.service';
+import { List } from '../../entities/list';
+import { LabelService } from '../../services/label.service';
+import { Label } from '../../entities/label';
+import { IDate } from 'ng2-date-picker';
+import { CommentService } from '../../services/comment.service';
+import { ChecklistService } from '../../services/checklist.service';
+import { ItemService } from '../../services/item.service';
 
 @Component({
   selector: 'app-board',
@@ -314,11 +313,7 @@ export class BoardComponent implements OnInit {
     const startList = this.data.lists.find(list => list.id === startId);
     const targetId = destinationElement.getAttribute('data-id') as string;
     const targetList = this.data.lists.find(list => list.id === targetId);
-    /*this.listService.swapOrder(
-      this.data.id,
-      startList,
-      targetList
-    ).subscribe(() => this.ngOnInit, console.log);*/
+
     const newStart = {...startList};
     newStart.position = targetList.position;
     const newTarget = {...targetList};
