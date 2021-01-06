@@ -289,9 +289,9 @@ export class BoardComponent implements OnInit {
   }
 
   handleDescriptionChanged(description: string, listId: string, cardId: string, boardId: string): void {
-    const newCard = {...this.activeCard, description};
+    const newCard = { description };
     this.cardService.updateCard(boardId, listId, cardId, newCard)
-      .subscribe(this.ngOnInit);
+      .subscribe(() => this.ngOnInit());
   }
 
   toggleEditingDate(): void {

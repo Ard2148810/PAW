@@ -37,7 +37,6 @@ export class ChecklistComponent implements OnInit, OnChanges {
   }
 
   handleNewChecklistItem(itemDescription: string): void {
-    console.log(`Add new checklist item: ${itemDescription}`);
     this.itemService.addItem(
       this.ownerBoardId,
       this.ownerListId,
