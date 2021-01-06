@@ -42,9 +42,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3",
     "swagger-ui-express": "^4.1.5",
-    "typeorm": "^0.2.29"
-  },
-  "devDependencies": {
+    "typeorm": "^0.2.29",
     "@nestjs/cli": "^7.5.3",
     "@nestjs/schematics": "^7.2.2",
     "@nestjs/testing": "^7.5.5",
@@ -68,6 +66,9 @@
     "ts-node": "^9.1.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.1.2"
+  },
+  "devDependencies": {
+
   },
   "jest": {
     "moduleFileExtensions": [
