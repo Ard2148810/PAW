@@ -31,5 +31,11 @@
       [value]="title || '[Unnamed list]'"
       (valueChanged)="handleListRenamed($event)"
     ></app-inline-input>
+    <span
+      class="btn-cancel clickable"
+      (click)="handleListDeleteClicked(data)"
+    >
+      <fa-icon [icon]="iconCancel"></fa-icon>
+    </span>
   </div>
 </ng-template>

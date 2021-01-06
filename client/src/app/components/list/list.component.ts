@@ -4,6 +4,7 @@ import { EventEmitter } from '@angular/core';
 import { ListService } from '../../services/list.service';
 import { ActivatedRoute } from '@angular/router';
 import { List } from '../../entities/list';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-list',
@@ -29,6 +30,7 @@ export class ListComponent implements OnInit {
   @Input() data: List;
 
   ownerBoardId: string;
+  iconCancel = faTimes;
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -145,6 +147,11 @@ export class ListComponent implements OnInit {
       });
     }
     return null;
+  }
+
+  handleListDeleteClicked(list: List): void {
+    this.listService.deleteList(this.ownerBoardId, list.id)
+      .subscribe(() => this.handleContentUpdated());
   }
 }
 

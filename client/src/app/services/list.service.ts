@@ -36,4 +36,8 @@ export class ListService {
       );
   }
 
+  deleteList(boardId: string, listId): Observable<any> {
+    return this.http.delete(`${environment.backendURL}/api/boards/${boardId}/lists/${listId}`, { responseType: 'text' });
+  }
+
 }
