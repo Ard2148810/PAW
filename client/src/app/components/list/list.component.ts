@@ -125,7 +125,7 @@ export class ListComponent implements OnInit {
       const newStartList = {...ListComponent.startList};
       newStartList.cards = newStartList.cards.filter(card => card.id !== ListComponent.startCard.id);
       const newTargetList = {...targetList};
-      if(ListComponent.startList.id === targetList.id) {
+      if (ListComponent.startList.id === targetList.id) {
         console.log('Dropped to the same list');
       } else {
         newTargetList.cards = [...newTargetList.cards, ListComponent.startCard];

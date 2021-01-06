@@ -218,6 +218,38 @@
             </div>
           </div>
         </div>
+        <div class="card-section">
+          <span>Members</span>
+          <div>
+            <div>
+              <span *ngFor="let member of activeCard.members" class="card-member">{{ member }}</span>
+            </div>
+            <div class="dropdown">
+              <button class="btn" (click)="toggleEditingMembers()">Edit members</button>
+              <div class="dropdown-content-click spacein-small" [class.visible]="editingMembers">
+                <div *ngFor="let teamMember of this.data.teamMembers">
+                  <span>{{ teamMember }}</span>
+                  <button
+                    class="btn"
+                    *ngIf="isCardMember(teamMember, activeCard.members)"
+                    (click)="handleRemoveMember(teamMember, activeList, activeCard)"
+                  >Remove</button>
+                  <button
+                    class="btn"
+                    *ngIf="!isCardMember(teamMember, activeCard.members)"
+                    (click)="handleAssignMember(teamMember, activeList, activeCard)"
+                  >Assign</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <span>Comments</span>
+          <div>
+            soon...
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button

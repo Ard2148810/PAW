@@ -47,6 +47,8 @@ export class BoardComponent implements OnInit {
   labelName = '';
   labelColor = '';
 
+  editingMembers: boolean;
+
   constructor(private boardService: BoardService,
               private cardService: CardService,
               private listService: ListService,
@@ -332,5 +334,24 @@ export class BoardComponent implements OnInit {
       const d = new Date(dateISO);
       return `${d.getUTCDate()}.${d.getUTCMonth() + 1}.${d.getUTCFullYear()} | ${d.getUTCHours()}:${d.getUTCMinutes()}`;
     }
+  }
+
+  toggleEditingMembers(): void {
+    this.editingMembers = !this.editingMembers;
+  }
+
+  isCardMember(teamMember: string, members: string[]): boolean {
+    return members.includes(teamMember);
+  }
+
+  handleRemoveMember(teamMember: string, list: List, card: Card): void {
+    const updatedCard = { members: [] };
+    updatedCard.members = card.members.filter(member => member !== teamMember);
+    console.log(updatedCard);
+    this.cardService.updateCard(this.data.id, list.id, card.id, updatedCard).subscribe(() => this.ngOnInit());
+  }
+
+  handleAssignMember(teamMember: string, list: List, card: Card): void {
+    this.cardService.addMemberToCard(this.data.id, list.id, card.id, teamMember).subscribe(() => this.ngOnInit());
   }
 }

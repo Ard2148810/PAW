@@ -29,11 +29,13 @@ export class CardService {
 
   addMemberToCard(boardID: string, listID: string, cardID: string, member: string): Observable<any>{
     const body = {members: [member]};
-    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`, body);
+    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`, body,
+      { responseType: 'text' });
   }
 
-  updateCard(boardID: string, listID: string, cardID: string, card: Card): Observable<any>{
-    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`, card);
+  updateCard(boardID: string, listID: string, cardID: string, card: object): Observable<any>{
+    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`, card,
+      { responseType: 'text' });
   }
 
   deleteCard(boardID: string, listID: string, cardID: string): Observable<any>{
