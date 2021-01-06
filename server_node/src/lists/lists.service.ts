@@ -80,7 +80,7 @@ export class ListsService {
       throw new NotFoundException('List not found');
     }
     const indexOfList = board.lists.findIndex((value) => value.id == list.id);
-    if (updateListDto.position) {
+    if (updateListDto.position != null) {
       board.lists[indexOfList].position = updateListDto.position;
     }
     if (updateListDto.name) {
