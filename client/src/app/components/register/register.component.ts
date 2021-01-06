@@ -10,7 +10,13 @@ import {AuthenticationService} from '../../services/authentication.service';
 
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
+  messageIsLoading: boolean;
+  registerSuccessful: boolean;
+  registerFailed: boolean;
+
+  loadingMessage: string;
   responseMessage: string;
+  errorMessage: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,18 +28,35 @@ export class RegisterComponent implements OnInit {
       email: '',
       password: ''
     });
+    this.messageIsLoading = false;
+    this.registerSuccessful = false;
+    this.registerFailed = false;
   }
 
   ngOnInit(): void {
   }
 
   onSubmit(userData: UserRegisterData): void {
-    this.responseMessage = 'Please wait...';
+    if (!userData.name || !userData.email  || !userData.password || !userData.username){
+      this.registerFailed = true;
+      this.errorMessage = 'Complete the rest of the form.';
+      return;
+    }
+
+    this.registerFailed = false;
+    this.registerSuccessful = false;
+    this.messageIsLoading = true;
+    this.loadingMessage = 'Please wait...';
+
     this.authenticationService.registerUser(userData).subscribe(response => {
       console.log(response);
-      this.responseMessage = `Hello ${response.name}! You can log in now.`;
+      this.messageIsLoading = false;
+      this.registerSuccessful = true;
+      this.responseMessage = `Hello ${response.name}! You can log in now :)`;
     }, error => {
-      this.responseMessage = `Something went wrong :( ${error.status}: ${error.statusText}`;
+      this.messageIsLoading = false;
+      this.registerFailed = true;
+      this.errorMessage = `${error}`;
     });
   }
 
