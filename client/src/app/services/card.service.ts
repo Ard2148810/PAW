@@ -40,15 +40,17 @@ export class CardService {
       { responseType: 'text' });
   }
 
-  addLabelToCard(boardID: string, listID: string, cardID: string, labelID): Observable<any>{
+  addLabelToCard(boardID: string, listID: string, cardID: string, labelID: string): Observable<any>{
     const body = {labelId: labelID};
-    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`, body);
+    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/label`, body,
+      { responseType: 'text' });
   }
 
-  removeLabelFromCard(boardID: string, listID: string, cardID: string, labelID): Observable<any>{
+  removeLabelFromCard(boardID: string, listID: string, cardID: string, labelID: string): Observable<any>{
     const body = {labelId: labelID};
-    return this.http.request('delete', `${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`,
-      { body });
+    return this.http.request('delete', `${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/label`,
+      { body, responseType: 'text' },
+      );
   }
 
 }

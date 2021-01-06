@@ -313,4 +313,14 @@ export class BoardComponent implements OnInit {
         this.closeCardModal();
       });
   }
+
+  handleAssignLabel(data: Board, list: List, card: Card, label: Label, value: boolean): void {
+    if (value) {
+      this.cardService.addLabelToCard(data.id, list.id, card.id, label.id)
+        .subscribe(() => this.ngOnInit());
+    } else {
+      this.cardService.removeLabelFromCard(data.id, list.id, card.id, label.id)
+        .subscribe(() => this.ngOnInit());
+    }
+  }
 }

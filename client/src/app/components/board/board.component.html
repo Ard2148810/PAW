@@ -172,8 +172,15 @@
                 <ng-template #labelMenu>
                   <div *ngFor="let label of data.labels">
                     <app-label  [id]="label.id"></app-label>
-                    <button class="btn" *ngIf="isLabelActive(label.id, activeCard)">Detach</button>
-                    <button class="btn" *ngIf="!isLabelActive(label.id, activeCard)">Attach</button>
+                    <button
+                      class="btn"
+                      *ngIf="isLabelActive(label.id, activeCard)"
+                      (click)="handleAssignLabel(data, activeList, activeCard, label, false)"
+                    >Detach</button>
+                    <button
+                      class="btn"
+                      *ngIf="!isLabelActive(label.id, activeCard)"
+                      (click)="handleAssignLabel(data, activeList, activeCard, label, true)">Attach</button>
                     <button class="btn" (click)="handleLabelEditClicked(label.id)">Edit</button>
                   </div>
                   <button class="btn" (click)="handleLabelEditClicked(null)">+</button>
