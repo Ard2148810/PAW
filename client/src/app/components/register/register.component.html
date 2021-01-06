@@ -31,7 +31,9 @@
         </div>
         <div class="center" style="margin: 15px">
           <button class="btn primary" type="submit">Register</button>
-          <div *ngIf="responseMessage" class="alert">{{responseMessage}}</div>
+          <div *ngIf="messageIsLoading" class="alert">{{loadingMessage}}</div>
+          <div *ngIf="registerSuccessful" class="alert">{{responseMessage}}</div>
+          <div *ngIf="registerFailed" class="alert" style="color: red">{{errorMessage}}</div>
         </div>
       </div>
     </form>
