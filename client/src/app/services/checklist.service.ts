@@ -35,7 +35,8 @@ export class ChecklistService {
 
   deleteChecklist(boardID: string, listID: string, cardID: string, checklistID: string): Observable<any>{
     return this.http
-      .delete(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}`);
+      .delete(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}`,
+        { responseType: 'text' });
   }
 
 

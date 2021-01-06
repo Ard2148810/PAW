@@ -330,7 +330,7 @@ export class BoardComponent implements OnInit {
       return '';
     } else {
       const d = new Date(dateISO);
-      return `${d.getDay()}.${d.getUTCMonth() + 1}.${d.getFullYear()} | ${d.getHours()}:${d.getMinutes()}`;
+      return `${d.getUTCDate()}.${d.getUTCMonth() + 1}.${d.getUTCFullYear()} | ${d.getUTCHours()}:${d.getUTCMinutes()}`;
     }
   }
 }
