@@ -204,13 +204,13 @@
         </div>
         <div class="card-section">
           <span>Date</span>
+          <div>{{ formatDate(activeCard.date) }}</div>
           <div>
             <div class="dropdown">
               <button class="btn" (click)="toggleEditingDate()">Date</button>
               <div class="dropdown-content-click" [class.visible]="editingDate">
                 <dp-day-time-calendar
-                  [(ngModel)]="currentDate"
-                  (onChange)="handleDateChanged($event)"
+                  (onChange)="handleDateChanged($event, data, activeList, activeCard)"
                   [config]="{}"
                   theme="dp-material"
                 ></dp-day-time-calendar>

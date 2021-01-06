@@ -5,7 +5,7 @@ export interface Card {
   name: string;
   description: string;
   members: string[];
-  date?: Date;
+  date: string;
   labels: string[]; // IDs
   checklists: Checklist[];
 }

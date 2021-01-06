@@ -23,7 +23,8 @@ export class CardService {
 
   updateCardDate(boardID: string, listID: string, cardID: string, date: Date): Observable<any>{
     const body = {date: date.toISOString()};
-    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`, body);
+    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`, body,
+      { responseType: 'text' });
   }
 
   addMemberToCard(boardID: string, listID: string, cardID: string, member: string): Observable<any>{

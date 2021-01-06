@@ -14,6 +14,7 @@ import { IDate } from 'ng2-date-picker';
 import { CommentService } from '../../services/comment.service';
 import { ChecklistService } from '../../services/checklist.service';
 import { ItemService } from '../../services/item.service';
+import DateTimeFormat = Intl.DateTimeFormat;
 
 @Component({
   selector: 'app-board',
@@ -42,8 +43,6 @@ export class BoardComponent implements OnInit {
   activeLabel: Label;
   managingLabels = false;
   editingDate = false;
-  currentDate: IDate;
-
 
   labelName = '';
   labelColor = '';
@@ -295,8 +294,10 @@ export class BoardComponent implements OnInit {
     this.editingDate = !this.editingDate;
   }
 
-  handleDateChanged(date: IDate): void {  // TODO: Connect to API
+  handleDateChanged(date: IDate, board: Board, list: List, card: Card): void {
     console.log({ msg: 'handleDateChanged', date: date.date.toISOString() });
+    this.cardService.updateCardDate(board.id, list.id, card.id, new Date(date.date.toISOString()))
+      .subscribe(() => this.ngOnInit());
   }
 
   handleAddChecklist(activeList: List, activeCard: Card): void {
@@ -321,6 +322,15 @@ export class BoardComponent implements OnInit {
     } else {
       this.cardService.removeLabelFromCard(data.id, list.id, card.id, label.id)
         .subscribe(() => this.ngOnInit());
+    }
+  }
+
+  formatDate(dateISO: string): string {
+    if (dateISO === '') {
+      return '';
+    } else {
+      const d = new Date(dateISO);
+      return `${d.getDay()}.${d.getUTCMonth() + 1}.${d.getFullYear()} | ${d.getHours()}:${d.getMinutes()}`;
     }
   }
 }
