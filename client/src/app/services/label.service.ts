@@ -29,11 +29,12 @@ export class LabelService {
       name: labelName,
       color: labelColor
     };
-    return this.http.post(`${environment.backendURL}/api/boards/{board}/labels`, body);
+    return this.http.post(`${environment.backendURL}/api/boards/${boardID}/labels`, body);
   }
 
-  updateLabel(boardID: string, labelID: string, label: Label): Observable<any>{
-    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/labels/${labelID}`, label);
+  updateLabel(boardID: string, labelID: string, label: { color: string; name: string; id: string }): Observable<any>{
+    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/labels/${labelID}`, label,
+      { responseType: 'text' });
   }
 
   getBoardLabels(boardID: string): Observable<any>{

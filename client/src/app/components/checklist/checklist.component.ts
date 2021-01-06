@@ -30,8 +30,6 @@ export class ChecklistComponent implements OnInit, OnChanges {
     this.route.params.subscribe(params => {
       this.ownerBoardId = params.id;
     });
-    console.log('checklist init');
-    console.log(this.data);
   }
 
   ngOnChanges(): void {

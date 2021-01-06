@@ -269,13 +269,26 @@ export class BoardComponent implements OnInit {
     this.managingLabels = !this.managingLabels;
   }
 
-  handleLabelEditConfirm(labelName: string, labelColor: string): void {   // TODO: Connect to API
+  handleLabelEditConfirm(labelName: string, labelColor: string): void {
     console.log({ msg: 'handleLabelEditConfirm', labelName, labelColor });
+    const newLabel = {...this.activeLabel, name: labelName, color: labelColor};
+    console.log(newLabel);
+    if (this.activeLabel.id !== '') {
+      this.labelService.updateLabel(this.data.id, this.activeLabel.id, newLabel).subscribe(() => {
+        this.ngOnInit();
+      });
+    } else {
+      this.labelService.addLabel(this.data.id, labelName, labelColor).subscribe(() => {
+        this.ngOnInit();
+      });
+    }
     this.activeLabel = null;
   }
 
-  handleDescriptionChanged(description: string, listId: string, cardId: string, boardId: string): void {  // TODO: Connect to API
-    console.log({ msg: 'handleDescriptionChanged', description });
+  handleDescriptionChanged(description: string, listId: string, cardId: string, boardId: string): void {
+    const newCard = {...this.activeCard, description};
+    this.cardService.updateCard(boardId, listId, cardId, newCard)
+      .subscribe(this.ngOnInit);
   }
 
   toggleEditingDate(): void {
@@ -290,6 +303,14 @@ export class BoardComponent implements OnInit {
     this.checklistService.addChecklist(this.data.id, activeList.id, activeCard.id, 'New checklist')
       .subscribe(() => {
         this.ngOnInit();
+      });
+  }
+
+  handleDeleteCard(boardId: string, listId: string, cardId: string): void {
+    this.cardService.deleteCard(boardId, listId, cardId)
+      .subscribe(() => {
+        this.ngOnInit();
+        this.closeCardModal();
       });
   }
 }

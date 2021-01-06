@@ -211,11 +211,13 @@
             </div>
           </div>
         </div>
-        {{ activeCard.id }}
       </div>
       <div class="modal-footer">
-        <button class="btn" (click)="closeCardModal()">Close</button>
-        <button type="submit" class="btn primary" (click)="closeCardModal()">Confirm</button>
+        <button
+          class="btn danger"
+          (click)="handleDeleteCard(this.data.id, this.activeList.id, this.activeCard.id)"
+        >Delete card</button>
+        <button type="submit" class="btn primary" (click)="closeCardModal()">CLOSE</button>
       </div>
     </div>
   </div>

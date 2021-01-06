@@ -36,7 +36,8 @@ export class CardService {
   }
 
   deleteCard(boardID: string, listID: string, cardID: string): Observable<any>{
-    return this.http.delete(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`);
+    return this.http.delete(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}`,
+      { responseType: 'text' });
   }
 
   addLabelToCard(boardID: string, listID: string, cardID: string, labelID): Observable<any>{
