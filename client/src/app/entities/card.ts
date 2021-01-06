@@ -1,4 +1,5 @@
-import {Checklist} from './checklist';
+import { Checklist } from './checklist';
+import { Comment } from './comment';
 
 export interface Card {
   id: string;
@@ -8,4 +9,5 @@ export interface Card {
   date: string;
   labels: string[]; // IDs
   checklists: Checklist[];
+  comments: Comment[];
 }

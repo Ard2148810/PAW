@@ -247,7 +247,23 @@
         <div class="card-section">
           <span>Comments</span>
           <div>
-            soon...
+            <div *ngFor="let comment of activeCard.comments" class="card-comment">
+              <span class="card-comment-author">{{ comment.author }}:</span>
+              <span class="card-comment-text">{{ comment.description }}</span>
+              <span
+                class="btn-cancel clickable"
+                (click)="handleDeleteComment(data.id, activeList.id, activeCard.id, comment.id)"
+                style="margin-left: 10px"
+              >
+                <fa-icon [icon]="iconCancel"></fa-icon>
+              </span>
+            </div>
+            <div class="card-comment-new">
+              <app-inline-input
+                value="New comment..."
+                (valueChanged)="handleCardCommentAdded($event, data.id, activeList.id, activeCard.id)"
+              ></app-inline-input>
+            </div>
           </div>
         </div>
       </div>

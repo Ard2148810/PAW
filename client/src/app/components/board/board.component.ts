@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BoardService } from '../../services/board.service';
 import { Board } from '../../entities/board';
@@ -14,7 +14,7 @@ import { IDate } from 'ng2-date-picker';
 import { CommentService } from '../../services/comment.service';
 import { ChecklistService } from '../../services/checklist.service';
 import { ItemService } from '../../services/item.service';
-import DateTimeFormat = Intl.DateTimeFormat;
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-board',
@@ -46,6 +46,8 @@ export class BoardComponent implements OnInit {
 
   labelName = '';
   labelColor = '';
+
+  iconCancel = faTimes;
 
   editingMembers: boolean;
 
@@ -348,10 +350,22 @@ export class BoardComponent implements OnInit {
     const updatedCard = { members: [] };
     updatedCard.members = card.members.filter(member => member !== teamMember);
     console.log(updatedCard);
-    this.cardService.updateCard(this.data.id, list.id, card.id, updatedCard).subscribe(() => this.ngOnInit());
+    this.cardService.updateCard(this.data.id, list.id, card.id, updatedCard)
+      .subscribe(() => this.ngOnInit());
   }
 
   handleAssignMember(teamMember: string, list: List, card: Card): void {
-    this.cardService.addMemberToCard(this.data.id, list.id, card.id, teamMember).subscribe(() => this.ngOnInit());
+    this.cardService.addMemberToCard(this.data.id, list.id, card.id, teamMember)
+      .subscribe(() => this.ngOnInit());
+  }
+
+  handleCardCommentAdded(comment: string, boardId: string, listId: string, cardId: string): void {
+    this.commentService.addComment(boardId, listId, cardId, comment)
+      .subscribe(() => this.ngOnInit());
+  }
+
+  handleDeleteComment(boardId: string, listId: string, cardId: string, commentId: string): void {
+    this.commentService.deleteComment(boardId, listId, cardId, commentId)
+      .subscribe(() => this.ngOnInit());
   }
 }

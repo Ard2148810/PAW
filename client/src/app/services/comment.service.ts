@@ -24,6 +24,7 @@ export class CommentService {
   }
 
   deleteComment(boardID: string, listID: string, cardID: string, commentID: string): Observable<any>{
-    return this.http.delete(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/comments/${commentID}`);
+    return this.http.delete(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/comments/${commentID}`,
+      { responseType: 'text' });
   }
 }
