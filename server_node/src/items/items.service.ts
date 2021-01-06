@@ -115,7 +115,7 @@ export class ItemsService {
     if (updateItemDto.description) {
       checklist.items[indexOfItem].description = updateItemDto.description;
     }
-    if (updateItemDto.status) {
+    if (updateItemDto.status != null) {
       checklist.items[indexOfItem].status = updateItemDto.status;
     }
     return await this.checklistsService.update(
