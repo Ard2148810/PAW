@@ -71,6 +71,10 @@ export class BoardComponent implements OnInit {
       this.data.lists = this.listService.sortListsByOrder(this.data.lists);
       this.labelService.newBoardActivated(this.data.id, this.data.labels);
 
+      if (this.activeCard) {
+        this.setActiveCard(this.activeList.id, this.activeCard.id);
+      }
+
       this.boardReady = true;
 
       if (!this.data.isPublic){
@@ -282,4 +286,10 @@ export class BoardComponent implements OnInit {
     console.log({ msg: 'handleDateChanged', date: date.date.toISOString() });
   }
 
+  handleAddChecklist(activeList: List, activeCard: Card): void {
+    this.checklistService.addChecklist(this.data.id, activeList.id, activeCard.id, 'New checklist')
+      .subscribe(() => {
+        this.ngOnInit();
+      });
+  }
 }

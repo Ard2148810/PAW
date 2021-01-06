@@ -1,0 +1,25 @@
+<div class="checklist">
+  <div>
+    <app-inline-input
+      [value]="data.description"
+      (valueChanged)="handleChecklistUpdated($event)"
+    ></app-inline-input>
+    <span
+      class="btn-cancel clickable"
+      (click)="handleDeleteChecklistClicked(data)"
+    >
+      <fa-icon [icon]="iconCancel"></fa-icon>
+    </span>
+  </div>
+  <app-checklist-row
+    *ngFor="let row of data.items"
+    [data]="row"
+    (itemDeleted)="handleChecklistItemDeleted($event)"
+    (itemUpdated)="handleChecklistItemUpdated($event)"
+  ></app-checklist-row>
+  <app-inline-input
+    value="New checklist item..."
+    (valueChanged)="handleNewChecklistItem($event)"
+    style="opacity: 80%"
+  ></app-inline-input>
+</div>

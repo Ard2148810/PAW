@@ -1,0 +1,20 @@
+<div class="checklist-row">
+  <div>
+    <span><app-inline-input
+      [value]="data.description"
+      (valueChanged)="descriptionChanged($event)"
+    ></app-inline-input></span>
+    <span>
+      <input
+        type="checkbox"
+        [(ngModel)]="data.status"
+        [value]="data.status"
+        (ngModelChange)="handleItemUpdated(data)"></span>
+    <span
+      class="btn-cancel clickable"
+      (click)="handleDeleteClicked(data)"
+    >
+      <fa-icon [icon]="iconCancel"></fa-icon>
+    </span>
+  </div>
+</div>

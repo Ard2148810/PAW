@@ -1,3 +1,5 @@
+import {Checklist} from './checklist';
+
 export interface Card {
   id: string;
   name: string;
@@ -5,4 +7,5 @@ export interface Card {
   members: string[];
   date?: Date;
   labels: string[]; // IDs
+  checklists: Checklist[];
 }

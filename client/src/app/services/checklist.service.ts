@@ -21,19 +21,21 @@ export class ChecklistService {
   }
 
   updateChecklist(boardID: string, listID: string, cardID: string, checklistID: string, checklist: Checklist): Observable<any>{
-    return this.http.post(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}`,
-      checklist);
+    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}`,
+      checklist,
+      { responseType: 'text' });
   }
 
   updateChecklistDescription(boardID: string,
                              listID: string, cardID: string, checklistID: string, checklistDescription: string): Observable<any>{
     const body = {description: checklistDescription};
-    return this.http.post(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}`,
+    return this.http.put(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}`,
       body);
   }
 
   deleteChecklist(boardID: string, listID: string, cardID: string, checklistID: string): Observable<any>{
-    return this.http.delete(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}`);
+    return this.http
+      .delete(`${environment.backendURL}/api/boards/${boardID}/lists/${listID}/cards/${cardID}/checklists/${checklistID}`);
   }
 
 

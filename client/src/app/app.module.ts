@@ -21,6 +21,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PublicBoardComponent } from './components/public-board/public-board.component';
 import { LabelComponent } from './components/label/label.component';
 import { DpDatePickerModule } from 'ng2-date-picker';
+import { ChecklistRowComponent } from './components/checklist-row/checklist-row.component';
+import { ChecklistComponent } from './components/checklist/checklist.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { DpDatePickerModule } from 'ng2-date-picker';
     InlineInputComponent,
     ListComponent,
     PublicBoardComponent,
-    LabelComponent
+    LabelComponent,
+    ChecklistRowComponent,
+    ChecklistComponent
   ],
   imports: [
     BrowserModule,

@@ -183,9 +183,16 @@
           </div>
         </div>
         <div class="card-section">
-          <span>Checklist</span>
+          <span>Checklists</span>
           <div>
-            <button class="btn">Checklist</button>
+            <app-checklist
+              *ngFor="let checklist of activeCard.checklists"
+              [data]="checklist"
+              (contentUpdated)="handleContentUpdated()"
+              [ownerListId]="this.activeList.id"
+              [ownerCardId]="this.activeCard.id"
+            ></app-checklist>
+            <button class="btn" (click)="handleAddChecklist(this.activeList, this.activeCard)">New checklist</button>
           </div>
         </div>
         <div class="card-section">
