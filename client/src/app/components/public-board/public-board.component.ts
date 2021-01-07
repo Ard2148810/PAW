@@ -30,6 +30,8 @@ export class PublicBoardComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.publicBoardLink = await this.boardService.getPublicLink(this.id);
+    this.publicBoardLink = this.publicBoardLink.replace('https', '');
+    this.publicBoardLink = this.publicBoardLink.replace('http', '');
     // this.publicBoardLink = 'https://' + this.publicBoardLink;
 
     console.log(this.publicBoardLink);
