@@ -25,8 +25,6 @@
         [id]="list.id" [title]="list.name"
         [cards]="list.cards"
         (cardClicked)="handleCardClicked($event)"
-        (cardAdded)="handleCardAdded($event)"
-        (contentUpdated)="handleContentUpdated()"
         [data]="list"
       ></app-list>
       <app-list wildcard=true (listAdded)="handleListAdded($event)"></app-list>
@@ -58,7 +56,6 @@
       <div class="modal-header">
         <app-inline-input
           [value]="activeCard.name"
-          (valueChanged)="handleCardRenamed($event, this.activeCard, this.activeList)"
         ></app-inline-input>
       </div>
       <div class="modal-body">
@@ -67,7 +64,6 @@
           <div>
             <app-inline-input
               [value]="activeCard.description || 'description...'"
-              (valueChanged)="handleDescriptionChanged($event, activeList.id, activeCard.id, data.id)"
             ></app-inline-input>
           </div>
         </div>
@@ -76,43 +72,43 @@
           <div>
             <app-label *ngFor="let labelId of activeCard.labels" [id]="labelId"></app-label>
             <br>
-            <div class="dropdown">
-              <button class="btn" (click)="toggleManageLabels()">Manage labels</button>
-              <div *ngIf="managingLabels" class="dropdown-content" style="display: block" id="labelDropdown">
-                <div *ngIf="activeLabel else labelMenu">
-                  <button class="btn" (click)="activeLabel = null">Back</button>
-                  <div class="form-control-container">
-                    <label for="labelName">
-                      Name
-                    </label>
-                    <input id="labelName" name="labelName" type="text" [(ngModel)]="labelName">
-                  </div>
-                  <div class="form-control-container">
-                    <label for="labelColor">
-                      Color
-                    </label>
-                    <input id="labelColor" name="labelColor" style="min-height: 18px" type="color" [(ngModel)]="labelColor">
-                  </div>
-                  <button class="btn" (click)="handleLabelEditConfirm(labelName, labelColor)">Confirm</button>
-                </div>
-                <ng-template #labelMenu>
-                  <div *ngFor="let label of data.labels">
-                    <app-label  [id]="label.id"></app-label>
-                    <button
-                      class="btn"
-                      *ngIf="isLabelActive(label.id, activeCard)"
-                      (click)="handleAssignLabel(data, activeList, activeCard, label, false)"
-                    >Detach</button>
-                    <button
-                      class="btn"
-                      *ngIf="!isLabelActive(label.id, activeCard)"
-                      (click)="handleAssignLabel(data, activeList, activeCard, label, true)">Attach</button>
-                    <button class="btn" (click)="handleLabelEditClicked(label.id)">Edit</button>
-                  </div>
-                  <button class="btn" (click)="handleLabelEditClicked(null)">+</button>
-                </ng-template>
-              </div>
-            </div>
+<!--            <div class="dropdown">-->
+<!--&lt;!&ndash;              <button class="btn" (click)="toggleManageLabels()">Manage labels</button>&ndash;&gt;-->
+<!--              <div *ngIf="managingLabels" class="dropdown-content" style="display: block" id="labelDropdown">-->
+<!--                <div *ngIf="activeLabel else labelMenu">-->
+<!--                  <button class="btn" (click)="activeLabel = null">Back</button>-->
+<!--                  <div class="form-control-container">-->
+<!--                    <label for="labelName">-->
+<!--                      Name-->
+<!--                    </label>-->
+<!--                    <input id="labelName" name="labelName" type="text" [(ngModel)]="labelName">-->
+<!--                  </div>-->
+<!--                  <div class="form-control-container">-->
+<!--                    <label for="labelColor">-->
+<!--                      Color-->
+<!--                    </label>-->
+<!--                    <input id="labelColor" name="labelColor" style="min-height: 18px" type="color" [(ngModel)]="labelColor">-->
+<!--                  </div>-->
+<!--                  <button class="btn" (click)="handleLabelEditConfirm(labelName, labelColor)">Confirm</button>-->
+<!--                </div>-->
+<!--                <ng-template #labelMenu>-->
+<!--                  <div *ngFor="let label of data.labels">-->
+<!--                    <app-label  [id]="label.id"></app-label>-->
+<!--                    <button-->
+<!--                      class="btn"-->
+<!--                      *ngIf="isLabelActive(label.id, activeCard)"-->
+<!--                      (click)="handleAssignLabel(data, activeList, activeCard, label, false)"-->
+<!--                    >Detach</button>-->
+<!--                    <button-->
+<!--                      class="btn"-->
+<!--                      *ngIf="!isLabelActive(label.id, activeCard)"-->
+<!--                      (click)="handleAssignLabel(data, activeList, activeCard, label, true)">Attach</button>-->
+<!--                    <button class="btn" (click)="handleLabelEditClicked(label.id)">Edit</button>-->
+<!--                  </div>-->
+<!--                  <button class="btn" (click)="handleLabelEditClicked(null)">+</button>-->
+<!--                </ng-template>-->
+<!--              </div>-->
+<!--            </div>-->
           </div>
         </div>
         <div class="card-section">
@@ -125,7 +121,7 @@
               [ownerListId]="this.activeList.id"
               [ownerCardId]="this.activeCard.id"
             ></app-checklist>
-            <button class="btn" (click)="handleAddChecklist(this.activeList, this.activeCard)">New checklist</button>
+<!--            <button class="btn" (click)="handleAddChecklist(this.activeList, this.activeCard)">New checklist</button>-->
           </div>
         </div>
         <div class="card-section">
@@ -150,24 +146,24 @@
             <div>
               <span *ngFor="let member of activeCard.members" class="card-member">{{ member }}</span>
             </div>
-            <div class="dropdown">
-              <button class="btn" (click)="toggleEditingMembers()">Edit members</button>
-              <div class="dropdown-content-click spacein-small" [class.visible]="editingMembers">
-                <div *ngFor="let teamMember of this.data.teamMembers">
-                  <span>{{ teamMember }}</span>
-                  <button
-                    class="btn"
-                    *ngIf="isCardMember(teamMember, activeCard.members)"
-                    (click)="handleRemoveMember(teamMember, activeList, activeCard)"
-                  >Remove</button>
-                  <button
-                    class="btn"
-                    *ngIf="!isCardMember(teamMember, activeCard.members)"
-                    (click)="handleAssignMember(teamMember, activeList, activeCard)"
-                  >Assign</button>
-                </div>
-              </div>
-            </div>
+<!--            <div class="dropdown">-->
+<!--              <button class="btn" (click)="toggleEditingMembers()">Edit members</button>-->
+<!--              <div class="dropdown-content-click spacein-small" [class.visible]="editingMembers">-->
+<!--                <div *ngFor="let teamMember of this.data.teamMembers">-->
+<!--                  <span>{{ teamMember }}</span>-->
+<!--                  <button-->
+<!--                    class="btn"-->
+<!--                    *ngIf="isCardMember(teamMember, activeCard.members)"-->
+<!--                    (click)="handleRemoveMember(teamMember, activeList, activeCard)"-->
+<!--                  >Remove</button>-->
+<!--                  <button-->
+<!--                    class="btn"-->
+<!--                    *ngIf="!isCardMember(teamMember, activeCard.members)"-->
+<!--                    (click)="handleAssignMember(teamMember, activeList, activeCard)"-->
+<!--                  >Assign</button>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
           </div>
         </div>
         <div class="card-section">
@@ -176,28 +172,28 @@
             <div *ngFor="let comment of activeCard.comments" class="card-comment">
               <span class="card-comment-author">{{ comment.author }}:</span>
               <span class="card-comment-text">{{ comment.description }}</span>
-              <span
-                class="btn-cancel clickable"
-                (click)="handleDeleteComment(data.id, activeList.id, activeCard.id, comment.id)"
-                style="margin-left: 10px"
-              >
-                <fa-icon [icon]="iconCancel"></fa-icon>
-              </span>
+<!--              <span-->
+<!--                class="btn-cancel clickable"-->
+<!--                (click)="handleDeleteComment(data.id, activeList.id, activeCard.id, comment.id)"-->
+<!--                style="margin-left: 10px"-->
+<!--              >-->
+<!--                <fa-icon [icon]="iconCancel"></fa-icon>-->
+<!--              </span>-->
             </div>
-            <div class="card-comment-new">
-              <app-inline-input
-                value="New comment..."
-                (valueChanged)="handleCardCommentAdded($event, data.id, activeList.id, activeCard.id)"
-              ></app-inline-input>
-            </div>
+<!--            <div class="card-comment-new">-->
+<!--              <app-inline-input-->
+<!--                value="New comment..."-->
+<!--                (valueChanged)="handleCardCommentAdded($event, data.id, activeList.id, activeCard.id)"-->
+<!--              ></app-inline-input>-->
+<!--            </div>-->
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button
-          class="btn danger"
-          (click)="handleDeleteCard(this.data.id, this.activeList.id, this.activeCard.id)"
-        >Delete card</button>
+<!--        <button-->
+<!--          class="btn danger"-->
+<!--          (click)="handleDeleteCard(this.data.id, this.activeList.id, this.activeCard.id)"-->
+<!--        >Delete card</button>-->
         <button type="submit" class="btn primary" (click)="closeCardModal()">CLOSE</button>
       </div>
     </div>

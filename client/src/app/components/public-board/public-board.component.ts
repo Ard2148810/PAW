@@ -55,14 +55,14 @@ export class PublicBoardComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router) {
     route.params.subscribe(params => this.id = params.id);
-    route.params.subscribe(params => this.id2 = params.id2);
+    // route.params.subscribe(params => this.id2 = params.id2);
     this.boardReady = false;
     this.error = false;
   }
 
   ngOnInit(): void {
-    const hash = this.id + '/' + this.id2;
-    // const hash = this.id2;
+    // const hash = this.id + '/' + this.id2;
+    const hash = this.id;
 
     console.log(hash);
 
