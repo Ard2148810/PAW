@@ -185,14 +185,7 @@ export class BoardsService {
     if (!board.isPublic) {
       throw new BadRequestException('Board is not public');
     }
-    return (
-      `${process.env.HOST}` +
-      ':' +
-      `${process.env.PORT}` +
-      '/api/boards/' +
-      this.encrypt(board.id) +
-      '/public'
-    );
+    return this.encrypt(board.id);
   }
 
   encrypt(id: string) {
