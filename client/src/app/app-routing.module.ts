@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NotLoggedGuard] },
   { path: 'login', component: LoginComponent, canActivate: [NotLoggedGuard] },
   { path: 'board/:id', component: BoardComponent, canActivate: [LoggedGuard] },
-  { path: 'public-board/:id', component: PublicBoardComponent, canActivate: [LoggedGuard] }
+  { path: 'public-board/:id/:id2', component: PublicBoardComponent, canActivate: [LoggedGuard] }
 ];
 
 @NgModule({

@@ -43,12 +43,12 @@ export class BoardService {
     return this.http.get(`${environment.backendURL}/api/boards/${id}`);
   }
 
-  async getPublicLink(id: string): Promise<string>{
+  async getPublicBoardHash(id: string): Promise<string> {
     return this.http.get(`${environment.backendURL}/api/boards/${id}/link`, { responseType: 'text'}).toPromise();
   }
 
-  getPublicBoard(link: string): any{
-    return this.http.get(link);
+  getPublicBoard(hash: string): any{
+    return this.http.get(`${environment.backendURL}/api/boards/${hash}/public`);
   }
 
   updateBoard(id: string, name: string, description: string, isPublic: boolean): any {
@@ -58,6 +58,15 @@ export class BoardService {
       isPublic
     };
     return this.http.put(`${environment.backendURL}/api/boards/${id}`, body, { responseType: 'text'});
+  }
+
+  async updateBoardAsync(id: string, name: string, description: string, isPublic: boolean): Promise<any> {
+    const body = {
+      name,
+      description,
+      isPublic
+    };
+    return this.http.put(`${environment.backendURL}/api/boards/${id}`, body, { responseType: 'text'}).toPromise();
   }
 
   addUserToBoard(id: string, username: string): any {

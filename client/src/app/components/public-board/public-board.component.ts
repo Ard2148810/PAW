@@ -11,9 +11,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class PublicBoardComponent implements OnInit {
 
   id: string;
+  id2: string;
   data: Board;
 
-  publicBoardLink: string;
 
   boardReady: boolean;
 
@@ -24,19 +24,18 @@ export class PublicBoardComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router) {
     route.params.subscribe(params => this.id = params.id);
+    route.params.subscribe(params => this.id2 = params.id2);
     this.boardReady = false;
     this.error = false;
   }
 
-  async ngOnInit(): Promise<void> {
-    this.publicBoardLink = await this.boardService.getPublicLink(this.id);
-    this.publicBoardLink = this.publicBoardLink.replace('https', '');
-    this.publicBoardLink = this.publicBoardLink.replace('http', '');
-    // this.publicBoardLink = 'https://' + this.publicBoardLink;
+  ngOnInit(): void {
+    const hash = this.id + '/' + this.id2;
+    // const hash = this.id2;
 
-    console.log(this.publicBoardLink);
+    console.log(hash);
 
-    this.boardService.getPublicBoard(this.publicBoardLink)
+    this.boardService.getPublicBoard(hash)
       .subscribe(
         response => {
           this.data = response;

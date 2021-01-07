@@ -68,8 +68,8 @@ export class BoardComponent implements OnInit {
     this.error = false;
   }
 
-  ngOnInit(): void {
-    this.boardService.getBoard(this.id).subscribe(data => {
+  async ngOnInit(): Promise<void> {
+    this.boardService.getBoard(this.id).subscribe(async data => {
       this.data = data;
       this.data.lists = this.listService.sortListsByOrder(this.data.lists);
       this.labelService.newBoardActivated(this.data.id, this.data.labels);
@@ -84,7 +84,8 @@ export class BoardComponent implements OnInit {
         this.setPrivate();
       }
       else{
-        this.setPublic();
+        const hash = await this.boardService.getPublicBoardHash(this.id);
+        this.setPublic(hash);
       }
 
       console.log('Received board:');
@@ -180,10 +181,10 @@ export class BoardComponent implements OnInit {
     this.error = true;
   }
 
-  setPublic(): any{
+  setPublic(hash): any{
     this.data.isPublic = true;
     this.makingPublicMessage = 'THIS BOARD IS PUBLIC';
-    this.getPublicLink();
+    this.setPublicLink(hash);
   }
 
   setPrivate(): any{
@@ -192,19 +193,39 @@ export class BoardComponent implements OnInit {
     this.publicLink = 'None';
   }
 
-  makePublic(): void{
-    this.boardService.updateBoard(this.data.id, this.data.name, this.data.description, true).subscribe(
-      response => {
-        console.log(response);
-        this.setPublic();
-      },
-      error => {
-        this.displayError(error);
-      });
+  async delay(ms: number): Promise<any> {
+    await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => this.setPublicDelayed());
   }
 
-  getPublicLink(): any {
-    this.publicLink = `${window.location.origin}` + '/public-board/' + this.id;
+  async makePublic(): Promise<void>{
+    let success = false;
+    const resp = await this.boardService.updateBoardAsync(this.data.id, this.data.name, this.data.description, true);
+    console.log(resp);
+
+    if (resp === 'Board successfully updated')
+    {
+      success = true;
+    }
+    else{
+      this.displayError(resp);
+    }
+
+    if (success)
+    {
+      this.delay(1000);
+      console.log('HURAAAA');
+    }
+  }
+
+  async setPublicDelayed(): Promise<any> {
+    console.log('fired');
+    let hash = await this.boardService.getPublicBoardHash(this.id);
+    hash = hash.replace('http://', '');
+    this.setPublic(hash);
+  }
+
+  setPublicLink(hash): any {
+    this.publicLink = `${window.location.origin}` + '/public-board/' + hash;
   }
 
   setActiveCard(listId: string, cardId: string): void {
