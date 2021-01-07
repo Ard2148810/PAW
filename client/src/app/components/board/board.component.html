@@ -138,8 +138,8 @@
       </div>
       <div class="modal-body">
         <div class="card-section">
-          <span>Description</span>
-          <div>
+          <span class="card-section-title">Description</span>
+          <div class="card-section-content">
             <app-inline-input
               [value]="activeCard.description || 'description...'"
               (valueChanged)="handleDescriptionChanged($event, activeList.id, activeCard.id, data.id)"
@@ -147,9 +147,9 @@
           </div>
         </div>
         <div class="card-section">
-          <span>Labels</span>
-          <div>
-            <app-label *ngFor="let labelId of activeCard.labels" [id]="labelId"></app-label>
+          <span class="card-section-title">Labels</span>
+          <div class="card-section-content">
+            <app-label *ngFor="let labelId of activeCard.labels" [id]="labelId" style="margin: 3px"></app-label>
             <br>
             <div class="dropdown">
               <button class="btn" (click)="toggleManageLabels()">Manage labels</button>
@@ -191,8 +191,8 @@
           </div>
         </div>
         <div class="card-section">
-          <span>Checklists</span>
-          <div>
+          <span class="card-section-title">Checklists</span>
+          <div class="card-section-content">
             <app-checklist
               *ngFor="let checklist of activeCard.checklists"
               [data]="checklist"
@@ -204,9 +204,9 @@
           </div>
         </div>
         <div class="card-section">
-          <span>Date</span>
+          <span class="card-section-title">Date</span>
           <div>{{ formatDate(activeCard.date) }}</div>
-          <div>
+          <div class="card-section-content">
             <div class="dropdown">
               <button class="btn" (click)="toggleEditingDate()">Date</button>
               <div class="dropdown-content-click" [class.visible]="editingDate">
@@ -220,8 +220,8 @@
           </div>
         </div>
         <div class="card-section">
-          <span>Members</span>
-          <div>
+          <span class="card-section-title">Members</span>
+          <div class="card-section-content">
             <div>
               <span *ngFor="let member of activeCard.members" class="card-member">{{ member }}</span>
             </div>
@@ -246,8 +246,8 @@
           </div>
         </div>
         <div class="card-section">
-          <span>Comments</span>
-          <div>
+          <span class="card-section-title">Comments</span>
+          <div class="card-section-content">
             <div *ngFor="let comment of activeCard.comments" class="card-comment">
               <span class="card-comment-author">{{ comment.author }}:</span>
               <span class="card-comment-text">{{ comment.description }}</span>
