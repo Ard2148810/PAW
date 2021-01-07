@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -107,11 +103,13 @@ export class CardsService {
       list.cards[indexOfCard].date = updateCardDto.date;
     }
     if (Array.isArray(updateCardDto.members) && updateCardDto.members.length) {
+      list.cards[indexOfCard].members = [];
       updateCardDto.members.forEach((value) => {
         list.cards[indexOfCard].members.push(value);
       });
     }
     if (Array.isArray(updateCardDto.labels) && updateCardDto.labels.length) {
+      list.cards[indexOfCard].labels = [];
       updateCardDto.labels.forEach((value) => {
         list.cards[indexOfCard].labels.push(value);
       });
