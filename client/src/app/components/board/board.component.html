@@ -20,7 +20,8 @@
         <button class="btn simple" (click)="toggleAddingUserModal()">Add user</button>
       </div>
       <div>
-        <button class="btn simple" (click)="toggleMakingPublicModal()">Make public</button>
+        <button class="btn simple" *ngIf="!data.isPublic" (click)="toggleMakingPublicModal()">Make public</button>
+        <button class="btn simple" *ngIf="data.isPublic" (click)="toggleMakingPublicModal()">Show public link</button>
       </div>
       <div>
         <button class="btn simple" (click)="toggleDeletingBoardModal()">Delete Board</button>
